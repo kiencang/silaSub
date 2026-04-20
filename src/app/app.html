@@ -36,10 +36,19 @@
       <!-- Input Area -->
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 shrink-0">
         <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Link YouTube (Để tự động phát Video)</label>
-        <input type="text" 
-               [(ngModel)]="videoUrl"
-               [disabled]="isAnalyzing()"
-               class="w-full px-4 py-3 mb-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-sm truncate disabled:opacity-50">
+        <div class="relative w-full mb-4">
+          <input type="text" 
+                 [(ngModel)]="videoUrl"
+                 [disabled]="isAnalyzing()"
+                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-sm truncate disabled:opacity-50 pr-11">
+          @if (videoUrl()) {
+            <button (click)="videoUrl.set('')" class="absolute right-2.5 top-[10px] p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors focus:outline-none cursor-pointer" title="Xóa Link">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          }
+        </div>
                
         <div class="flex items-center gap-1.5 mb-2">
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-400">2. File Phụ đề (.srt)</label>
@@ -67,22 +76,12 @@
         <!-- Use flex-wrap or min-w-0 on input to prevent Firefox overflow -->
         <div class="flex gap-3 mb-3 relative max-w-full">
           <input type="file" accept=".srt" (change)="onFileSelected($event)" 
-                 class="flex-1 min-w-0 text-sm text-slate-500 file:mr-2 md:file:mr-4 file:py-2.5 file:px-2 md:file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer border border-slate-200 rounded-xl bg-slate-50 pl-0 w-full overflow-hidden text-ellipsis whitespace-nowrap">
-          <button (click)="analyzeData()" 
-                  [disabled]="isAnalyzing() || !videoUrl() || !selectedFile()"
-                  class="px-4 py-3 md:px-6 bg-slate-900 text-white rounded-xl font-semibold text-sm hover:bg-slate-800 transition-colors shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px] md:min-w-[140px] flex items-center justify-center">
-            @if (isAnalyzing()) {
-              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-              Đang kết nối...
-            } @else {
-              Phân tích Phụ đề
-            }
-          </button>
+                 class="flex-1 w-full min-w-0 text-sm text-slate-500 file:mr-2 md:file:mr-4 file:py-3 file:px-4 md:file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer border border-slate-200 rounded-xl bg-slate-50 pl-0 overflow-hidden text-ellipsis whitespace-nowrap">
         </div>
         
         <!-- Toggle for pre-translated file -->
         <label class="flex items-center gap-2 text-sm text-slate-600 font-medium cursor-pointer max-w-max">
-           <input type="checkbox" [(ngModel)]="isVietnameseFile" class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 focus:ring-2 cursor-pointer">
+           <input type="checkbox" [ngModel]="isVietnameseFile()" (ngModelChange)="onVietnameseFlagChange($event)" class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 focus:ring-2 cursor-pointer">
            Nếu đây là file Phụ đề Tiếng Việt đã dịch sẵn thì tick vào ô bên trái. Bạn sẽ xem luôn, và không cần AI để dịch nữa.
         </label>
 
@@ -124,7 +123,7 @@
         
         <!-- Translated Subtitle Overlay -->
         @if (currentLine()?.viText) {
-          <div class="absolute bottom-[10%] left-0 right-0 px-4 md:px-12 text-center pointer-events-none transition-all duration-300 z-10 w-full flex justify-center">
+          <div class="absolute left-0 right-0 px-4 md:px-12 text-center pointer-events-none transition-all duration-300 z-10 w-full flex justify-center" [style.bottom.rem]="subVerticalOffset()">
             <div class="inline-block max-w-full">
               <!-- Optional Original Text (Hide if using pre-translated file) -->
               @if (!isVietnameseFile()) {
@@ -246,7 +245,7 @@
 
   <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
     <p>© 2026 silaSub • Nguyễn Đức Anh</p>
-    <p>v1.0.3 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
+    <p>v1.0.4 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
   </footer>
 
   <!-- Settings Modal (Popup) -->
@@ -305,6 +304,21 @@
         <div class="flex justify-between text-xs text-slate-400 mt-1">
           <span>15%</span>
           <span>85%</span>
+        </div>
+      </div>
+
+      <!-- Option: Vertical Offset -->
+      <div class="mb-8">
+        <label class="block text-sm font-semibold text-slate-700 mb-2 flex justify-between">
+          <span>Khoảng cách từ đáy</span>
+          <span class="text-slate-500">Mức {{ subVerticalOffset() }}</span>
+        </label>
+        <input type="range" min="0" max="5" step="0.5" 
+               [ngModel]="subVerticalOffset()" (ngModelChange)="subVerticalOffset.set($event)"
+               class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-red-600">
+        <div class="flex justify-between text-xs text-slate-400 mt-1">
+          <span>Sát khung</span>
+          <span>Siêu cao</span>
         </div>
       </div>
 

@@ -43,7 +43,8 @@ export class App implements OnDestroy, OnInit {
   subFontSize = signal<number>(30);
   subFontFamily = signal<string>('Inter');
   subBgOpacity = signal<number>(0.5);
-  private backupSettings = { size: 30, font: 'Inter', opacity: 0.5 };
+  subVerticalOffset = signal<number>(2); // 2rem default
+  private backupSettings = { size: 30, font: 'Inter', opacity: 0.5, offset: 2 };
 
   isAnalyzing = signal(false);
   analysisResult = signal<{lines: number, transcript: TranscriptLine[]} | null>(null);
@@ -69,7 +70,8 @@ export class App implements OnDestroy, OnInit {
     this.backupSettings = {
       size: this.subFontSize(),
       font: this.subFontFamily(),
-      opacity: this.subBgOpacity()
+      opacity: this.subBgOpacity(),
+      offset: this.subVerticalOffset()
     };
     this.isSettingsOpen.set(true);
   }
@@ -81,7 +83,8 @@ export class App implements OnDestroy, OnInit {
         localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({
           size: this.subFontSize(),
           font: this.subFontFamily(),
-          opacity: this.subBgOpacity()
+          opacity: this.subBgOpacity(),
+          offset: this.subVerticalOffset()
         }));
       }
       this.addToast('Lưu cài đặt thành công!', 'success');
@@ -90,6 +93,7 @@ export class App implements OnDestroy, OnInit {
       this.subFontSize.set(30);
       this.subFontFamily.set('Inter');
       this.subBgOpacity.set(0.5);
+      this.subVerticalOffset.set(2);
       // Xoá memory trong localStorage
       if (isPlatformBrowser(this.platformId)) {
         localStorage.removeItem(SETTINGS_STORAGE_KEY);
@@ -100,6 +104,7 @@ export class App implements OnDestroy, OnInit {
       this.subFontSize.set(this.backupSettings.size);
       this.subFontFamily.set(this.backupSettings.font);
       this.subBgOpacity.set(this.backupSettings.opacity);
+      this.subVerticalOffset.set(this.backupSettings.offset);
     }
   }
 
@@ -187,7 +192,8 @@ export class App implements OnDestroy, OnInit {
           const parsed = JSON.parse(savedSettings);
           if (parsed.size) this.subFontSize.set(parsed.size);
           if (parsed.font) this.subFontFamily.set(parsed.font);
-          if (parsed.opacity) this.subBgOpacity.set(parsed.opacity);
+          if (parsed.opacity !== undefined) this.subBgOpacity.set(parsed.opacity);
+          if (parsed.offset !== undefined) this.subVerticalOffset.set(parsed.offset);
         } catch (e) {
           console.error("Failed to parse saved settings", e);
         }
@@ -243,6 +249,14 @@ export class App implements OnDestroy, OnInit {
     }
   }
 
+  onVietnameseFlagChange(checked: boolean) {
+    this.isVietnameseFile.set(checked);
+    // Re-trigger file parsing so subtitles render correctly 
+    if (this.selectedFile()) {
+      this.parseAndLoadFile(this.selectedFile()!);
+    }
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -253,13 +267,80 @@ export class App implements OnDestroy, OnInit {
       if (file.size > MAX_SIZE) {
         this.addToast(`File phụ đề quá lớn (${(file.size / 1024).toFixed(1)} KB). Giới hạn tối đa là 500 KB.`, 'error');
         this.selectedFile.set(null);
+        this.analysisResult.set(null);
         input.value = ''; // Reset file input
         return;
       }
       this.selectedFile.set(file);
+
+      // Auto-detect previously translated file and reconstruct YouTube URL
+      const match = file.name.match(/silaSub_vi_([a-zA-Z0-9_-]{11})/);
+      let autoDetected = false;
+      if (match && match[1]) {
+        const extractedId = match[1];
+        this.isVietnameseFile.set(true);
+        autoDetected = true;
+        this.videoUrl.set(`https://www.youtube.com/watch?v=${extractedId}`);
+        this.addToast('Đã phát hiện file dịch sẵn, nạp Video thành công', 'success');
+      }
+
+      this.parseAndLoadFile(file, autoDetected);
+
     } else {
       this.selectedFile.set(null);
+      this.analysisResult.set(null);
     }
+  }
+
+  private parseAndLoadFile(file: File, autoDetected: boolean = false) {
+    this.isAnalyzing.set(true);
+    this.analyzeError.set(null);
+    this.analysisResult.set(null);
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result as string;
+        const transcript = this.parseSRT(text);
+        if (transcript.length === 0) {
+          throw new Error('File không đúng định dạng SRT hoặc trống.');
+        }
+
+        // Handle case where user provided an already translated Vietnamese file
+        if (this.isVietnameseFile() || autoDetected) {
+           transcript.forEach(line => {
+              line.viText = line.text;
+              line.text = '[Phụ đề Tiếng Việt có sẵn]'; // Hide original English logic
+           });
+        }
+
+        this.analysisResult.set({
+          lines: transcript.length,
+          transcript: transcript
+        });
+        
+        // Auto reset video time to beginning if loaded and not auto-detecting a new video
+        // since auto-detecting might load a fresh player
+        if (!autoDetected) {
+            this.currentTime.set(0);
+            if (this.player && this.player.seekTo) {
+                this.player.seekTo(0, true);
+            }
+        }
+        
+        this.isAnalyzing.set(false);
+      } catch (err: any) {
+        this.analyzeError.set(err.message || 'Lỗi khi đọc file SRT. Vui lòng kiểm tra lại định dạng.');
+        this.addToast('File SRT không đúng định dạng. Vui lòng kiểm tra lại!', 'error');
+        this.isAnalyzing.set(false);
+      }
+    };
+    reader.onerror = () => {
+      this.analyzeError.set('Không thể đọc được file này.');
+      this.addToast('Xảy ra lỗi khi đọc file từ máy của bạn.', 'error');
+      this.isAnalyzing.set(false);
+    };
+    reader.readAsText(file);
   }
 
   private parseSRT(srtData: string): TranscriptLine[] {
@@ -303,59 +384,6 @@ export class App implements OnDestroy, OnInit {
       transcript.push(current as TranscriptLine);
     }
     return transcript;
-  }
-
-  analyzeData() {
-    if (!this.videoId()) {
-      this.analyzeError.set('Vui lòng nhập link YouTube hợp lệ.');
-      this.addToast('Bạn chưa nhập link YouTube hoặc link không hợp lệ!', 'warning');
-      return;
-    }
-    if (!this.selectedFile()) {
-      this.analyzeError.set('Vui lòng tải lên file phụ đề (.srt).');
-      this.addToast('Bạn chưa tải lên file phụ đề (.srt)!', 'warning');
-      return;
-    }
-
-    this.isAnalyzing.set(true);
-    this.analyzeError.set(null);
-    this.analysisResult.set(null);
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const text = e.target?.result as string;
-        const transcript = this.parseSRT(text);
-        if (transcript.length === 0) {
-          throw new Error('File không đúng định dạng SRT hoặc trống.');
-        }
-
-        // Handle case where user provided an already translated Vietnamese file
-        if (this.isVietnameseFile()) {
-           transcript.forEach(line => {
-              line.viText = line.text;
-              line.text = '[Phụ đề Tiếng Việt có sẵn]'; // Hide original English logic
-           });
-        }
-
-        this.analysisResult.set({
-          lines: transcript.length,
-          transcript: transcript
-        });
-        
-        this.isAnalyzing.set(false);
-      } catch (err: any) {
-        this.analyzeError.set(err.message || 'Lỗi khi đọc file SRT. Vui lòng kiểm tra lại định dạng.');
-        this.addToast('File SRT không đúng định dạng. Vui lòng kiểm tra lại!', 'error');
-        this.isAnalyzing.set(false);
-      }
-    };
-    reader.onerror = () => {
-      this.analyzeError.set('Không thể đọc được file này.');
-      this.addToast('Xảy ra lỗi khi đọc file từ máy của bạn.', 'error');
-      this.isAnalyzing.set(false);
-    };
-    reader.readAsText(this.selectedFile()!);
   }
 
   async startTranslating() {
@@ -519,7 +547,7 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `silaSub_${this.videoId() || 'subtitles'}.srt`;
+    a.download = `silaSub_vi_${this.videoId() || 'subtitles'}.srt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
