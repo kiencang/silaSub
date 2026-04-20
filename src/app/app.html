@@ -11,7 +11,7 @@
 
   <main class="flex-1 overflow-hidden p-4 md:p-8 flex flex-col md:flex-row gap-8 min-h-0">
     <!-- Left Column: Input and Video Viewport -->
-    <div class="flex-[3] flex flex-col gap-6 min-w-0 h-full overflow-y-auto pr-2 pb-2 scrollbar-hide">
+    <div class="flex-[3] flex flex-col gap-6 min-w-0 h-full overflow-y-auto pr-2 pb-2 custom-scrollbar">
       <!-- Input Area -->
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 shrink-0">
         <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Link YouTube (Để tự động phát Video)</label>
@@ -81,16 +81,16 @@
         
         <!-- Translated Subtitle Overlay -->
         @if (currentLine()?.viText) {
-          <div class="absolute bottom-8 left-0 right-0 px-4 md:px-12 text-center pointer-events-none transition-all duration-300 z-10 w-full flex justify-center">
+          <div class="absolute bottom-[10%] left-0 right-0 px-4 md:px-12 text-center pointer-events-none transition-all duration-300 z-10 w-full flex justify-center">
             <div class="inline-block max-w-full">
               <!-- Optional Original Text (Hide if using pre-translated file) -->
               @if (!isVietnameseFile()) {
-                 <p class="bg-black/80 text-white px-4 py-1 text-xs md:text-sm mb-1 rounded italic opacity-70 inline-block max-w-full fade-in break-words whitespace-normal text-balance">
+                 <p class="bg-black/50 text-white px-4 py-1 text-xs md:text-sm mb-1 rounded italic inline-block max-w-[90%] whitespace-normal">
                    {{ currentLine()?.text }}
                  </p>
                  <br>
               }
-              <p class="bg-red-600/90 text-white px-4 md:px-6 py-2 text-base md:text-xl md:text-[22px] font-medium rounded-lg shadow-lg inline-block max-w-full text-shadow fade-in break-words whitespace-normal text-balance">
+              <p class="bg-black/50 text-yellow-400 px-4 md:px-6 py-2 text-base md:text-2xl lg:text-[28px] font-semibold rounded shadow-sm inline-block max-w-[90%] whitespace-normal leading-snug">
                 {{ currentLine()?.viText }}
               </p>
             </div>

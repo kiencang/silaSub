@@ -299,17 +299,23 @@ export class App implements OnDestroy, OnInit {
     }, 1000);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+      let systemInstruction = '';
+      let promptTemplate = '';
       
-      const systemInstruction = `Bạn là một chuyên gia DỊCH THUẬT PHỤ ĐỀ VIDEO (tiếng Anh sang tiếng Việt) xuất sắc. 
-Nhiệm vụ của bạn là nhận một mảng JSON chứa các dòng phụ đề tiếng Anh, và trả ra mảng JSON tiếng Việt với số lượng và thứ tự index KHÔNG ĐỔI.
+      try {
+        const [siRes, promptRes] = await Promise.all([
+          fetch('/prompts/video_system_instructions.md'),
+          fetch('/prompts/video_prompt.md')
+        ]);
+        
+        if (!siRes.ok || !promptRes.ok) throw new Error('Network response bounds error.');
+        systemInstruction = await siRes.text();
+        promptTemplate = await promptRes.text();
+      } catch (fetchErr) {
+        throw new Error('SYSTEM_PROMPT_FETCH_ERROR');
+      }
 
-NGUYÊN TẮC DỊCH THUẬT (ĐẶC TRƯNG VĂN NÓI YOUTUBE):
-1. Tính chất văn nói (Spoken Language): Nội dung video chủ yếu là văn nói. Tùy thuộc vào bối cảnh (phim tài liệu, vlog, phỏng vấn, tâm sự, hài kịch, v.v..), hãy linh hoạt thay đổi từ vựng, ngữ điệu và đại từ xưng hô sao cho sát với ngữ cảnh tự nhiên nhất. Khung cảnh trang trọng thì dùng từ lịch sự, khung cảnh suồng sã bạn bè thì dùng từ lóng, trẻ trung. Tránh tuyệt đối việc dịch cứng nhắc kiểu word-by-word hoặc phong cách văn bản hành chính, Hán Việt dập khuôn.
-2. Contextual Continuity (Tính liền mạch): Vì phụ đề bị giới hạn bởi thời gian hiển thị (timestamp), một câu nói thường bị cắt vụn ra nhiều dòng. BẮT BUỘC phải đọc tổng quan (look-ahead) các dòng phía sau để nắm rõ cấu trúc câu hoàn chỉnh, rồi mới quyết định chia từ vựng tiếng Việt tương ứng vào từng dòng một cách hợp lý và liền mạch.
-3. Độ dài & Tốc độ đọc: Mắt đọc chậm hơn tai nghe. Ưu tiên sự SÚC TÍCH. Hãy dịch gọn gàng nhất có thể nhưng vẫn giữ nguyên cảm xúc. Bạn có quyền lược bỏ các từ đệm vô nghĩa (như "you know", "like", "actually") nếu nó làm phụ đề quá dài.
-4. Cấu trúc đứt gãy & Cảm xúc: Giữ lại nhịp điệu ngập ngừng, chuyển ý đột ngột của người nói bằng dấu (...) hoặc gạch ngang (-). Đối với các câu cảm thán, hãy bọc lót tinh tế bằng các từ thuần Việt (ví dụ: "Trời ạ", "Thật luôn", "Này nhé", "Nè") để đẩy cảm xúc lên mức tự nhiên nhất.
-5. Thuật ngữ Jargon: Đối với các video đặc thù (Gaming, Coding, Esports), hãy giữ nguyên các thuật ngữ tiếng Anh gốc phổ biến (ví dụ: buff, nerf, deploy, bug) thay vì cố dịch gượng ép sang tiếng Việt.`;
+      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
       const CHUNK_SIZE = 500;
       const fullTranscript = res.transcript;
@@ -339,12 +345,9 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
 `;
         }
 
-        const prompt = `${contextText}[NHIỆM VỤ CỦA BẠN - CHỈ DỊCH DUY NHẤT MẢNG JSON DƯỚI ĐÂY]
-Dịch toàn bộ mảng JSON sau sang tiếng Việt theo đúng các nguyên tắc trong System Instruction.
-CHỈ TRẢ VỀ DUY NHẤT một mảng JSON string hợp lệ, độ dài mảng phải KHỚP 100% với dữ liệu đầu vào.
-
-Input:
-${JSON.stringify(textsToTranslate)}`;
+        const prompt = promptTemplate
+           .replace('{{CONTEXT_TEXT}}', contextText)
+           .replace('{{JSON_PAYLOAD}}', JSON.stringify(textsToTranslate));
 
         const response = await ai.models.generateContent({
           model: 'gemini-3.1-pro-preview',
@@ -360,9 +363,12 @@ ${JSON.stringify(textsToTranslate)}`;
         const output = response.text;
         if (!output) throw new Error("Empty response from AI");
         
+        // Defensive programming: Lột bỏ markdown (nếu có) trước khi parse
+        const cleanOutput = output.replace(/```json\n?/gi, '').replace(/```\n?/g, '').trim();
+        
         let translatedArray: string[] = [];
         try {
-          translatedArray = JSON.parse(output);
+          translatedArray = JSON.parse(cleanOutput);
         } catch (parseError) {
           throw new Error("AI returned invalid JSON format.");
         }
@@ -395,7 +401,9 @@ ${JSON.stringify(textsToTranslate)}`;
       let toastMsg = 'Lỗi kết nối khi dịch thuật.';
       let toastType: ToastType = 'error';
       
-      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota')) {
+      if (errMsg === 'SYSTEM_PROMPT_FETCH_ERROR') {
+         toastMsg = 'Không thể tải file Cấu hình AI. Vui lòng kiểm tra lại thư mục public/prompts/';
+      } else if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota')) {
         toastMsg = 'Hệ thống AI đang quá tải hoặc hết lượt dịch miễn phí. Vui lòng thử lại sau ít phút!';
       } else if (errMsg.toLowerCase().includes('safet') || errMsg.toLowerCase().includes('block')) {
         toastMsg = 'Nội dung đoạn này có chứa từ khóa nhạy cảm, AI đã từ chối dịch.';
@@ -437,7 +445,7 @@ ${JSON.stringify(textsToTranslate)}`;
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `viettrans_${this.videoId() || 'subtitles'}.srt`;
+    a.download = `silaSub_${this.videoId() || 'subtitles'}.srt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
