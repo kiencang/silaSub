@@ -5,6 +5,9 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { GoogleGenAI, ThinkingLevel } from '@google/genai';
 
+const AI_MODEL_VERSION = 'gemini-pro-latest';
+const SETTINGS_STORAGE_KEY = 'silaSub_v1_prefs_8f9a2b';
+
 export interface TranscriptLine {
   text: string;
   viText?: string;
@@ -33,6 +36,15 @@ export class App implements OnDestroy, OnInit {
   selectedFile = signal<File | null>(null);
   isVietnameseFile = signal(false); // Flag if the uploaded file is already Vietnamese
   
+  aiTemperature = signal<number>(0.5); // AI Temperature parameter
+
+  // Settings State
+  isSettingsOpen = signal(false);
+  subFontSize = signal<number>(30);
+  subFontFamily = signal<string>('Inter');
+  subBgOpacity = signal<number>(0.5);
+  private backupSettings = { size: 30, font: 'Inter', opacity: 0.5 };
+
   isAnalyzing = signal(false);
   analysisResult = signal<{lines: number, transcript: TranscriptLine[]} | null>(null);
   analyzeError = signal<string | null>(null);
@@ -52,6 +64,55 @@ export class App implements OnDestroy, OnInit {
     this.toasts.update(current => current.filter(t => t.id !== id));
   }
   
+  // Settings Logic
+  openSettings() {
+    this.backupSettings = {
+      size: this.subFontSize(),
+      font: this.subFontFamily(),
+      opacity: this.subBgOpacity()
+    };
+    this.isSettingsOpen.set(true);
+  }
+
+  closeSettings(action: 'save' | 'reset' | 'cancel') {
+    this.isSettingsOpen.set(false);
+    if (action === 'save') {
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({
+          size: this.subFontSize(),
+          font: this.subFontFamily(),
+          opacity: this.subBgOpacity()
+        }));
+      }
+      this.addToast('Lưu cài đặt thành công!', 'success');
+    } else if (action === 'reset') {
+      // Khôi phục về thông số mặc định nguyên thuỷ
+      this.subFontSize.set(30);
+      this.subFontFamily.set('Inter');
+      this.subBgOpacity.set(0.5);
+      // Xoá memory trong localStorage
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.removeItem(SETTINGS_STORAGE_KEY);
+      }
+      this.addToast('Đã khôi phục cài đặt gốc', 'success');
+    } else if (action === 'cancel') {
+      // Revert if canceled (click backdrop without saving)
+      this.subFontSize.set(this.backupSettings.size);
+      this.subFontFamily.set(this.backupSettings.font);
+      this.subBgOpacity.set(this.backupSettings.opacity);
+    }
+  }
+
+  getFontFamily(fontName: string): string {
+    switch(fontName) {
+      case 'Roboto': return '"Roboto", sans-serif';
+      case 'Montserrat': return '"Montserrat", sans-serif';
+      case 'Playfair Display': return '"Playfair Display", serif';
+      case 'Be Vietnam Pro': return '"Be Vietnam Pro", sans-serif';
+      default: return '"Inter", sans-serif';
+    }
+  }
+
   // Translation timer
   translationSeconds = signal<number>(0);
   formattedTranslationTime = computed(() => {
@@ -119,6 +180,19 @@ export class App implements OnDestroy, OnInit {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
+      // Load Settings from LocalStorage
+      const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+      if (savedSettings) {
+        try {
+          const parsed = JSON.parse(savedSettings);
+          if (parsed.size) this.subFontSize.set(parsed.size);
+          if (parsed.font) this.subFontFamily.set(parsed.font);
+          if (parsed.opacity) this.subBgOpacity.set(parsed.opacity);
+        } catch (e) {
+          console.error("Failed to parse saved settings", e);
+        }
+      }
+
       // Listen to fullscreen changes on the document
       document.addEventListener('fullscreenchange', () => {
         this.isFullscreen.set(!!document.fullscreenElement);
@@ -350,12 +424,12 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
            .replace('{{JSON_PAYLOAD}}', JSON.stringify(textsToTranslate));
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.1-pro-preview',
+          model: AI_MODEL_VERSION,
           contents: prompt,
           config: {
             systemInstruction: systemInstruction,
             responseMimeType: "application/json",
-            temperature: 0.5,
+            temperature: this.aiTemperature(),
             thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH }
           }
         });
