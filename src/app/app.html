@@ -1,0 +1,230 @@
+<div class="flex flex-col h-full w-full overflow-hidden">
+  <!-- Header Section -->
+  <header class="border-b border-slate-200 bg-white px-8 py-4 flex justify-between items-center shrink-0">
+    <div class="flex items-center space-gap-3">
+      <h1 class="text-xl font-bold tracking-tight text-slate-800">sila<span class="text-red-600">Sub</span></h1>
+    </div>
+    <div class="flex items-center gap-6">
+      <button class="px-4 py-2 bg-slate-100 rounded-full text-sm font-semibold hover:bg-slate-200 transition-colors cursor-pointer">Cài đặt</button>
+    </div>
+  </header>
+
+  <main class="flex-1 overflow-hidden p-4 md:p-8 flex flex-col md:flex-row gap-8 min-h-0">
+    <!-- Left Column: Input and Video Viewport -->
+    <div class="flex-[3] flex flex-col gap-6 min-w-0 h-full overflow-y-auto pr-2 pb-2 scrollbar-hide">
+      <!-- Input Area -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 shrink-0">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Link YouTube (Để tự động phát Video)</label>
+        <input type="text" 
+               [(ngModel)]="videoUrl"
+               [disabled]="isAnalyzing()"
+               class="w-full px-4 py-3 mb-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-sm truncate disabled:opacity-50">
+               
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">2. File Phụ đề (.srt)</label>
+        <!-- Use flex-wrap or min-w-0 on input to prevent Firefox overflow -->
+        <div class="flex gap-3 mb-3 relative max-w-full">
+          <input type="file" accept=".srt" (change)="onFileSelected($event)" 
+                 class="flex-1 min-w-0 text-sm text-slate-500 file:mr-2 md:file:mr-4 file:py-2.5 file:px-2 md:file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer border border-slate-200 rounded-xl bg-slate-50 pl-0 w-full overflow-hidden text-ellipsis whitespace-nowrap">
+          <button (click)="analyzeData()" 
+                  [disabled]="isAnalyzing() || !videoUrl() || !selectedFile()"
+                  class="px-4 py-3 md:px-6 bg-slate-900 text-white rounded-xl font-semibold text-sm hover:bg-slate-800 transition-colors shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px] md:min-w-[140px] flex items-center justify-center">
+            @if (isAnalyzing()) {
+              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+              Đang kết nối...
+            } @else {
+              Phân tích Phụ đề
+            }
+          </button>
+        </div>
+        
+        <!-- Toggle for pre-translated file -->
+        <label class="flex items-center gap-2 text-sm text-slate-600 font-medium cursor-pointer max-w-max">
+           <input type="checkbox" [(ngModel)]="isVietnameseFile" class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 focus:ring-2 cursor-pointer">
+           Nếu đây là file Phụ đề Tiếng Việt đã dịch sẵn thì tick vào ô bên trái. Bạn sẽ xem luôn, và không cần AI để dịch nữa.
+        </label>
+
+        @if (analyzeError()) {
+          <p class="mt-2 text-sm text-red-500">{{ analyzeError() }}</p>
+        }
+      </div>
+
+      <!-- Video Mockup / Iframe -->
+      <div id="video-wrapper" class="w-full aspect-video bg-black rounded-2xl relative overflow-hidden shadow-2xl group shrink-0">
+        
+        <div class="absolute inset-0 w-full h-full" [class.hidden]="!videoId()">
+             <!-- Target for YouTube IFrame API -->
+             <div id="yt-player-container" class="w-full h-full border-0 pointer-events-auto"></div>
+             
+             <!-- Custom Fullscreen Button Overlay -->
+             <button (click)="toggleFullscreen()" class="absolute bottom-16 right-4 md:bottom-20 md:right-6 z-50 text-white/70 bg-black/60 hover:bg-red-600 hover:text-white p-3 rounded-xl transition-all backdrop-blur-md cursor-pointer border border-white/10 opacity-70 group-hover:opacity-100 focus:outline-none">
+                @if (isFullscreen()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /><!-- Exit pseudo icon --><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20v-5H4M20 9h-5V4M20 15h-5v5M4 9h5V4" /></svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                }
+             </button>
+        </div>
+        
+        @if (!videoId()) {
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+             <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1000" 
+                  class="w-full h-full object-cover opacity-60 grayscale" alt="Video Preview" referrerpolicy="no-referrer">
+             <div class="absolute inset-0 bg-black/40"></div>
+             <div class="absolute flex flex-col items-center gap-3">
+               <div class="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg">
+                  <div class="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-white border-b-[12px] border-b-transparent ml-2"></div>
+               </div>
+               <span class="text-white/90 text-sm font-medium tracking-wide drop-shadow-md">Chưa có link YouTube</span>
+             </div>
+          </div>
+        }
+        
+        <!-- Translated Subtitle Overlay -->
+        @if (currentLine()?.viText) {
+          <div class="absolute bottom-8 left-0 right-0 px-4 md:px-12 text-center pointer-events-none transition-all duration-300 z-10 w-full flex justify-center">
+            <div class="inline-block max-w-full">
+              <!-- Optional Original Text (Hide if using pre-translated file) -->
+              @if (!isVietnameseFile()) {
+                 <p class="bg-black/80 text-white px-4 py-1 text-xs md:text-sm mb-1 rounded italic opacity-70 inline-block max-w-full fade-in break-words whitespace-normal text-balance">
+                   {{ currentLine()?.text }}
+                 </p>
+                 <br>
+              }
+              <p class="bg-red-600/90 text-white px-4 md:px-6 py-2 text-base md:text-xl md:text-[22px] font-medium rounded-lg shadow-lg inline-block max-w-full text-shadow fade-in break-words whitespace-normal text-balance">
+                {{ currentLine()?.viText }}
+              </p>
+            </div>
+          </div>
+        }
+        
+        <!-- Progress Bar -->
+        @if (analysisResult()?.transcript?.[0]?.viText) {
+          <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-white/20 pointer-events-none z-20">
+            <div class="h-full bg-red-600 transition-all duration-100" 
+                 [style.width.%]="(currentTime() / (analysisResult()!.transcript[analysisResult()!.transcript.length-1].offset || 1)) * 100"></div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Right Column: Status and Settings -->
+    <div class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full min-h-0">
+      <!-- Detection Status -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0">
+        <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4" [class.text-green-500]="analysisResult()" [class.text-slate-400]="!analysisResult()" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          Trạng thái
+        </h3>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center text-sm">
+            <span class="text-slate-500">Phụ đề SRT</span>
+            @if (analysisResult()) {
+              <span class="font-mono font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded">{{ isVietnameseFile() ? 'Đã tải bản Việt' : 'Đã tải lên' }}</span>
+            } @else if (analyzeError()) {
+              <span class="font-mono font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">Lỗi</span>
+            } @else {
+              <span class="font-mono font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded">Đang chờ</span>
+            }
+          </div>
+          <div class="flex justify-between items-center text-sm">
+            <span class="text-slate-500">Số phân đoạn</span>
+            <span class="font-medium text-slate-900">{{ analysisResult()?.lines || 0 }} dòng</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transcript Card -->
+      <div class="flex-1 bg-slate-900 rounded-2xl text-white overflow-hidden relative flex flex-col border border-slate-800 min-h-0" [class.opacity-50]="!analysisResult()">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="p-4 md:p-5 border-b border-slate-800 shrink-0 relative z-10 flex justify-between items-center bg-slate-900/50">
+           <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400">Cuộn phụ đề trực tiếp</h3>
+           @if (translateError()) {
+             <p class="text-[10px] text-red-400 font-medium">{{ translateError() }}</p>
+           }
+        </div>
+
+        <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth">
+          @if (analysisResult()) {
+            @for (line of analysisResult()!.transcript; track line.offset) {
+              <div class="p-3 rounded-xl transition-colors border border-transparent" 
+                   [class.bg-slate-800]="currentLine() === line" 
+                   [class.border-slate-700]="currentLine() === line">
+                <span class="block text-[10px] text-slate-500 uppercase font-bold tracking-tighter mb-1">{{ line.offset | number:'1.1-1' }}s</span>
+                @if (!isVietnameseFile()) {
+                    <p class="text-xs text-slate-400 leading-relaxed italic mb-2">{{ line.text }}</p>
+                }
+                <p class="text-sm text-white font-medium leading-relaxed" [class.text-red-400]="isVietnameseFile()">
+                  @if (line.viText) {
+                    {{ line.viText }}
+                  } @else {
+                    <span class="opacity-30">(Đang chờ hệ thống...)</span>
+                  }
+                </p>
+              </div>
+            }
+          } @else {
+            <div class="flex items-center justify-center h-full text-sm text-slate-500 italic">
+               Chưa có dữ liệu phân tích...
+            </div>
+          }
+        </div>
+        
+        <div class="p-4 bg-slate-950 border-t border-slate-800 shrink-0 relative z-10">
+          @if (analysisResult()?.transcript?.[0]?.viText) {
+              <button (click)="exportSrt()"
+                      class="w-full py-3 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all cursor-pointer flex items-center justify-center">
+                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                 Tải xuống Phụ đề Tiếng Việt (.srt)
+              </button>
+              @if (translationCompletedText()) {
+                 <p class="text-[11px] text-green-400 font-medium text-center mt-3">{{ translationCompletedText() }} ✨</p>
+              }
+          } @else {
+              <button (click)="startTranslating()"
+                      class="w-full py-3 bg-red-600 rounded-xl font-bold text-sm hover:bg-red-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                      [disabled]="!analysisResult() || isTranslating()">
+                @if (isTranslating()) {
+                   <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                   AI đang suy luận & Dịch... {{ translationProgressText() ? translationProgressText() + ' ' : '' }}({{ formattedTranslationTime() }})
+                } @else {
+                   Bắt đầu Dịch tự động
+                }
+              </button>
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
+    <p>© 2026 SILASUB • NO VIDEO DATA STORED PERMANENTLY</p>
+    <p>QUOTA USAGE: ENABLED • STATUS: READY</p>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none">
+    @for (toast of toasts(); track toast.id) {
+       <div class="pointer-events-auto flex items-center justify-between gap-3 min-w-[300px] max-w-md p-4 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-0 opacity-100 text-white"
+            [class.bg-red-600]="toast.type === 'error'"
+            [class.bg-amber-500]="toast.type === 'warning'"
+            [class.bg-emerald-500]="toast.type === 'success'">
+         <div class="flex items-center gap-3">
+           @if (toast.type === 'success') {
+             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+           } @else if (toast.type === 'error') {
+             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+           } @else {
+             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+           }
+           <p class="text-sm font-medium leading-relaxed">{{ toast.message }}</p>
+         </div>
+         <button (click)="removeToast(toast.id)" class="text-white/70 hover:text-white transition-colors cursor-pointer p-1 shrink-0">
+           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+         </button>
+       </div>
+    }
+  </div>
+
+</div>
+<router-outlet />
