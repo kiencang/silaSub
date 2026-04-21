@@ -13,14 +13,15 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.6] - 2026-04-21
 ### Fixed
-- Cải thiện tính năng của phần cuộn phụ đề trực tiếp.
+- Cải thiện tính năng của phần cuộn phụ đề trực tiếp (click vào phụ đề cột phải sẽ nhảy sang play tại thời điểm tương ứng).
+- Chỉnh mốc thời gian hiển thị theo phong cách 'con người', ví dụ 10:50 (thay vì 650s) ở hộp cuộn phụ đề trực tiếp.
 
 ## [v1.0.5] - 2026-04-21
 ### Fixed
 - Cấu trúc lại vị trí của input nhập video (cho lên header) và input nhập phụ để (cho sang cột phải).
 - Tăng khả năng điều chỉnh khoảng cách phụ đề từ đáy.
 - Khắc phục lỗi font chữ trên di động quá to.
-- Điều chỉnh lại vị trí xuất hiện của Cài đặt phụ đề, người dùng dễ dàng nhìn thấy điều chỉnh của họ theo thời gian thực.
+- Điều chỉnh lại vị trí xuất hiện của Cài đặt phụ đề, người dùng dễ dàng nhìn thấy điều chỉnh của họ theo thời gian thực với video thực tế bên cột trái.
 
 ## [v1.0.4] - 2026-04-21
 ### Removed
