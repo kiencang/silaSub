@@ -1,0 +1,15 @@
+.responsive-sub-text {
+  font-size: calc(var(--sub-size) * 0.6);
+}
+
+@media (min-width: 768px) {
+  .responsive-sub-text {
+    font-size: calc(var(--sub-size) * 0.8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-sub-text {
+    font-size: var(--sub-size);
+  }
+}
