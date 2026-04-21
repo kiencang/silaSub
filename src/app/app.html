@@ -42,7 +42,7 @@
              placeholder="Link YouTube (Để tự động phát Video)"
              class="w-full px-5 py-2.5 bg-slate-100 hover:bg-slate-200/50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-sm truncate disabled:opacity-50 pr-11 placeholder-slate-400 font-medium shadow-inner shadow-slate-100/50">
       @if (videoUrl()) {
-        <button (click)="videoUrl.set('')" class="absolute right-2.5 top-[7px] p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors focus:outline-none cursor-pointer" title="Xóa Link">
+        <button (click)="clearAllData()" class="absolute right-2.5 top-[7px] p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors focus:outline-none cursor-pointer" title="Tiết lập lại / Xóa Link">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
@@ -60,10 +60,10 @@
 
   <main class="flex-1 overflow-hidden p-4 md:p-8 flex flex-col md:flex-row gap-8 min-h-0">
     <!-- Left Column: Video Viewport -->
-    <div class="flex-[3] flex flex-col min-w-0 h-full max-h-full items-center justify-center">
+    <div class="flex-[3] flex flex-col min-w-0 h-full max-h-full items-center justify-center p-2 lg:p-6">
 
       <!-- Video Mockup / Iframe -->
-      <div id="video-wrapper" class="w-full aspect-video bg-black rounded-2xl relative overflow-hidden shadow-2xl group shrink-0">
+      <div id="video-wrapper" class="w-full h-auto aspect-video max-h-full bg-black rounded-2xl relative overflow-hidden shadow-2xl shrink-0" style="max-width: calc((100vh - 150px) * 16 / 9);">
         
         <div class="absolute inset-0 w-full h-full" [class.hidden]="!videoId()">
              <!-- Target for YouTube IFrame API -->
@@ -129,7 +129,7 @@
     <div class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full overflow-y-auto pr-2 pb-4 custom-scrollbar">
       
       <!-- Upload SRT Card (Moved from Left) -->
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0" [class.hidden]="isTranscriptExpanded()">
         <div class="flex items-center gap-1.5 mb-3">
           <label class="block text-sm font-bold text-slate-800">Tải lên Phụ đề (.srt)</label>
           <div class="group relative flex items-center justify-center cursor-help ml-1">
@@ -155,7 +155,7 @@
         </div>
         
         <div class="flex gap-3 mb-4 relative max-w-full">
-          <input type="file" accept=".srt" (change)="onFileSelected($event)" 
+          <input type="file" accept=".srt" (change)="onFileSelected($event)" #fileUploader
                  class="flex-1 w-full min-w-0 text-sm text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer border border-slate-200 rounded-xl bg-slate-50 pl-0 overflow-hidden text-ellipsis whitespace-nowrap">
         </div>
         
@@ -171,7 +171,7 @@
       </div>
 
       <!-- Detection Status -->
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0" [class.hidden]="isTranscriptExpanded()">
         <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
           <svg class="w-4 h-4" [class.text-green-500]="analysisResult()" [class.text-slate-400]="!analysisResult()" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
           Trạng thái
@@ -198,11 +198,25 @@
       <div class="flex-1 bg-slate-900 rounded-2xl text-white overflow-hidden relative flex flex-col border border-slate-800 min-h-[400px]" [class.opacity-50]="!analysisResult()">
         <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-3xl pointer-events-none"></div>
         
-        <div class="p-4 md:p-5 border-b border-slate-800 shrink-0 relative z-10 flex justify-between items-center bg-slate-900/50">
-           <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400">Cuộn phụ đề trực tiếp</h3>
-           @if (translateError()) {
-             <p class="text-[10px] text-red-400 font-medium">{{ translateError() }}</p>
-           }
+        <div class="p-4 md:p-5 border-b border-slate-800 shrink-0 relative z-10 flex justify-between items-center bg-slate-900/50 w-full">
+           <h3 class="text-sm font-bold text-slate-300 tracking-tight">Cuộn phụ đề trực tiếp</h3>
+           
+           <div class="flex items-center gap-3">
+             @if (translateError()) {
+               <p class="text-[10px] text-red-400 font-medium">{{ translateError() }}</p>
+             }
+             <button (click)="isTranscriptExpanded.set(!isTranscriptExpanded())" 
+                     class="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-md transition-all cursor-pointer outline-none focus:outline-none shadow-sm flex items-center justify-center" 
+                     [title]="isTranscriptExpanded() ? 'Thu gọn' : 'Mở rộng toàn bộ'">
+               @if (isTranscriptExpanded()) {
+                 <!-- Collapse Vertical Icon -->
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 11 4 4 4-4"/><path d="m8 13 4-4 4 4"/><path d="M12 3v18"/></svg>
+               } @else {
+                 <!-- Expand Vertical Icon -->
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/><path d="M12 3v18"/></svg>
+               }
+             </button>
+           </div>
         </div>
 
         <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth custom-scrollbar"
@@ -242,9 +256,22 @@
         <div class="p-4 bg-slate-950 border-t border-slate-800 shrink-0 relative z-10">
           @if (analysisResult()?.transcript?.[0]?.viText) {
               <button (click)="exportSrt()"
-                      class="w-full py-3 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all cursor-pointer flex items-center justify-center">
-                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                 Tải xuống Phụ đề Tiếng Việt (.srt)
+                      [disabled]="isVietnameseFile()"
+                      class="w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center"
+                      [class.bg-white]="!isVietnameseFile()" 
+                      [class.text-slate-900]="!isVietnameseFile()" 
+                      [class.hover:bg-slate-200]="!isVietnameseFile()" 
+                      [class.cursor-pointer]="!isVietnameseFile()"
+                      [class.bg-slate-800]="isVietnameseFile()" 
+                      [class.text-slate-500]="isVietnameseFile()" 
+                      [class.cursor-not-allowed]="isVietnameseFile()">
+                 @if (isVietnameseFile()) {
+                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                   Đã nạp Phụ đề Việt từ máy
+                 } @else {
+                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                   Tải xuống Phụ đề Tiếng Việt (.srt)
+                 }
               </button>
               @if (translationCompletedText()) {
                  <p class="text-[11px] text-green-400 font-medium text-center mt-3">{{ translationCompletedText() }} ✨</p>
@@ -267,8 +294,8 @@
   </main>
 
   <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
-    <p>© 2026 silaSub • Nguyễn Đức Anh</p>
-    <p>v1.0.6 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
+    <p>© 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên trình duyệt Google Chrome, màn hình lớn</p>
+    <p>v1.0.7 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
   </footer>
 
   <!-- Settings Modal (Side Panel) -->

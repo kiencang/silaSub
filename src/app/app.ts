@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, signal, computed, OnDestroy, effect, OnInit, PLATFORM_ID, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, signal, computed, OnDestroy, effect, OnInit, PLATFORM_ID, inject, ViewChild, ElementRef} from '@angular/core';
 import {isPlatformBrowser, DecimalPipe} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
@@ -31,6 +31,8 @@ export interface ToastInfo {
 })
 export class App implements OnDestroy, OnInit {
   private platformId = inject(PLATFORM_ID);
+  
+  @ViewChild('fileUploader') fileUploader!: ElementRef<HTMLInputElement>;
 
   videoUrl = signal('');
   selectedFile = signal<File | null>(null);
@@ -139,6 +141,7 @@ export class App implements OnDestroy, OnInit {
   
   // Auto-scroll state
   isTranscriptHovered = signal(false);
+  isTranscriptExpanded = signal(false);
 
   currentLine = computed(() => {
     const res = this.analysisResult();
@@ -299,6 +302,29 @@ export class App implements OnDestroy, OnInit {
       return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  clearAllData() {
+    if (this.player && typeof this.player.stopVideo === 'function') {
+      this.player.stopVideo();
+    }
+    
+    this.videoUrl.set('');
+    this.analysisResult.set(null);
+    this.currentTime.set(0);
+    this.selectedFile.set(null);
+    this.analyzeError.set(null);
+    this.translateError.set(null);
+    this.translationProgressText.set(null);
+    this.translationCompletedText.set(null);
+    if (this.translateTimerInterval) clearInterval(this.translateTimerInterval);
+    this.isTranslating.set(false);
+    this.isVietnameseFile.set(false);
+    
+    // Clear DOM input file
+    if (this.fileUploader && this.fileUploader.nativeElement) {
+      this.fileUploader.nativeElement.value = '';
+    }
   }
 
   onVietnameseFlagChange(checked: boolean) {
