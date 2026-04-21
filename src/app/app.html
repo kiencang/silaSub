@@ -205,17 +205,25 @@
            }
         </div>
 
-        <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth">
+        <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth custom-scrollbar"
+             (mouseenter)="isTranscriptHovered.set(true)"
+             (mouseleave)="isTranscriptHovered.set(false); forceScrollToCurrent()">
           @if (analysisResult()) {
             @for (line of analysisResult()!.transcript; track line.offset) {
-              <div class="p-3 rounded-xl transition-colors border border-transparent" 
+              <div id="transcript-line-{{line.offset}}"
+                   (click)="seekToLine(line.offset)" 
+                   class="p-3 rounded-xl transition-all border border-transparent cursor-pointer group hover:bg-slate-800/80 hover:shadow-sm" 
                    [class.bg-slate-800]="currentLine() === line" 
-                   [class.border-slate-700]="currentLine() === line">
-                <span class="block text-[10px] text-slate-500 uppercase font-bold tracking-tighter mb-1">{{ line.offset | number:'1.1-1' }}s</span>
+                   [class.border-slate-700]="currentLine() === line"
+                   [class.shadow-md]="currentLine() === line">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="block text-[10px] text-slate-500 font-mono font-bold tracking-tighter group-hover:text-red-400 transition-colors">{{ formatTime(line.offset) }}</span>
+                  <svg class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
                 @if (!isVietnameseFile()) {
-                    <p class="text-xs text-slate-400 leading-relaxed italic mb-2">{{ line.text }}</p>
+                    <p class="text-xs text-slate-400 leading-relaxed italic mb-2 group-hover:text-slate-300 transition-colors">{{ line.text }}</p>
                 }
-                <p class="text-sm text-white font-medium leading-relaxed" [class.text-red-400]="isVietnameseFile()">
+                <p class="text-sm text-white font-medium leading-relaxed group-hover:text-white transition-colors" [class.text-red-400]="isVietnameseFile()">
                   @if (line.viText) {
                     {{ line.viText }}
                   } @else {
@@ -260,7 +268,7 @@
 
   <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
     <p>© 2026 silaSub • Nguyễn Đức Anh</p>
-    <p>v1.0.5 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
+    <p>v1.0.6 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
   </footer>
 
   <!-- Settings Modal (Side Panel) -->

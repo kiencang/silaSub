@@ -136,6 +136,9 @@ export class App implements OnDestroy, OnInit {
   isYtReady = signal(false);
   player: any;
   isFullscreen = signal(false);
+  
+  // Auto-scroll state
+  isTranscriptHovered = signal(false);
 
   currentLine = computed(() => {
     const res = this.analysisResult();
@@ -154,6 +157,23 @@ export class App implements OnDestroy, OnInit {
   });
 
   constructor() {
+    effect(() => {
+      // Auto-scrolling logic
+      if (!isPlatformBrowser(this.platformId)) return;
+      const line = this.currentLine();
+      const hovered = this.isTranscriptHovered();
+      
+      if (line && !hovered) {
+        // Use a short timeout to ensure the DOM has completed any re-renders
+        setTimeout(() => {
+          const el = document.getElementById(`transcript-line-${line.offset}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 50);
+      }
+    });
+
     effect(() => {
       if (!isPlatformBrowser(this.platformId)) return;
       
@@ -247,6 +267,38 @@ export class App implements OnDestroy, OnInit {
     } else {
         document.exitFullscreen();
     }
+  }
+
+  seekToLine(offset: number) {
+    if (this.player && typeof this.player.seekTo === 'function') {
+      this.player.seekTo(offset, true);
+      const state = this.player.getPlayerState?.();
+      if (state !== 1 && typeof this.player.playVideo === 'function') {
+        this.player.playVideo();
+      }
+    }
+  }
+
+  forceScrollToCurrent() {
+    const line = this.currentLine();
+    if (line && isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        const el = document.getElementById(`transcript-line-${line.offset}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+    }
+  }
+
+  formatTime(seconds: number): string {
+    if (isNaN(seconds) || seconds < 0) return '00:00';
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    
+    if (hrs > 0) {
+      return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }
 
   onVietnameseFlagChange(checked: boolean) {
