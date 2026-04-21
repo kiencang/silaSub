@@ -483,9 +483,10 @@ export class App implements OnDestroy, OnInit {
       let promptTemplate = '';
       
       try {
+        const timestamp = Date.now();
         const [siRes, promptRes] = await Promise.all([
-          fetch('/prompts/video_system_instructions.md'),
-          fetch('/prompts/video_prompt.md')
+          fetch(`/prompts/video_system_instructions.md?t=${timestamp}`),
+          fetch(`/prompts/video_prompt.md?t=${timestamp}`)
         ]);
         
         if (!siRes.ok || !promptRes.ok) throw new Error('Network response bounds error.');
@@ -554,9 +555,15 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
         }
         
         for (let i = 0; i < currentChunk.length; i++) {
+           let finalViText = translatedArray[i] || currentChunk[i].text;
+           // Giải bùa: Chuyển đổi ký tự thế thân <br> về \n thực sự
+           if (typeof finalViText === 'string') {
+             finalViText = finalViText.replace(/<br\s*\/?>/gi, '\n');
+           }
+           
            translatedTranscript[startIndex + i] = {
              ...translatedTranscript[startIndex + i],
-             viText: translatedArray[i] || currentChunk[i].text
+             viText: finalViText
            };
         }
 

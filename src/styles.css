@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;700&family=Montserrat:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import "tailwindcss";
 
@@ -12,35 +12,70 @@ body {
   background-color: #0f172a; /* slate-900 */
 }
 
-/* Custom Scrollbar for Video Column */
-.custom-scrollbar {
-  scrollbar-width: thin;
+/* Custom Scrollbar Variations */
+.custom-scrollbar, .custom-scrollbar-md, .custom-scrollbar-lg {
   scrollbar-color: #cbd5e1 transparent;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px; /* Mobile width */
+/* Base version (10px) */
+.custom-scrollbar {
+  scrollbar-width: thin;
 }
-
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
 @media (min-width: 768px) {
   .custom-scrollbar::-webkit-scrollbar {
-    width: 10px; /* Desktop width - 30% larger */
+    width: 10px;
   }
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+/* Medium version (1.5x - 15px) */
+.custom-scrollbar-md {
+  scrollbar-width: auto;
+}
+.custom-scrollbar-md::-webkit-scrollbar {
+  width: 9px;
+}
+@media (min-width: 768px) {
+  .custom-scrollbar-md::-webkit-scrollbar {
+    width: 15px;
+  }
+}
+
+/* Large version (2x - 20px) */
+.custom-scrollbar-lg {
+  scrollbar-width: auto;
+}
+.custom-scrollbar-lg::-webkit-scrollbar {
+  width: 12px;
+}
+@media (min-width: 768px) {
+  .custom-scrollbar-lg::-webkit-scrollbar {
+    width: 20px;
+  }
+}
+
+/* Common track and thumb styles */
+.custom-scrollbar::-webkit-scrollbar-track,
+.custom-scrollbar-md::-webkit-scrollbar-track,
+.custom-scrollbar-lg::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 10px;
   margin-block: 8px; /* Slight padding top/bottom */
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
+.custom-scrollbar::-webkit-scrollbar-thumb,
+.custom-scrollbar-md::-webkit-scrollbar-thumb,
+.custom-scrollbar-lg::-webkit-scrollbar-thumb {
   background-color: #cbd5e1; /* slate-300 */
   border-radius: 10px;
   border: 2px solid transparent; 
   background-clip: padding-box; /* Creates "floating" illusion */
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar-md::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar-lg::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8; /* slate-400 */
 }

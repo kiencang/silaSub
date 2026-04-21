@@ -58,12 +58,12 @@
     </div>
   </header>
 
-  <main class="flex-1 overflow-hidden p-4 md:p-8 flex flex-col md:flex-row gap-8 min-h-0">
+  <main class="flex-1 overflow-hidden p-4 flex flex-col md:flex-row gap-5 min-h-0">
     <!-- Left Column: Video Viewport -->
-    <div class="flex-[3] flex flex-col min-w-0 h-full max-h-full items-center justify-center p-2 lg:p-6">
+    <div class="flex-[3] flex flex-col min-w-0 h-full max-h-full items-center justify-center p-2">
 
       <!-- Video Mockup / Iframe -->
-      <div id="video-wrapper" class="w-full h-auto aspect-video max-h-full bg-black rounded-2xl relative overflow-hidden shadow-2xl shrink-0" style="max-width: calc((100vh - 150px) * 16 / 9);">
+      <div id="video-wrapper" class="w-full h-auto aspect-video max-h-full bg-black rounded-2xl relative overflow-hidden shadow-2xl shrink-0" style="max-width: calc((100vh - 110px) * 16 / 9);">
         
         <div class="absolute inset-0 w-full h-full" [class.hidden]="!videoId()">
              <!-- Target for YouTube IFrame API -->
@@ -95,16 +95,18 @@
         
         <!-- Translated Subtitle Overlay -->
         @if (currentLine()?.viText) {
-          <div class="absolute left-0 right-0 px-4 md:px-12 text-center pointer-events-none transition-all duration-300 z-10 w-full flex justify-center" [style.bottom.rem]="subVerticalOffset()">
-            <div class="inline-block max-w-full">
+          <div class="absolute left-0 right-0 px-4 md:px-12 bottom-0 w-full flex flex-col items-center justify-end pointer-events-none transition-all duration-300 z-10" 
+               [style.paddingBottom.rem]="subVerticalOffset()">
+            <div class="flex flex-col items-center max-w-[90%]">
               <!-- Optional Original Text (Hide if using pre-translated file) -->
               @if (!isVietnameseFile()) {
-                 <p class="bg-black/50 text-white px-4 py-1 text-xs md:text-sm mb-1 rounded italic inline-block max-w-[90%] whitespace-normal">
+                 <p class="bg-black/50 text-white px-4 py-1 text-xs md:text-sm mb-1 rounded italic text-center whitespace-pre-wrap" style="text-wrap: balance;">
                    {{ currentLine()?.text }}
                  </p>
                  <br>
               }
-              <p class="text-yellow-400 px-4 md:px-6 py-2 font-semibold rounded inline-block max-w-[90%] whitespace-normal leading-snug shadow-md transition-all duration-100 responsive-sub-text"
+              <p class="text-yellow-400 px-4 md:px-6 py-2 font-semibold rounded text-center whitespace-pre-wrap leading-snug shadow-md transition-all duration-100 responsive-sub-text"
+                 style="text-wrap: balance;"
                  [style.backgroundColor]="'rgba(0, 0, 0, ' + subBgOpacity() + ')'"
                  [style.--sub-size]="subFontSize() + 'px'"
                  [style.fontFamily]="getFontFamily(subFontFamily())"
@@ -126,7 +128,7 @@
     </div>
 
     <!-- Right Column: Status and Settings -->
-    <div class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full overflow-y-auto pr-2 pb-4 custom-scrollbar">
+    <div class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full overflow-y-auto pr-2 pb-4 custom-scrollbar-lg">
       
       <!-- Upload SRT Card (Moved from Left) -->
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0" [class.hidden]="isTranscriptExpanded()">
@@ -219,7 +221,7 @@
            </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth custom-scrollbar"
+        <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth custom-scrollbar-md"
              (mouseenter)="isTranscriptHovered.set(true)"
              (mouseleave)="isTranscriptHovered.set(false); forceScrollToCurrent()">
           @if (analysisResult()) {
@@ -295,7 +297,7 @@
 
   <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
     <p>© 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên trình duyệt Google Chrome, màn hình lớn</p>
-    <p>v1.0.7 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
+    <p>v1.0.8 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
   </footer>
 
   <!-- Settings Modal (Side Panel) -->
@@ -326,10 +328,10 @@
           <select [ngModel]="subFontFamily()" (ngModelChange)="subFontFamily.set($event)" 
                   class="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 cursor-pointer font-medium appearance-none">
             <option value="Inter">Inter (Gọn gàng, UI chuẩn)</option>
-            <option value="Roboto">Roboto (Truyền thống của YouTube)</option>
-            <option value="Montserrat">Montserrat (Hiện đại, tròn trịa)</option>
-            <option value="Playfair Display">Playfair Display (Có chân, cổ điển)</option>
             <option value="Be Vietnam Pro">Be Vietnam Pro (Tối ưu Tiếng Việt)</option>
+            <option value="Lexend">Lexend (Tăng tốc độ đọc chữ)</option>
+            <option value="Roboto">Roboto (Truyền thống của YouTube)</option>
+            <option value="Merriweather">Merriweather (Có chân, rõ nét)</option>
           </select>
         </div>
 
