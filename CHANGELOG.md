@@ -5,8 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.6] - 2026-04-21
+### Fixed
+- Cải thiện tính năng của phần cuộn phụ đề trực tiếp.
+
 ## [v1.0.5] - 2026-04-21
-### fixed
+### Fixed
 - Cấu trúc lại vị trí của input nhập video (cho lên header) và input nhập phụ để (cho sang cột phải).
 - Tăng khả năng điều chỉnh khoảng cách phụ đề từ đáy.
 - Khắc phục lỗi font chữ trên di động quá to.
