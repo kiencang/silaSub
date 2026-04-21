@@ -7,7 +7,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.7] - 2026-04-21
 ### Fixed
-- Tính năng mở rộng hộp cuộn phù đề trực tiếp.
+- Tính năng mở rộng hộp cuộn phù đề trực tiếp (cho những ai muốn học tiếng Anh, hoặc cho những đoạn nói quá nhanh cần xem lại đoạn trước,..).
 - Căn lề cột trái để hiển thị video tốt hơn (không bị mất lề).
 - Click dấu x trong input video sẽ xóa hết các thông tin của video trước (phụ đề, hộp cuộn) để đảm bảo logic vận hành.
 
