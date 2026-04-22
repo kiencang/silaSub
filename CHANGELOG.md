@@ -5,6 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.9] - 2026-04-22
+### Fixed
+- Chỉnh kích cỡ tối đa của phần phụ đề trên màn hình lớn (900px chiều ngang).
+- Cải thiện UX/UI của input nhập URL và input tải file .srt lên.
+- Điều chỉnh lại SI để nó đáp ứng kiểu dịch tương ứng 1 - 1 giữa hành động nói trên video (đảm bảo timing, chấp nhận hy sinh một phần tính tự nhiên).
+
 ## [v1.0.8] - 2026-04-22
 ### Fixed
 - Điều chỉnh lỗi CSS hiển thị phụ đề khiến từ bị rớt xuống cụt lủn.
