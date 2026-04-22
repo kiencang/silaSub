@@ -44,9 +44,10 @@ export class App implements OnDestroy, OnInit {
   isSettingsOpen = signal(false);
   subFontSize = signal<number>(30);
   subFontFamily = signal<string>('Lexend');
+  subTextColor = signal<string>('#FFD700');
   subBgOpacity = signal<number>(0.5);
   subVerticalOffset = signal<number>(2); // 2rem default
-  private backupSettings = { size: 30, font: 'Lexend', opacity: 0.5, offset: 2 };
+  private backupSettings = { size: 30, font: 'Lexend', color: '#FFD700', opacity: 0.5, offset: 2 };
 
   isAnalyzing = signal(false);
   analysisResult = signal<{lines: number, transcript: TranscriptLine[]} | null>(null);
@@ -72,6 +73,7 @@ export class App implements OnDestroy, OnInit {
     this.backupSettings = {
       size: this.subFontSize(),
       font: this.subFontFamily(),
+      color: this.subTextColor(),
       opacity: this.subBgOpacity(),
       offset: this.subVerticalOffset()
     };
@@ -85,6 +87,7 @@ export class App implements OnDestroy, OnInit {
         localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({
           size: this.subFontSize(),
           font: this.subFontFamily(),
+          color: this.subTextColor(),
           opacity: this.subBgOpacity(),
           offset: this.subVerticalOffset()
         }));
@@ -94,6 +97,7 @@ export class App implements OnDestroy, OnInit {
       // Khôi phục về thông số mặc định nguyên thuỷ
       this.subFontSize.set(30);
       this.subFontFamily.set('Lexend');
+      this.subTextColor.set('#FFD700');
       this.subBgOpacity.set(0.5);
       this.subVerticalOffset.set(2);
       // Xoá memory trong localStorage
@@ -105,6 +109,7 @@ export class App implements OnDestroy, OnInit {
       // Revert if canceled (click backdrop without saving)
       this.subFontSize.set(this.backupSettings.size);
       this.subFontFamily.set(this.backupSettings.font);
+      this.subTextColor.set(this.backupSettings.color);
       this.subBgOpacity.set(this.backupSettings.opacity);
       this.subVerticalOffset.set(this.backupSettings.offset);
     }
@@ -217,6 +222,7 @@ export class App implements OnDestroy, OnInit {
           const parsed = JSON.parse(savedSettings);
           if (parsed.size) this.subFontSize.set(parsed.size);
           if (parsed.font) this.subFontFamily.set(parsed.font);
+          if (parsed.color) this.subTextColor.set(parsed.color);
           if (parsed.opacity !== undefined) this.subBgOpacity.set(parsed.opacity);
           if (parsed.offset !== undefined) this.subVerticalOffset.set(parsed.offset);
         } catch (e) {

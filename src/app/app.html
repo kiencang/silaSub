@@ -106,8 +106,9 @@
                  </p>
                  <br>
               }
-              <p class="text-yellow-400 px-4 md:px-6 py-2 font-semibold rounded text-center whitespace-pre-wrap leading-snug shadow-md transition-all duration-100 responsive-sub-text"
+              <p class="px-4 md:px-6 py-2 font-semibold rounded text-center whitespace-pre-wrap leading-snug shadow-md transition-all duration-100 responsive-sub-text"
                  style="text-wrap: balance;"
+                 [style.color]="subTextColor()"
                  [style.backgroundColor]="'rgba(0, 0, 0, ' + subBgOpacity() + ')'"
                  [style.--sub-size]="subFontSize() + 'px'"
                  [style.fontFamily]="getFontFamily(subFontFamily())"
@@ -318,7 +319,7 @@
 
   <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
     <p>© 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên trình duyệt Google Chrome, màn hình lớn</p>
-    <p>v1.0.10 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
+    <p>v1.0.11 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
   </footer>
 
   <!-- Settings Modal (Side Panel) -->
@@ -354,6 +355,37 @@
             <option value="Roboto">Roboto (Truyền thống của YouTube)</option>
             <option value="Merriweather">Merriweather (Có chân, rõ nét)</option>
           </select>
+        </div>
+
+        <!-- Option: Font Color -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Màu chữ</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button (click)="subTextColor.set('#FFD700')"
+                    class="py-2.5 rounded-xl border-2 transition-all font-medium text-sm flex items-center justify-center gap-2"
+                    [class.border-red-500]="subTextColor() === '#FFD700'"
+                    [class.bg-red-50]="subTextColor() === '#FFD700'"
+                    [class.border-slate-200]="subTextColor() !== '#FFD700'"
+                    [class.bg-slate-50]="subTextColor() !== '#FFD700'">
+              <span class="w-3.5 h-3.5 rounded-full bg-[#FFD700] ring-1 ring-black/10"></span> Vàng
+            </button>
+            <button (click)="subTextColor.set('#FFFFFF')"
+                    class="py-2.5 rounded-xl border-2 transition-all font-medium text-sm flex items-center justify-center gap-2"
+                    [class.border-red-500]="subTextColor() === '#FFFFFF'"
+                    [class.bg-red-50]="subTextColor() === '#FFFFFF'"
+                    [class.border-slate-200]="subTextColor() !== '#FFFFFF'"
+                    [class.bg-slate-50]="subTextColor() !== '#FFFFFF'">
+              <span class="w-3.5 h-3.5 rounded-full bg-white ring-1 ring-black/10 shadow-sm"></span> Trắng
+            </button>
+            <button (click)="subTextColor.set('#38BDF8')"
+                    class="py-2.5 rounded-xl border-2 transition-all font-medium text-sm flex items-center justify-center gap-2"
+                    [class.border-red-500]="subTextColor() === '#38BDF8'"
+                    [class.bg-red-50]="subTextColor() === '#38BDF8'"
+                    [class.border-slate-200]="subTextColor() !== '#38BDF8'"
+                    [class.bg-slate-50]="subTextColor() !== '#38BDF8'">
+              <span class="w-3.5 h-3.5 rounded-full bg-[#38BDF8] ring-1 ring-black/10"></span> Xanh lơ
+            </button>
+          </div>
         </div>
 
         <!-- Option: Font Size -->
