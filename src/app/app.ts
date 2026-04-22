@@ -43,10 +43,10 @@ export class App implements OnDestroy, OnInit {
   // Settings State
   isSettingsOpen = signal(false);
   subFontSize = signal<number>(30);
-  subFontFamily = signal<string>('Inter');
+  subFontFamily = signal<string>('Lexend');
   subBgOpacity = signal<number>(0.5);
   subVerticalOffset = signal<number>(2); // 2rem default
-  private backupSettings = { size: 30, font: 'Inter', opacity: 0.5, offset: 2 };
+  private backupSettings = { size: 30, font: 'Lexend', opacity: 0.5, offset: 2 };
 
   isAnalyzing = signal(false);
   analysisResult = signal<{lines: number, transcript: TranscriptLine[]} | null>(null);
@@ -93,7 +93,7 @@ export class App implements OnDestroy, OnInit {
     } else if (action === 'reset') {
       // Khôi phục về thông số mặc định nguyên thuỷ
       this.subFontSize.set(30);
-      this.subFontFamily.set('Inter');
+      this.subFontFamily.set('Lexend');
       this.subBgOpacity.set(0.5);
       this.subVerticalOffset.set(2);
       // Xoá memory trong localStorage
@@ -116,7 +116,9 @@ export class App implements OnDestroy, OnInit {
       case 'Montserrat': return '"Montserrat", sans-serif';
       case 'Playfair Display': return '"Playfair Display", serif';
       case 'Be Vietnam Pro': return '"Be Vietnam Pro", sans-serif';
-      default: return '"Inter", sans-serif';
+      case 'Inter': return '"Inter", sans-serif';
+      case 'Lexend': return '"Lexend", sans-serif';
+      default: return '"Lexend", sans-serif';
     }
   }
 
@@ -394,7 +396,8 @@ export class App implements OnDestroy, OnInit {
     reader.onload = (e) => {
       try {
         const text = e.target?.result as string;
-        const transcript = this.parseSRT(text);
+        const preserveNewlines = this.isVietnameseFile() || autoDetected;
+        const transcript = this.parseSRT(text, preserveNewlines);
         if (transcript.length === 0) {
           throw new Error('File không đúng định dạng SRT hoặc trống.');
         }
@@ -436,7 +439,7 @@ export class App implements OnDestroy, OnInit {
     reader.readAsText(file);
   }
 
-  private parseSRT(srtData: string): TranscriptLine[] {
+  private parseSRT(srtData: string, preserveNewlines: boolean = false): TranscriptLine[] {
     const lines = srtData.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
     const transcript: TranscriptLine[] = [];
     let current: Partial<TranscriptLine> = {};
@@ -452,7 +455,7 @@ export class App implements OnDestroy, OnInit {
       const line = lines[i].trim();
       if (!line) {
         if (current.offset !== undefined && textBuffer.length > 0) {
-          current.text = textBuffer.join(' ');
+          current.text = textBuffer.join(preserveNewlines ? '\n' : ' ');
           transcript.push(current as TranscriptLine);
         }
         current = {};
