@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.13] - 2026-04-23
 ### Fixed
 - Cập nhật SI lên phiên bản mới nhất.
+- Giảm chunking thành 500 index, và tăng số câu từ bản chunk trước lên 10. Mục đích là giảm tải cho AI và tăng cường bối cảnh cũ để dịch mượt hơn.
 
 ## [v1.0.12] - 2026-04-23
 ### Fixed
