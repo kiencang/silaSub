@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.11] - 2026-04-23
 ### Fixed
 - Thêm tùy chọn đổi màu chữ cho font chữ (thêm 2 màu).
+- Thêm phần định hướng phong cách dịch trong SI.
 
 ## [v1.0.10] - 2026-04-22
 ### Fixed
