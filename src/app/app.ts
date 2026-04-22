@@ -656,11 +656,12 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `silaSub_vi_${this.videoId() || 'subtitles'}.srt`;
+    const fileName = `silaSub_vi_${this.videoId() || 'subtitles'}.srt`;
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
-    this.addToast('Đã tải thành công file Phụ đề Tiếng Việt về máy.', 'success');
+    this.addToast(`Đã tải thành công file Phụ đề Tiếng Việt: ${fileName} về máy.`, 'success');
   }
 }

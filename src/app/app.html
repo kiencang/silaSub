@@ -133,7 +133,12 @@
     <div class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full overflow-y-auto pr-2 pb-4 custom-scrollbar-lg">
       
       <!-- Upload SRT Card (Moved from Left) -->
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0" [class.hidden]="isTranscriptExpanded()">
+      <div class="bg-white p-5 rounded-2xl border transition-all duration-700 shrink-0" 
+           [class.hidden]="isTranscriptExpanded()"
+           [class.shadow-sm]="selectedFile() || !videoId()"
+           [class.border-slate-200]="selectedFile() || !videoId()"
+           [class.border-yellow-400]="videoId() && !selectedFile()"
+           [style.box-shadow]="(videoId() && !selectedFile()) ? 'inset 0 0 40px rgba(234, 179, 8, 0.25), 0 0 15px rgba(234, 179, 8, 0.3)' : ''">
         <div class="flex items-center gap-1.5 mb-3">
           <label class="block text-sm font-bold text-slate-800">Tải lên Phụ đề (.srt)</label>
           <div class="group relative flex items-center justify-center cursor-help ml-1">
@@ -141,7 +146,9 @@
             <div class="relative flex items-center gap-1.5 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full group-hover:bg-red-100 transition-colors shadow-sm">
               <div class="relative flex h-3 w-3 items-center justify-center">
                 <!-- Hiệu ứng tỏa sóng (Ping) liên tục -->
-                <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-60"></div>
+                @if (videoId() && !selectedFile()) {
+                  <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-60"></div>
+                }
                 <div class="relative inline-flex items-center justify-center w-3.5 h-3.5 bg-red-600 rounded-full text-white">
                   <span class="text-[9px] font-bold font-serif italic">i</span>
                 </div>
@@ -319,7 +326,7 @@
 
   <footer class="px-8 py-3 bg-white border-t border-slate-200 text-[10px] text-slate-400 flex justify-between shrink-0">
     <p>© 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên trình duyệt Google Chrome, màn hình lớn</p>
-    <p>v1.0.11 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
+    <p>v1.0.12 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors">GitHub</a></p>
   </footer>
 
   <!-- Settings Modal (Side Panel) -->
