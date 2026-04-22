@@ -310,6 +310,14 @@ export class App implements OnDestroy, OnInit {
     }
     
     this.videoUrl.set('');
+    this.clearSubtitleFile();
+  }
+
+  clearSubtitleFile(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.analysisResult.set(null);
     this.currentTime.set(0);
     this.selectedFile.set(null);
@@ -324,6 +332,13 @@ export class App implements OnDestroy, OnInit {
     // Clear DOM input file
     if (this.fileUploader && this.fileUploader.nativeElement) {
       this.fileUploader.nativeElement.value = '';
+    }
+  }
+
+  onVideoUrlChange(url: string) {
+    this.videoUrl.set(url);
+    if (!url || url.trim() === '') {
+      this.clearAllData();
     }
   }
 
