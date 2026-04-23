@@ -522,7 +522,7 @@ export class App implements OnDestroy, OnInit {
 
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-      const CHUNK_SIZE = 700;
+      const CHUNK_SIZE = 900;
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
       let translatedTranscript = [...fullTranscript];
@@ -539,7 +539,7 @@ export class App implements OnDestroy, OnInit {
 
         let contextText = '';
         if (chunkIndex > 0) {
-           const prevStart = Math.max(0, startIndex - 35);
+           const prevStart = Math.max(0, startIndex - 45);
            const prevLines = translatedTranscript.slice(prevStart, startIndex);
            contextText = `[THÔNG TIN NGỮ CẢNH - KHÔNG DỊCH PHẦN NÀY]
 Người nói vừa kết thúc đoạn trước bằng các câu sau:
