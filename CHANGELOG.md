@@ -5,6 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.15] - 2026-04-23
+### Fixed
+- Cập nhật SI lên phiên bản mới nhất (điều chỉnh ví dụ tốt hơn).
+- Tăng chunking lên 700, tăng bối cảnh cũ lên 35 (trước đây là 10).
+- Ngưỡng 700 sẽ xử lý tốt đa số các video có độ dài từ 25 phút đổ xuống.
+
 ## [v1.0.14] - 2026-04-23
 ### Fixed
 - Cập nhật SI lên phiên bản mới nhất.
