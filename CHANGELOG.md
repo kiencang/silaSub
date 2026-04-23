@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.17] - 2026-04-23
+### Fixed
+- Lỗi tên phiên bản. 
+
 ## [v1.0.16] - 2026-04-23
 ### Fixed
 - Cập nhật SI lên phiên bản mới nhất (điều chỉnh mã markdown, chỉ thị phong cách dịch, thêm tag xml phân đoạn SI dài).
