@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.22] - 2026-04-25
 ### Fixed
 - Điều chỉnh thông báo khi dịch kiểu chunking hợp lý hơn.
+- Cập nhật SI phiên bản mới nhất (tăng cường chất lượng các ví dụ).
 
 ## [v1.0.21] - 2026-04-25
 ### Fixed
