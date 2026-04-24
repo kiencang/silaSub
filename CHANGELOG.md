@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.21] - 2026-04-24
 ### Fixed
 - Chỉnh UI cho input tìm kiếm.
+- Lên SI phiên bản mới nhất.
 
 ## [v1.0.20] - 2026-04-24
 ### Fixed
