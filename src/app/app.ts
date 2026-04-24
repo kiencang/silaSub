@@ -135,7 +135,8 @@ export class App implements OnDestroy, OnInit {
     const sec = s % 60;
     return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
   });
-  translationProgressText = signal<string | null>(null);
+  translationCurrentChunk = signal<number>(0);
+  translationTotalChunks = signal<number>(0);
   translationCompletedText = signal<string | null>(null);
   private translateTimerInterval: any;
 
@@ -340,7 +341,8 @@ export class App implements OnDestroy, OnInit {
     this.selectedFile.set(null);
     this.analyzeError.set(null);
     this.translateError.set(null);
-    this.translationProgressText.set(null);
+    this.translationCurrentChunk.set(0);
+    this.translationTotalChunks.set(0);
     this.translationCompletedText.set(null);
     if (this.translateTimerInterval) clearInterval(this.translateTimerInterval);
     this.isTranslating.set(false);
@@ -540,7 +542,8 @@ export class App implements OnDestroy, OnInit {
     this.translateError.set(null);
     this.translationCompletedText.set(null);
     this.translationSeconds.set(0);
-    this.translationProgressText.set(null);
+    this.translationCurrentChunk.set(0);
+    this.translationTotalChunks.set(0);
     
     this.translateTimerInterval = setInterval(() => {
       this.translationSeconds.update(s => s + 1);
@@ -573,7 +576,8 @@ export class App implements OnDestroy, OnInit {
 
       for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
         if (totalChunks > 1) {
-          this.translationProgressText.set(`(Phần ${chunkIndex + 1}/${totalChunks})`);
+          this.translationCurrentChunk.set(chunkIndex + 1);
+          this.translationTotalChunks.set(totalChunks);
         }
 
         const startIndex = chunkIndex * CHUNK_SIZE;
@@ -643,14 +647,16 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
       }
       
       clearInterval(this.translateTimerInterval);
-      this.translationProgressText.set(null);
+      this.translationCurrentChunk.set(0);
+      this.translationTotalChunks.set(0);
       this.translationCompletedText.set(`Đã hoàn thành trong ${this.formattedTranslationTime()} phút`);
       this.addToast(`Tuyệt vời! Đã dịch thành công trong ${this.formattedTranslationTime()} phút!`, 'success');
       this.isTranslating.set(false);
     } catch(err: any) {
       console.error(err);
       clearInterval(this.translateTimerInterval);
-      this.translationProgressText.set(null);
+      this.translationCurrentChunk.set(0);
+      this.translationTotalChunks.set(0);
       
       const errMsg = err.message || '';
       let toastMsg = 'Lỗi kết nối khi dịch thuật.';

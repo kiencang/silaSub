@@ -330,7 +330,7 @@
         <div class="bg-slate-950 border-t border-slate-800 shrink-0 relative z-10 transition-all"
              [class.hidden]="isTranscriptExpanded() && isVietnameseFile()"
              [class.p-4]="!(isTranscriptExpanded() && isVietnameseFile())">
-          @if (analysisResult()?.transcript?.[0]?.viText) {
+          @if (analysisResult()?.transcript?.[0]?.viText && !isTranslating()) {
               <button (click)="exportSrt()"
                       [disabled]="isVietnameseFile()"
                       class="w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center"
@@ -358,11 +358,25 @@
                       [disabled]="!analysisResult() || isTranslating()">
                 @if (isTranslating()) {
                    <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                   AI đang suy luận & Dịch... {{ translationProgressText() ? translationProgressText() + ' ' : '' }}({{ formattedTranslationTime() }})
+                   @if (translationTotalChunks() > 1) {
+                      Đang dịch phần {{ translationCurrentChunk() }}/{{ translationTotalChunks() }} ({{ formattedTranslationTime() }})
+                   } @else {
+                      AI đang suy luận & Dịch... ({{ formattedTranslationTime() }})
+                   }
                 } @else {
                    Bắt đầu Dịch tự động
                 }
               </button>
+
+              @if (isTranslating() && translationCurrentChunk() > 1) {
+                 <div class="mt-3 p-3 bg-slate-800 border border-slate-700/50 rounded-xl flex items-start gap-2.5 shadow-inner">
+                    <div class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-1.5 animate-pulse shrink-0"></div>
+                    <p class="text-[11px] text-slate-300 leading-relaxed">
+                        Đã xong phần {{ translationCurrentChunk() - 1 }}. 
+                        Đang tiếp tục ghép nối & dịch phần {{ translationCurrentChunk() }}/{{ translationTotalChunks() }}...
+                    </p>
+                 </div>
+              }
           }
         </div>
       </div>
@@ -374,7 +388,7 @@
       © 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên Google Chrome, màn hình lớn
     </p>
     <p class="text-[10px] text-slate-400 font-medium">
-      v1.0.21 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
+      v1.0.22 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
     </p>
   </footer>
 
