@@ -11,6 +11,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Chỉnh lại footer cho đỡ bí.
 - Chỉnh lại cuộn phụ đề trực tiếp thoáng hơn.
 - Chỉnh lại logo.
+- Cập nhật SI.
 
 ## [v1.0.19] - 2026-04-24
 ### Fixed
