@@ -10,6 +10,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Chỉnh cỡ chữ to thêm cho 2 phần input.
 - Chỉnh lại footer cho đỡ bí.
 - Chỉnh lại cuộn phụ đề trực tiếp thoáng hơn.
+- Chỉnh lại logo.
 
 ## [v1.0.19] - 2026-04-24
 ### Fixed
