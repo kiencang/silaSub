@@ -454,6 +454,39 @@ export class App implements OnDestroy, OnInit {
     reader.readAsText(file);
   }
 
+  private cleanAudioTags(text: string): string {
+    // Only target tags that contain common sound effect keywords (case insensitive)
+    const audioTagRegex = /\[.*?(music|upbeat).*?\]/gi;
+    
+    const textWithoutTags = text.replace(audioTagRegex, '').trim();
+    
+    // If there's no real text outside the tags, keep it (so we don't end up with empty lines)
+    if (!/[a-zA-Z0-9\u00C0-\u017F]/.test(textWithoutTags)) {
+      return text;
+    }
+    
+    let cleaned = text.replace(audioTagRegex, (match, _, offset) => {
+      const beforeStr = text.substring(0, offset);
+      const afterStr = text.substring(offset + match.length);
+      
+      // Remove other tags temporarily just to check text presence
+      const cleanBefore = beforeStr.replace(/\[.*?\]/g, '');
+      const hasTextBefore = /[a-zA-Z0-9\u00C0-\u017F]/.test(cleanBefore);
+      
+      const cleanAfter = afterStr.replace(/\[.*?\]/g, '');
+      const hasTextAfter = /[a-zA-Z0-9\u00C0-\u017F]/.test(cleanAfter);
+
+      // Remove the tag only if there's real text both before AND after it
+      if (hasTextBefore && hasTextAfter) {
+        return ' '; 
+      }
+      
+      return match;
+    });
+
+    return cleaned.replace(/\s{2,}/g, ' ').trim();
+  }
+
   private parseSRT(srtData: string, preserveNewlines: boolean = false): TranscriptLine[] {
     const lines = srtData.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
     const transcript: TranscriptLine[] = [];
@@ -470,7 +503,8 @@ export class App implements OnDestroy, OnInit {
       const line = lines[i].trim();
       if (!line) {
         if (current.offset !== undefined && textBuffer.length > 0) {
-          current.text = textBuffer.join(preserveNewlines ? '\n' : ' ');
+          const joinedText = textBuffer.join(preserveNewlines ? '\n' : ' ');
+          current.text = this.cleanAudioTags(joinedText);
           transcript.push(current as TranscriptLine);
         }
         current = {};
@@ -491,7 +525,8 @@ export class App implements OnDestroy, OnInit {
     
     // push the last block if file doesn't end with empty line
     if (current.offset !== undefined && textBuffer.length > 0) {
-      current.text = textBuffer.join(' ');
+      const joinedText = textBuffer.join(preserveNewlines ? '\n' : ' ');
+      current.text = this.cleanAudioTags(joinedText);
       transcript.push(current as TranscriptLine);
     }
     return transcript;
