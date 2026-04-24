@@ -178,13 +178,7 @@ export class App implements OnDestroy, OnInit {
       const hovered = this.isTranscriptHovered();
       
       if (line && !hovered) {
-        // Use a short timeout to ensure the DOM has completed any re-renders
-        setTimeout(() => {
-          const el = document.getElementById(`transcript-line-${line.offset}`);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }, 50);
+        this.scrollContainerToElement(line.offset);
       }
     });
 
@@ -294,13 +288,24 @@ export class App implements OnDestroy, OnInit {
     }
   }
 
+  private scrollContainerToElement(offset: number) {
+    if (!isPlatformBrowser(this.platformId)) return;
+    setTimeout(() => {
+      const container = document.getElementById('transcript-container');
+      const el = document.getElementById(`transcript-line-${offset}`);
+      if (container && el) {
+        const containerRect = container.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        const scrollTop = container.scrollTop + (elRect.top - containerRect.top) - (containerRect.height / 2) + (elRect.height / 2);
+        container.scrollTo({ top: scrollTop, behavior: 'smooth' });
+      }
+    }, 50);
+  }
+
   forceScrollToCurrent() {
     const line = this.currentLine();
-    if (line && isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        const el = document.getElementById(`transcript-line-${line.offset}`);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 50);
+    if (line) {
+      this.scrollContainerToElement(line.offset);
     }
   }
 

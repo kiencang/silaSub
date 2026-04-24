@@ -4,7 +4,7 @@
     <!-- Top row for mobile (Logo, Temp, Settings) - or Left side for desktop -->
     <div class="flex items-center justify-between w-full md:w-auto gap-4 xl:gap-8 shrink-0">
       <div class="flex items-center gap-4">
-        <h1 class="text-xl font-bold tracking-tight text-slate-800 leading-none">sila<span class="text-red-600">Sub</span></h1>
+        <h1 class="text-xl font-bold tracking-tight text-slate-800 leading-none select-none">sila<span class="text-red-600">Sub</span></h1>
         <!-- Temperature Controls -->
         <div class="flex items-center gap-3">
            <!-- Black (0.3) -->
@@ -41,8 +41,8 @@
         [(ngModel)]="searchQuery" 
         (keydown.enter)="searchYoutube()"
         [disabled]="isSearchingQuery() || isAnalyzing()"
-        placeholder="Gõ tiếng Việt, tìm video tiếng Anh..." 
-        class="w-full px-5 py-2.5 bg-slate-50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-slate-300 transition-all text-sm truncate disabled:opacity-70 pr-11 placeholder-slate-400 font-medium shadow-sm">
+        placeholder="Gõ tiếng Việt, tìm video tiếng Anh trên YouTube..." 
+        class="w-full px-5 py-2.5 bg-slate-50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-[16px] leading-[20px] truncate disabled:opacity-70 pr-11 placeholder-slate-400 font-medium shadow-sm">
       
       <button 
         (click)="searchYoutube()"
@@ -144,7 +144,7 @@
                (ngModelChange)="onVideoUrlChange($event)"
                [disabled]="isAnalyzing()"
                placeholder="Dán link Video YouTube vào đây..."
-               class="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-sm truncate disabled:opacity-50 pr-12 placeholder-slate-400 shadow-sm font-medium">
+               class="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[16px] leading-[20px] truncate disabled:opacity-50 pr-12 placeholder-slate-400 shadow-sm font-medium">
         @if (videoUrl()) {
           <button (click)="clearAllData()" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none cursor-pointer" title="Thiết lập lại / Xóa Link">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -162,7 +162,7 @@
            [class.border-yellow-400]="videoId() && !selectedFile()"
            [style.box-shadow]="(videoId() && !selectedFile()) ? 'inset 0 0 40px rgba(234, 179, 8, 0.25), 0 0 15px rgba(234, 179, 8, 0.3)' : ''">
         <div class="flex items-center gap-1.5 mb-3">
-          <label class="block text-sm font-bold text-slate-800">Tải lên Phụ đề (.srt)</label>
+          <label class="block text-sm font-bold text-slate-800">Tải lên phụ đề (.srt)</label>
           <div class="group relative flex items-center justify-center cursor-help ml-1">
             <!-- Hộp cảnh báo sinh động thay cho Icon mờ nhạt -->
             <div class="relative flex items-center gap-1.5 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full group-hover:bg-red-100 transition-colors shadow-sm">
@@ -233,7 +233,7 @@
           <div class="flex justify-between items-center text-sm">
             <span class="text-slate-500">Phụ đề SRT</span>
             @if (analysisResult()) {
-              <span class="font-mono font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded">{{ isVietnameseFile() ? 'Đã tải bản Việt' : 'Đã tải lên' }}</span>
+              <span class="font-mono font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded">{{ isVietnameseFile() ? 'Đã tải bản tiếng Việt' : 'Đã tải lên' }}</span>
             } @else if (analyzeError()) {
               <span class="font-mono font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">Lỗi</span>
             } @else {
@@ -251,7 +251,11 @@
       <div class="flex-1 bg-slate-900 rounded-2xl text-white overflow-hidden relative flex flex-col border border-slate-800 min-h-[400px]" [class.opacity-50]="!analysisResult()">
         <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-3xl pointer-events-none"></div>
         
-        <div class="p-4 md:p-5 border-b border-slate-800 shrink-0 relative z-10 flex justify-between items-center bg-slate-900/50 w-full">
+        <div class="border-b border-slate-800 shrink-0 relative z-10 flex justify-between items-center bg-slate-900/50 w-full" 
+             [class.p-4]="!isTranscriptExpanded()"
+             [class.md:p-5]="!isTranscriptExpanded()"
+             [class.px-4]="isTranscriptExpanded()"
+             [class.py-2]="isTranscriptExpanded()">
            <h3 class="text-sm font-bold text-slate-300 tracking-tight">Cuộn phụ đề trực tiếp</h3>
            
            <div class="flex items-center gap-3">
@@ -272,14 +276,17 @@
            </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth custom-scrollbar-md"
+        <div id="transcript-container" class="flex-1 overflow-y-auto relative z-10 p-3 md:p-4 space-y-3 scroll-smooth custom-scrollbar-md"
              (mouseenter)="isTranscriptHovered.set(true)"
              (mouseleave)="isTranscriptHovered.set(false); forceScrollToCurrent()">
           @if (analysisResult()) {
             @for (line of analysisResult()!.transcript; track line.offset) {
               <div id="transcript-line-{{line.offset}}"
                    (click)="seekToLine(line.offset)" 
-                   class="p-3 rounded-xl transition-all border border-transparent cursor-pointer group hover:bg-slate-800/80 hover:shadow-sm" 
+                   class="rounded-xl transition-all border border-transparent cursor-pointer group hover:bg-slate-800/80 hover:shadow-sm" 
+                   [class.p-3]="!isTranscriptExpanded()"
+                   [class.py-2]="isTranscriptExpanded()"
+                   [class.px-3]="isTranscriptExpanded()"
                    [class.bg-slate-800]="currentLine() === line" 
                    [class.border-slate-700]="currentLine() === line"
                    [class.shadow-md]="currentLine() === line">
@@ -288,7 +295,9 @@
                   <svg class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </div>
                 @if (!isVietnameseFile()) {
-                    <p class="text-xs text-slate-400 leading-relaxed italic mb-2 group-hover:text-slate-300 transition-colors">{{ line.text }}</p>
+                    <p class="text-xs text-slate-400 leading-relaxed italic group-hover:text-slate-300 transition-colors"
+                       [class.mb-2]="!isTranscriptExpanded()"
+                       [class.mb-1]="isTranscriptExpanded()">{{ line.text }}</p>
                 }
                 <p class="text-sm text-white font-medium leading-relaxed group-hover:text-white transition-colors" [class.text-red-400]="isVietnameseFile()">
                   @if (line.viText) {
@@ -306,7 +315,9 @@
           }
         </div>
         
-        <div class="p-4 bg-slate-950 border-t border-slate-800 shrink-0 relative z-10">
+        <div class="bg-slate-950 border-t border-slate-800 shrink-0 relative z-10 transition-all"
+             [class.hidden]="isTranscriptExpanded() && isVietnameseFile()"
+             [class.p-4]="!(isTranscriptExpanded() && isVietnameseFile())">
           @if (analysisResult()?.transcript?.[0]?.viText) {
               <button (click)="exportSrt()"
                       [disabled]="isVietnameseFile()"
@@ -346,9 +357,12 @@
     </div>
   </main>
 
-  <footer class="bg-white border-t border-slate-200 py-1.5 px-8 flex justify-center shrink-0">
+  <footer class="bg-white border-t border-slate-200 py-[10px] px-8 flex items-center justify-between shrink-0">
     <p class="text-[10px] text-slate-400 font-medium">
-      silaSub • Nguyễn Đức Anh • v1.0.19 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
+      © 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên Google Chrome, màn hình lớn
+    </p>
+    <p class="text-[10px] text-slate-400 font-medium">
+      v1.0.20 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
     </p>
   </footer>
 
@@ -379,8 +393,8 @@
           <label class="block text-sm font-semibold text-slate-700 mb-2">Loại Font chữ</label>
           <select [ngModel]="subFontFamily()" (ngModelChange)="subFontFamily.set($event)" 
                   class="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 cursor-pointer font-medium appearance-none">
-            <option value="Lexend">Lexend (Tăng tốc độ đọc chữ)</option>
-            <option value="Be Vietnam Pro">Be Vietnam Pro (Tối ưu Tiếng Việt)</option>
+            <option value="Lexend">Lexend (Giúp tăng tốc độ đọc)</option>
+            <option value="Be Vietnam Pro">Be Vietnam Pro (Font tiếng Việt đẹp)</option>
             <option value="Inter">Inter (Gọn gàng, UI chuẩn)</option>
             <option value="Roboto">Roboto (Truyền thống của YouTube)</option>
             <option value="Merriweather">Merriweather (Có chân, rõ nét)</option>
