@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.26] - 2026-04-25
 ### Fixed
 - Xử lý được link video dạng short.
+- Thiết lập giới hạn cho chế độ dịch thông thường là 5000 dòng, dịch âm nhạc là 500 dòng.
 
 ### Added
 - Thêm tính năng dịch phụ đề âm nhạc.
