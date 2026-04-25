@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### Fixed
 - Tinh chỉnh SI dịch thông thường.
 - Điều chỉnh Cài đặt phụ đề thao tác được ngay cả trong lúc dịch (hữu ích khi dịch phù đề dài/Có thể vừa xem vừa tùy chỉnh).
+- Đổi tên dịch thông thường thành dịch đa chủ đề.
 
 ## [v1.0.27] - 2026-04-25
 ### Fixed
