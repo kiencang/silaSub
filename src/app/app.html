@@ -1,35 +1,66 @@
-<div class="flex flex-col h-full w-full overflow-hidden">
+    <div class="flex flex-col h-full w-full overflow-hidden">
   <header class="border-b border-slate-200 bg-white px-4 md:px-8 py-3 flex flex-col md:flex-row md:justify-between items-center shrink-0 relative z-50 gap-3 md:gap-4">
     
     <!-- Top row for mobile (Logo, Temp, Settings) - or Left side for desktop -->
     <div class="flex items-center justify-between w-full md:w-auto gap-4 xl:gap-8 shrink-0">
       <div class="flex items-center gap-4">
         <h1 class="text-xl font-bold tracking-tight text-slate-800 leading-none select-none">sila<span class="text-red-600">Sub</span></h1>
-        <!-- Temperature Controls -->
-        <div class="flex items-center gap-3">
-           <!-- Black (0.3) -->
-           <button (click)="aiTemperature.set(0.3)" 
-                   class="group relative w-3.5 h-3.5 rounded-full bg-slate-900 transition-all focus:outline-none cursor-pointer hover:scale-110"
-                   [class.ring-2]="aiTemperature() === 0.3" [class.ring-offset-2]="aiTemperature() === 0.3" [class.ring-slate-900]="aiTemperature() === 0.3">
-             <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Sát nghĩa (0.3)</span>
-           </button>
-           <!-- Blue (0.5) -->
-           <button (click)="aiTemperature.set(0.5)" 
-                   class="group relative w-3.5 h-3.5 rounded-full bg-blue-500 transition-all focus:outline-none cursor-pointer hover:scale-110"
-                   [class.ring-2]="aiTemperature() === 0.5" [class.ring-offset-2]="aiTemperature() === 0.5" [class.ring-blue-500]="aiTemperature() === 0.5">
-             <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Cân bằng (0.5)</span>
-           </button>
-           <!-- Red (0.7) -->
-           <button (click)="aiTemperature.set(0.7)" 
-                   class="group relative w-3.5 h-3.5 rounded-full bg-red-600 transition-all focus:outline-none cursor-pointer hover:scale-110"
-                   [class.ring-2]="aiTemperature() === 0.7" [class.ring-offset-2]="aiTemperature() === 0.7" [class.ring-red-600]="aiTemperature() === 0.7">
-             <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Uyển chuyển (0.7)</span>
-           </button>
+        
+        <!-- Controls Container -->
+        <div class="flex items-center gap-3 transition-opacity" [class.pointer-events-none]="isTranslating()" [class.opacity-50]="isTranslating()">
+          <!-- Temperature Controls -->
+          <div class="flex items-center gap-2.5">
+             <!-- Black (0.3) -->
+             <button (click)="aiTemperature.set(0.3)" 
+                     class="group relative w-3.5 h-3.5 rounded-full bg-slate-900 transition-all focus:outline-none cursor-pointer hover:scale-110"
+                     [class.ring-2]="aiTemperature() === 0.3" [class.ring-offset-2]="aiTemperature() === 0.3" [class.ring-slate-900]="aiTemperature() === 0.3">
+               <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Sát nghĩa (0.3)</span>
+             </button>
+             <!-- Blue (0.5) -->
+             <button (click)="aiTemperature.set(0.5)" 
+                     class="group relative w-3.5 h-3.5 rounded-full bg-blue-500 transition-all focus:outline-none cursor-pointer hover:scale-110"
+                     [class.ring-2]="aiTemperature() === 0.5" [class.ring-offset-2]="aiTemperature() === 0.5" [class.ring-blue-500]="aiTemperature() === 0.5">
+               <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Cân bằng (0.5)</span>
+             </button>
+             <!-- Red (0.7) -->
+             <button (click)="aiTemperature.set(0.7)" 
+                     class="group relative w-3.5 h-3.5 rounded-full bg-red-600 transition-all focus:outline-none cursor-pointer hover:scale-110"
+                     [class.ring-2]="aiTemperature() === 0.7" [class.ring-offset-2]="aiTemperature() === 0.7" [class.ring-red-600]="aiTemperature() === 0.7">
+               <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Uyển chuyển (0.7)</span>
+             </button>
+          </div>
+
+          <div class="w-[1px] h-4 bg-slate-300 mx-0.5"></div>
+
+          <!-- AI Model Controls -->
+          <div class="flex items-center gap-2">
+            <button (click)="aiModel.set('gemini-pro-latest')"
+                    class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+                    [class.bg-indigo-600]="aiModel() === 'gemini-pro-latest'"
+                    [class.text-white]="aiModel() === 'gemini-pro-latest'"
+                    [class.bg-slate-100]="aiModel() !== 'gemini-pro-latest'"
+                    [class.text-slate-400]="aiModel() !== 'gemini-pro-latest'"
+                    [class.hover:bg-slate-200]="aiModel() !== 'gemini-pro-latest'">
+              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">auto_awesome</mat-icon>
+              <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tư duy Sâu sắc (Pro)</span>
+            </button>
+
+            <button (click)="aiModel.set('gemini-flash-latest')"
+                    class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+                    [class.bg-amber-500]="aiModel() === 'gemini-flash-latest'"
+                    [class.text-white]="aiModel() === 'gemini-flash-latest'"
+                    [class.bg-slate-100]="aiModel() !== 'gemini-flash-latest'"
+                    [class.text-slate-400]="aiModel() !== 'gemini-flash-latest'"
+                    [class.hover:bg-slate-200]="aiModel() !== 'gemini-flash-latest'">
+              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">bolt</mat-icon>
+              <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tốc độ & Tiết kiệm (Flash)</span>
+            </button>
+          </div>
         </div>
       </div>
       
       <!-- Settings Button on Mobile (Shows here, hidden on Desktop input row) -->
-      <button (click)="openSettings()" class="md:hidden px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center shrink-0">
+      <button (click)="openSettings()" [disabled]="isTranslating()" class="md:hidden px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center shrink-0 disabled:opacity-50 disabled:pointer-events-none">
          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
       </button>
     </div>
@@ -40,7 +71,7 @@
         type="text" 
         [(ngModel)]="searchQuery" 
         (keydown.enter)="searchYoutube()"
-        [disabled]="isSearchingQuery() || isAnalyzing()"
+        [disabled]="isSearchingQuery() || isAnalyzing() || isTranslating()"
         placeholder="Gõ tiếng Việt, tìm video tiếng Anh trên YouTube..." 
         class="w-full px-5 py-2.5 bg-slate-50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-[16px] leading-[20px] truncate disabled:opacity-70 pr-20 placeholder-slate-400 font-medium shadow-sm">
       
@@ -57,7 +88,7 @@
         
         <button 
           (click)="searchYoutube()"
-          [disabled]="isSearchingQuery() || !searchQuery().trim()"
+          [disabled]="isSearchingQuery() || !searchQuery().trim() || isTranslating()"
           class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-600 focus:outline-none transition-colors disabled:opacity-50 disabled:hover:bg-transparent">
           @if (isSearchingQuery()) {
             <div class="w-4.5 h-4.5 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin"></div>
@@ -70,7 +101,7 @@
 
     <!-- Settings Button on Desktop (Hidden on Mobile) -->
     <div class="hidden md:flex items-center shrink-0">
-      <button (click)="openSettings()" class="px-4 py-2 bg-slate-100 rounded-full text-sm font-semibold hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center">
+      <button (click)="openSettings()" [disabled]="isTranslating()" class="px-4 py-2 bg-slate-100 rounded-full text-sm font-semibold hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none">
          Cài đặt
       </button>
     </div>
@@ -154,11 +185,11 @@
         <input type="text" 
                [ngModel]="videoUrl()"
                (ngModelChange)="onVideoUrlChange($event)"
-               [disabled]="isAnalyzing()"
+               [disabled]="isAnalyzing() || isTranslating()"
                placeholder="Dán link Video YouTube vào đây..."
                class="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[16px] leading-[20px] truncate disabled:opacity-50 pr-12 placeholder-slate-400 shadow-sm font-medium">
         @if (videoUrl()) {
-          <button (click)="clearAllData()" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none cursor-pointer" title="Thiết lập lại / Xóa Link">
+          <button (click)="clearAllData()" [disabled]="isTranslating()" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none" title="Thiết lập lại / Xóa Link">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -172,7 +203,9 @@
            [class.shadow-sm]="selectedFile() || !videoId()"
            [class.border-slate-200]="selectedFile() || !videoId()"
            [class.border-yellow-400]="videoId() && !selectedFile()"
-           [style.box-shadow]="(videoId() && !selectedFile()) ? 'inset 0 0 40px rgba(234, 179, 8, 0.25), 0 0 15px rgba(234, 179, 8, 0.3)' : ''">
+           [style.box-shadow]="(videoId() && !selectedFile()) ? 'inset 0 0 40px rgba(234, 179, 8, 0.25), 0 0 15px rgba(234, 179, 8, 0.3)' : ''"
+           [class.opacity-50]="isTranslating()"
+           [class.pointer-events-none]="isTranslating()">
         <div class="flex items-center gap-1.5 mb-3">
           <label class="block text-sm font-bold text-slate-800">Tải lên phụ đề (.srt)</label>
           <div class="group relative flex items-center justify-center cursor-help ml-1">
@@ -201,6 +234,7 @@
         
         <div class="flex gap-3 mb-4 relative max-w-full">
           <input type="file" accept=".srt" (change)="onFileSelected($event)" #fileUploader
+                 [disabled]="isTranslating()"
                  class="flex-1 w-full min-w-0 text-sm file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-xl overflow-hidden text-ellipsis whitespace-nowrap"
                  [class.border-slate-200]="!selectedFile()"
                  [class.bg-slate-50]="!selectedFile()"
@@ -216,7 +250,7 @@
                  [class.hover:file:bg-red-200]="selectedFile()"
                  >
           @if (selectedFile()) {
-            <button (click)="clearSubtitleFile($event)" class="absolute right-2.5 top-[7px] p-1.5 text-red-400 hover:text-red-600 hover:bg-white/50 rounded-full transition-colors focus:outline-none cursor-pointer" title="Hủy chọn File">
+            <button (click)="clearSubtitleFile($event)" [disabled]="isTranslating()" class="absolute right-2.5 top-[7px] p-1.5 text-red-400 hover:text-red-600 hover:bg-white/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none" title="Hủy chọn File">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
@@ -225,8 +259,8 @@
         </div>
         
         <!-- Toggle for pre-translated file -->
-        <label class="flex items-start gap-2.5 text-sm text-slate-600 font-medium cursor-pointer hover:text-slate-900 transition-colors">
-           <input type="checkbox" [ngModel]="isVietnameseFile()" (ngModelChange)="onVietnameseFlagChange($event)" class="mt-0.5 w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 focus:ring-2 cursor-pointer shrink-0">
+        <label class="flex items-start gap-2.5 text-sm text-slate-600 font-medium cursor-pointer hover:text-slate-900 transition-colors" [class.opacity-50]="isTranslating()" [class.pointer-events-none]="isTranslating()">
+           <input type="checkbox" [ngModel]="isVietnameseFile()" (ngModelChange)="onVietnameseFlagChange($event)" [disabled]="isTranslating()" class="mt-0.5 w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 focus:ring-2 cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed">
            <span class="leading-snug">Đây là file Tiếng Việt đã dịch sẵn (Không cần AI dịch lại)</span>
         </label>
 
@@ -388,7 +422,7 @@
       © 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên Google Chrome, màn hình lớn
     </p>
     <p class="text-[10px] text-slate-400 font-medium">
-      v1.0.24 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
+      v1.0.25 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
     </p>
   </footer>
 

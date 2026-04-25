@@ -4,8 +4,8 @@ import {RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { GoogleGenAI, ThinkingLevel } from '@google/genai';
+import { MatIconModule } from '@angular/material/icon';
 
-const AI_MODEL_VERSION = 'gemini-pro-latest';
 const SETTINGS_STORAGE_KEY = 'silaSub_v1_prefs_8f9a2b';
 
 export interface TranscriptLine {
@@ -25,7 +25,7 @@ export interface ToastInfo {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule, HttpClientModule, DecimalPipe],
+  imports: [RouterOutlet, FormsModule, HttpClientModule, DecimalPipe, MatIconModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -39,6 +39,7 @@ export class App implements OnDestroy, OnInit {
   isVietnameseFile = signal(false); // Flag if the uploaded file is already Vietnamese
   
   aiTemperature = signal<number>(0.5); // AI Temperature parameter
+  aiModel = signal<string>('gemini-pro-latest'); // AI Model selection
 
   // Settings State
   isSettingsOpen = signal(false);
@@ -602,26 +603,28 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
            .replace('{{CONTEXT_TEXT}}', contextText)
            .replace('{{JSON_PAYLOAD}}', JSON.stringify(textsToTranslate, null, 2));
 
-        const response = await ai.models.generateContent({
-          model: AI_MODEL_VERSION,
-          contents: prompt,
-          config: {
-            systemInstruction: systemInstruction,
-            responseMimeType: "application/json",
-            temperature: this.aiTemperature(),
-            thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
-            responseSchema: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  id: { type: "integer" },
-                  vi: { type: "string" }
-                },
-                required: ["id", "vi"]
-              }
+        const reqConfig: any = {
+          systemInstruction: systemInstruction,
+          responseMimeType: "application/json",
+          temperature: this.aiTemperature(),
+          thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
+          responseSchema: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id: { type: "integer" },
+                vi: { type: "string" }
+              },
+              required: ["id", "vi"]
             }
           }
+        };
+
+        const response = await ai.models.generateContent({
+          model: this.aiModel(),
+          contents: prompt,
+          config: reqConfig
         });
 
         const output = response.text;
