@@ -36,12 +36,12 @@
           <div class="flex items-center gap-2">
             <button (click)="aiModel.set('gemini-pro-latest')"
                     class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
-                    [class.bg-indigo-600]="aiModel() === 'gemini-pro-latest'"
+                    [class.bg-blue-500]="aiModel() === 'gemini-pro-latest'"
                     [class.text-white]="aiModel() === 'gemini-pro-latest'"
                     [class.bg-slate-100]="aiModel() !== 'gemini-pro-latest'"
                     [class.text-slate-400]="aiModel() !== 'gemini-pro-latest'"
                     [class.hover:bg-slate-200]="aiModel() !== 'gemini-pro-latest'">
-              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">auto_awesome</mat-icon>
+              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">psychology</mat-icon>
               <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tư duy sâu (Pro)</span>
             </button>
 
@@ -63,12 +63,12 @@
           <div class="flex items-center gap-2">
             <button (click)="translationMode.set('video')"
                     class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
-                    [class.bg-purple-600]="translationMode() === 'video'"
+                    [class.bg-blue-500]="translationMode() === 'video'"
                     [class.text-white]="translationMode() === 'video'"
                     [class.bg-slate-100]="translationMode() !== 'video'"
                     [class.text-slate-400]="translationMode() !== 'video'"
                     [class.hover:bg-slate-200]="translationMode() !== 'video'">
-              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">record_voice_over</mat-icon>
+              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">language</mat-icon>
               <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">Dịch thông thường</span>
             </button>
 
@@ -88,7 +88,7 @@
       
       <!-- Settings Button on Mobile (Shows here, hidden on Desktop input row) -->
       <button (click)="openSettings()" [disabled]="isTranslating()" class="md:hidden px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center shrink-0 disabled:opacity-50 disabled:pointer-events-none">
-         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+         <mat-icon class="text-[20px] w-[20px] h-[20px] leading-none">settings</mat-icon>
       </button>
     </div>
 
@@ -128,7 +128,8 @@
 
     <!-- Settings Button on Desktop (Hidden on Mobile) -->
     <div class="hidden md:flex items-center shrink-0">
-      <button (click)="openSettings()" [disabled]="isTranslating()" class="px-4 py-2 bg-slate-100 rounded-full text-sm font-semibold hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none">
+      <button (click)="openSettings()" [disabled]="isTranslating()" class="px-4 py-2 bg-slate-100 rounded-full text-sm font-semibold hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:pointer-events-none">
+         <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">settings</mat-icon>
          Cài đặt
       </button>
     </div>
@@ -453,7 +454,7 @@
       © 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên Google Chrome, màn hình lớn
     </p>
     <p class="text-[10px] text-slate-400 font-medium">
-      v1.0.26 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
+      v1.0.27 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
     </p>
   </footer>
 
