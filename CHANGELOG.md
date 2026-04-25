@@ -7,7 +7,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.23] - 2026-04-25
 ### Fixed
-- SI phiên bản mới nhất (bảo vệ timing).
+- SI phiên bản mới nhất (siết chặt bảo vệ timing/thứ tự index).
 
 ## [v1.0.22] - 2026-04-25
 ### Fixed
