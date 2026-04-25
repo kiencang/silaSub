@@ -404,7 +404,7 @@ export class App implements OnDestroy, OnInit {
     }
   }
 
-  private parseAndLoadFile(file: File, autoDetected: boolean = false) {
+  private parseAndLoadFile(file: File, autoDetected = false) {
     this.isAnalyzing.set(true);
     this.analyzeError.set(null);
     this.analysisResult.set(null);
@@ -467,7 +467,7 @@ export class App implements OnDestroy, OnInit {
       return text;
     }
     
-    let cleaned = text.replace(audioTagRegex, (match, _, offset) => {
+    const cleaned = text.replace(audioTagRegex, (match, _, offset) => {
       const beforeStr = text.substring(0, offset);
       const afterStr = text.substring(offset + match.length);
       
@@ -489,7 +489,7 @@ export class App implements OnDestroy, OnInit {
     return cleaned.replace(/\s{2,}/g, ' ').trim();
   }
 
-  private parseSRT(srtData: string, preserveNewlines: boolean = false): TranscriptLine[] {
+  private parseSRT(srtData: string, preserveNewlines = false): TranscriptLine[] {
     const lines = srtData.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
     const transcript: TranscriptLine[] = [];
     let current: Partial<TranscriptLine> = {};
@@ -569,10 +569,10 @@ export class App implements OnDestroy, OnInit {
 
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-      const CHUNK_SIZE = 567;
+      const CHUNK_SIZE = 600;
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
-      let translatedTranscript = [...fullTranscript];
+      const translatedTranscript = [...fullTranscript];
 
       for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
         if (totalChunks > 1) {
@@ -583,15 +583,15 @@ export class App implements OnDestroy, OnInit {
         const startIndex = chunkIndex * CHUNK_SIZE;
         const endIndex = Math.min(startIndex + CHUNK_SIZE, fullTranscript.length);
         const currentChunk = fullTranscript.slice(startIndex, endIndex);
-        const textsToTranslate = currentChunk.map(line => line.text);
+        const textsToTranslate = currentChunk.map((line, idx) => ({ id: startIndex + idx, en: line.text }));
 
         let contextText = '';
         if (chunkIndex > 0) {
-           const prevStart = Math.max(0, startIndex - 34);
+           const prevStart = Math.max(0, startIndex - 30);
            const prevLines = translatedTranscript.slice(prevStart, startIndex);
            contextText = `[THÔNG TIN NGỮ CẢNH - KHÔNG DỊCH PHẦN NÀY]
 Người nói vừa kết thúc đoạn trước bằng các câu sau:
-${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`).join('\n')}
+${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${l.viText}"`).join('\n')}
 
 (Dựa vào ngữ cảnh đang nói dở dang ở trên, hãy tiếp tục dịch mảng JSON dưới đây)
 
@@ -600,7 +600,7 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
 
         const prompt = promptTemplate
            .replace('{{CONTEXT_TEXT}}', contextText)
-           .replace('{{JSON_PAYLOAD}}', JSON.stringify(textsToTranslate));
+           .replace('{{JSON_PAYLOAD}}', JSON.stringify(textsToTranslate, null, 2));
 
         const response = await ai.models.generateContent({
           model: AI_MODEL_VERSION,
@@ -609,7 +609,18 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
             systemInstruction: systemInstruction,
             responseMimeType: "application/json",
             temperature: this.aiTemperature(),
-            thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH }
+            thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
+            responseSchema: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: { type: "integer" },
+                  vi: { type: "string" }
+                },
+                required: ["id", "vi"]
+              }
+            }
           }
         });
 
@@ -619,7 +630,7 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
         // Defensive programming: Lột bỏ markdown (nếu có) trước khi parse
         const cleanOutput = output.replace(/```json\n?/gi, '').replace(/```\n?/g, '').trim();
         
-        let translatedArray: string[] = [];
+        let translatedArray: { id: number, vi: string }[] = [];
         try {
           translatedArray = JSON.parse(cleanOutput);
         } catch (parseError) {
@@ -627,14 +638,16 @@ ${prevLines.map((l, i) => `${i + 1}. Anh: "${l.text}" -> Việt: "${l.viText}"`)
         }
         
         for (let i = 0; i < currentChunk.length; i++) {
-           let finalViText = translatedArray[i] || currentChunk[i].text;
+           const expectedId = startIndex + i;
+           const translatedItem = translatedArray.find(item => item.id === expectedId);
+           let finalViText = translatedItem ? translatedItem.vi : currentChunk[i].text;
            // Giải bùa: Chuyển đổi ký tự thế thân <br> về \n thực sự
            if (typeof finalViText === 'string') {
              finalViText = finalViText.replace(/<br\s*\/?>/gi, '\n');
            }
            
-           translatedTranscript[startIndex + i] = {
-             ...translatedTranscript[startIndex + i],
+           translatedTranscript[expectedId] = {
+             ...translatedTranscript[expectedId],
              viText: finalViText
            };
         }
