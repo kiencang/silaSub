@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.25] - 2026-04-25
+### Fixed
+- Thêm tính năng tùy chọn model để dịch tiết kiệm, nhanh hơn khi cần (mặc định vẫn dùng model có chất lượng cao nhất).
+
 ## [v1.0.24] - 2026-04-25
 ### Fixed
 - SI phiên bản mới nhất (siết thêm bảo vệ index / đưa thêm chỉ số index vào JSON gửi đi và nhận về).
