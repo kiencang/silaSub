@@ -42,7 +42,7 @@
                     [class.text-slate-400]="aiModel() !== 'gemini-pro-latest'"
                     [class.hover:bg-slate-200]="aiModel() !== 'gemini-pro-latest'">
               <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">auto_awesome</mat-icon>
-              <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tư duy Sâu sắc (Pro)</span>
+              <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tư duy sâu (Pro)</span>
             </button>
 
             <button (click)="aiModel.set('gemini-flash-latest')"
@@ -54,6 +54,33 @@
                     [class.hover:bg-slate-200]="aiModel() !== 'gemini-flash-latest'">
               <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">bolt</mat-icon>
               <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tốc độ & Tiết kiệm (Flash)</span>
+            </button>
+          </div>
+
+          <div class="w-[1px] h-4 bg-slate-300 mx-0.5"></div>
+
+          <!-- Translation Mode Controls -->
+          <div class="flex items-center gap-2">
+            <button (click)="translationMode.set('video')"
+                    class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+                    [class.bg-purple-600]="translationMode() === 'video'"
+                    [class.text-white]="translationMode() === 'video'"
+                    [class.bg-slate-100]="translationMode() !== 'video'"
+                    [class.text-slate-400]="translationMode() !== 'video'"
+                    [class.hover:bg-slate-200]="translationMode() !== 'video'">
+              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">record_voice_over</mat-icon>
+              <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">Dịch thông thường</span>
+            </button>
+
+            <button (click)="translationMode.set('music')"
+                    class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+                    [class.bg-pink-500]="translationMode() === 'music'"
+                    [class.text-white]="translationMode() === 'music'"
+                    [class.bg-slate-100]="translationMode() !== 'music'"
+                    [class.text-slate-400]="translationMode() !== 'music'"
+                    [class.hover:bg-slate-200]="translationMode() !== 'music'">
+              <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">music_note</mat-icon>
+              <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">Dịch lời bài hát</span>
             </button>
           </div>
         </div>
@@ -395,7 +422,11 @@
                    @if (translationTotalChunks() > 1) {
                       Đang dịch phần {{ translationCurrentChunk() }}/{{ translationTotalChunks() }} ({{ formattedTranslationTime() }})
                    } @else {
-                      AI đang suy luận & Dịch... ({{ formattedTranslationTime() }})
+                      @if (translationMode() === 'music') {
+                         Đang dịch lời bài hát... ({{ formattedTranslationTime() }})
+                      } @else {
+                         AI đang suy luận & Dịch... ({{ formattedTranslationTime() }})
+                      }
                    }
                 } @else {
                    Bắt đầu Dịch tự động
@@ -422,7 +453,7 @@
       © 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên Google Chrome, màn hình lớn
     </p>
     <p class="text-[10px] text-slate-400 font-medium">
-      v1.0.25 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
+      v1.0.26 • <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
     </p>
   </footer>
 

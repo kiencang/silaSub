@@ -40,6 +40,7 @@ export class App implements OnDestroy, OnInit {
   
   aiTemperature = signal<number>(0.5); // AI Temperature parameter
   aiModel = signal<string>('gemini-pro-latest'); // AI Model selection
+  translationMode = signal<'video' | 'music'>('video'); // Mode selection
 
   // Settings State
   isSettingsOpen = signal(false);
@@ -168,7 +169,7 @@ export class App implements OnDestroy, OnInit {
   videoId = computed(() => {
     const url = this.videoUrl();
     if (!url) return null;
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&]{11})/);
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([a-zA-Z0-9_-]{11})/);
     return match ? match[1] : null;
   });
 
@@ -539,6 +540,16 @@ export class App implements OnDestroy, OnInit {
     const res = this.analysisResult();
     if (!res || !res.transcript) return;
 
+    if (this.translationMode() === 'music' && res.transcript.length > 500) {
+      this.addToast('Vượt quá 500 dòng. Không thể dịch ở chế độ Âm nhạc.', 'error');
+      return;
+    }
+
+    if (this.translationMode() === 'video' && res.transcript.length > 5000) {
+      this.addToast('Vượt quá 5000 dòng. Vui lòng cắt nhỏ video hoặc file phụ đề để dịch.', 'error');
+      return;
+    }
+
     this.isTranslating.set(true);
     this.translateError.set(null);
     this.translationCompletedText.set(null);
@@ -556,9 +567,13 @@ export class App implements OnDestroy, OnInit {
       
       try {
         const timestamp = Date.now();
+        const mode = this.translationMode();
+        const siUrl = mode === 'music' ? '/prompts/music_system_instructions.md' : '/prompts/video_system_instructions.md';
+        const promptUrl = mode === 'music' ? '/prompts/music_prompt.md' : '/prompts/video_prompt.md';
+        
         const [siRes, promptRes] = await Promise.all([
-          fetch(`/prompts/video_system_instructions.md?t=${timestamp}`),
-          fetch(`/prompts/video_prompt.md?t=${timestamp}`)
+          fetch(`${siUrl}?t=${timestamp}`),
+          fetch(`${promptUrl}?t=${timestamp}`)
         ]);
         
         if (!siRes.ok || !promptRes.ok) throw new Error('Network response bounds error.');
@@ -570,7 +585,8 @@ export class App implements OnDestroy, OnInit {
 
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-      const CHUNK_SIZE = 600;
+      const mode = this.translationMode();
+      const CHUNK_SIZE = mode === 'music' ? res.transcript.length : 600;
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
       const translatedTranscript = [...fullTranscript];
