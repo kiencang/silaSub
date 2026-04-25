@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.24] - 2026-04-25
+### Fixed
+- SI phiên bản mới nhất (siết thêm bảo vệ index / đưa thêm chỉ số index vào JSON gửi đi và nhận về).
+- Chỉnh chunking về 600, và ngữ cảnh cung cấp trước là 30 của chunk trước.
+
 ## [v1.0.23] - 2026-04-25
 ### Fixed
 - SI phiên bản mới nhất (siết chặt bảo vệ timing/thứ tự index).
