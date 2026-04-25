@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.27] - 2026-04-25
 ### Fixed
 - Cập nhật cho SI dịch lyric.
+- Thay đổi icon phù hợp hơn cho model Pro và chế độ dịch thông thường.
 
 ## [v1.0.26] - 2026-04-25
 ### Fixed
