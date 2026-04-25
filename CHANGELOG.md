@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.23] - 2026-04-25
 ### Fixed
 - SI phiên bản mới nhất (siết chặt bảo vệ timing/thứ tự index).
+- Giảm ngưỡng chunking để tránh hiện tượng lạc trôi! 567 là con số được chọn (con số cũ là 900).
 
 ## [v1.0.22] - 2026-04-25
 ### Fixed
