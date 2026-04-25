@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.25] - 2026-04-25
 ### Fixed
 - Thêm tính năng tùy chọn model để dịch tiết kiệm, nhanh hơn khi cần (mặc định vẫn dùng model có chất lượng cao nhất).
+- Khóa cứng các tùy chỉnh khi bấm nút Dịch.
 
 ## [v1.0.24] - 2026-04-25
 ### Fixed
