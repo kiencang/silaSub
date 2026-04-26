@@ -1,12 +1,24 @@
-import {ChangeDetectionStrategy, Component, signal, computed, OnDestroy, effect, OnInit, PLATFORM_ID, inject, ViewChild, ElementRef} from '@angular/core';
-import {isPlatformBrowser, DecimalPipe} from '@angular/common';
-import {RouterOutlet} from '@angular/router';
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import { GoogleGenAI, ThinkingLevel } from '@google/genai';
-import { MatIconModule } from '@angular/material/icon';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  signal,
+  computed,
+  OnDestroy,
+  effect,
+  OnInit,
+  PLATFORM_ID,
+  inject,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import { isPlatformBrowser, DecimalPipe } from "@angular/common";
+import { RouterOutlet } from "@angular/router";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
+import { MatIconModule } from "@angular/material/icon";
 
-const SETTINGS_STORAGE_KEY = 'silaSub_v1_prefs_8f9a2b';
+const SETTINGS_STORAGE_KEY = "silaSub_v1_prefs_8f9a2b";
 
 export interface TranscriptLine {
   text: string;
@@ -15,7 +27,7 @@ export interface TranscriptLine {
   offset: number;
 }
 
-export type ToastType = 'success' | 'error' | 'warning';
+export type ToastType = "success" | "error" | "warning";
 export interface ToastInfo {
   id: string;
   message: string;
@@ -24,35 +36,52 @@ export interface ToastInfo {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'app-root',
-  imports: [RouterOutlet, FormsModule, HttpClientModule, DecimalPipe, MatIconModule],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  selector: "app-root",
+  imports: [
+    RouterOutlet,
+    FormsModule,
+    HttpClientModule,
+    DecimalPipe,
+    MatIconModule,
+  ],
+  templateUrl: "./app.html",
+  styleUrl: "./app.css",
 })
 export class App implements OnDestroy, OnInit {
   private platformId = inject(PLATFORM_ID);
-  
-  @ViewChild('fileUploader') fileUploader!: ElementRef<HTMLInputElement>;
 
-  videoUrl = signal('');
-  selectedFile = signal<File | null>(null);
-  isVietnameseFile = signal(false); // Flag if the uploaded file is already Vietnamese
-  
+  @ViewChild("enFileUploader") enFileUploader!: ElementRef<HTMLInputElement>;
+  @ViewChild("viFileUploader") viFileUploader!: ElementRef<HTMLInputElement>;
+
+  videoUrl = signal("");
+  selectedEnFile = signal<File | null>(null);
+  selectedViFile = signal<File | null>(null);
+  showViUpload = signal(false); // Controls visibility of Vi file upload box
+
   aiTemperature = signal<number>(0.5); // AI Temperature parameter
-  aiModel = signal<string>('gemini-pro-latest'); // AI Model selection
-  translationMode = signal<'video' | 'music'>('video'); // Mode selection
+  aiModel = signal<string>("gemini-pro-latest"); // AI Model selection
+  translationMode = signal<"video" | "music">("video"); // Mode selection
 
   // Settings State
   isSettingsOpen = signal(false);
   subFontSize = signal<number>(30);
-  subFontFamily = signal<string>('Lexend');
-  subTextColor = signal<string>('#FFD700');
+  subFontFamily = signal<string>("Lexend");
+  subTextColor = signal<string>("#FFD700");
   subBgOpacity = signal<number>(0.5);
   subVerticalOffset = signal<number>(2); // 2rem default
-  private backupSettings = { size: 30, font: 'Lexend', color: '#FFD700', opacity: 0.5, offset: 2 };
+  private backupSettings = {
+    size: 30,
+    font: "Lexend",
+    color: "#FFD700",
+    opacity: 0.5,
+    offset: 2,
+  };
 
   isAnalyzing = signal(false);
-  analysisResult = signal<{lines: number, transcript: TranscriptLine[]} | null>(null);
+  analysisResult = signal<{
+    lines: number;
+    transcript: TranscriptLine[];
+  } | null>(null);
   analyzeError = signal<string | null>(null);
 
   isTranslating = signal(false);
@@ -60,16 +89,16 @@ export class App implements OnDestroy, OnInit {
 
   toasts = signal<ToastInfo[]>([]);
 
-  addToast(message: string, type: ToastType = 'error') {
+  addToast(message: string, type: ToastType = "error") {
     const id = Math.random().toString(36).substring(2, 9);
-    this.toasts.update(current => [...current, { id, message, type }]);
+    this.toasts.update((current) => [...current, { id, message, type }]);
     setTimeout(() => this.removeToast(id), 5000);
   }
 
   removeToast(id: string) {
-    this.toasts.update(current => current.filter(t => t.id !== id));
+    this.toasts.update((current) => current.filter((t) => t.id !== id));
   }
-  
+
   // Settings Logic
   openSettings() {
     this.backupSettings = {
@@ -77,37 +106,40 @@ export class App implements OnDestroy, OnInit {
       font: this.subFontFamily(),
       color: this.subTextColor(),
       opacity: this.subBgOpacity(),
-      offset: this.subVerticalOffset()
+      offset: this.subVerticalOffset(),
     };
     this.isSettingsOpen.set(true);
   }
 
-  closeSettings(action: 'save' | 'reset' | 'cancel') {
+  closeSettings(action: "save" | "reset" | "cancel") {
     this.isSettingsOpen.set(false);
-    if (action === 'save') {
+    if (action === "save") {
       if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({
-          size: this.subFontSize(),
-          font: this.subFontFamily(),
-          color: this.subTextColor(),
-          opacity: this.subBgOpacity(),
-          offset: this.subVerticalOffset()
-        }));
+        localStorage.setItem(
+          SETTINGS_STORAGE_KEY,
+          JSON.stringify({
+            size: this.subFontSize(),
+            font: this.subFontFamily(),
+            color: this.subTextColor(),
+            opacity: this.subBgOpacity(),
+            offset: this.subVerticalOffset(),
+          }),
+        );
       }
-      this.addToast('Lưu cài đặt thành công!', 'success');
-    } else if (action === 'reset') {
+      this.addToast("Lưu cài đặt thành công!", "success");
+    } else if (action === "reset") {
       // Khôi phục về thông số mặc định nguyên thuỷ
       this.subFontSize.set(30);
-      this.subFontFamily.set('Lexend');
-      this.subTextColor.set('#FFD700');
+      this.subFontFamily.set("Lexend");
+      this.subTextColor.set("#FFD700");
       this.subBgOpacity.set(0.5);
       this.subVerticalOffset.set(2);
       // Xoá memory trong localStorage
       if (isPlatformBrowser(this.platformId)) {
         localStorage.removeItem(SETTINGS_STORAGE_KEY);
       }
-      this.addToast('Đã khôi phục cài đặt gốc', 'success');
-    } else if (action === 'cancel') {
+      this.addToast("Đã khôi phục cài đặt gốc", "success");
+    } else if (action === "cancel") {
       // Revert if canceled (click backdrop without saving)
       this.subFontSize.set(this.backupSettings.size);
       this.subFontFamily.set(this.backupSettings.font);
@@ -118,14 +150,21 @@ export class App implements OnDestroy, OnInit {
   }
 
   getFontFamily(fontName: string): string {
-    switch(fontName) {
-      case 'Roboto': return '"Roboto", sans-serif';
-      case 'Montserrat': return '"Montserrat", sans-serif';
-      case 'Playfair Display': return '"Playfair Display", serif';
-      case 'Be Vietnam Pro': return '"Be Vietnam Pro", sans-serif';
-      case 'Inter': return '"Inter", sans-serif';
-      case 'Lexend': return '"Lexend", sans-serif';
-      default: return '"Lexend", sans-serif';
+    switch (fontName) {
+      case "Roboto":
+        return '"Roboto", sans-serif';
+      case "Montserrat":
+        return '"Montserrat", sans-serif';
+      case "Playfair Display":
+        return '"Playfair Display", serif';
+      case "Be Vietnam Pro":
+        return '"Be Vietnam Pro", sans-serif';
+      case "Inter":
+        return '"Inter", sans-serif';
+      case "Lexend":
+        return '"Lexend", sans-serif';
+      default:
+        return '"Lexend", sans-serif';
     }
   }
 
@@ -135,7 +174,7 @@ export class App implements OnDestroy, OnInit {
     const s = this.translationSeconds();
     const m = Math.floor(s / 60);
     const sec = s % 60;
-    return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    return `${m.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
   });
   translationCurrentChunk = signal<number>(0);
   translationTotalChunks = signal<number>(0);
@@ -148,28 +187,34 @@ export class App implements OnDestroy, OnInit {
   isYtReady = signal(false);
   player: any;
   isFullscreen = signal(false);
-  
+
   // Auto-scroll state
   isTranscriptHovered = signal(false);
   isTranscriptExpanded = signal(false);
 
   // Search video feature
-  searchQuery = signal('');
+  searchQuery = signal("");
   isSearchingQuery = signal(false);
 
   currentLine = computed(() => {
     const res = this.analysisResult();
     if (!res || !res.transcript) return null;
     const t = this.currentTime();
-    
+
     // Find the line that matches current time
-    return res.transcript.find(line => t >= line.offset && t <= (line.offset + line.duration)) || null;
+    return (
+      res.transcript.find(
+        (line) => t >= line.offset && t <= line.offset + line.duration,
+      ) || null
+    );
   });
-  
+
   videoId = computed(() => {
     const url = this.videoUrl();
     if (!url) return null;
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([a-zA-Z0-9_-]{11})/);
+    const match = url.match(
+      /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([a-zA-Z0-9_-]{11})/,
+    );
     return match ? match[1] : null;
   });
 
@@ -179,7 +224,7 @@ export class App implements OnDestroy, OnInit {
       if (!isPlatformBrowser(this.platformId)) return;
       const line = this.currentLine();
       const hovered = this.isTranscriptHovered();
-      
+
       if (line && !hovered) {
         this.scrollContainerToElement(line.offset);
       }
@@ -187,26 +232,29 @@ export class App implements OnDestroy, OnInit {
 
     effect(() => {
       if (!isPlatformBrowser(this.platformId)) return;
-      
+
       const id = this.videoId();
       const ready = this.isYtReady();
-      
+
       if (ready && id) {
         // Wait a small tick so DOM is present
         setTimeout(() => {
           if (this.player && this.player.loadVideoById) {
             this.player.loadVideoById(id);
           } else {
-            const container = document.getElementById('yt-player-container');
+            const container = document.getElementById("yt-player-container");
             if (container) {
-               this.player = new (window as any).YT.Player('yt-player-container', {
-                 videoId: id,
-                 playerVars: { 
-                    'autoplay': 0, 
-                    'rel': 0, 
-                    'fs': 0 // Disable native iframe fullscreen as it covers our custom subtitles overlay
-                 },
-               });
+              this.player = new (window as any).YT.Player(
+                "yt-player-container",
+                {
+                  videoId: id,
+                  playerVars: {
+                    autoplay: 0,
+                    rel: 0,
+                    fs: 0, // Disable native iframe fullscreen as it covers our custom subtitles overlay
+                  },
+                },
+              );
             }
           }
         }, 0);
@@ -224,25 +272,27 @@ export class App implements OnDestroy, OnInit {
           if (parsed.size) this.subFontSize.set(parsed.size);
           if (parsed.font) this.subFontFamily.set(parsed.font);
           if (parsed.color) this.subTextColor.set(parsed.color);
-          if (parsed.opacity !== undefined) this.subBgOpacity.set(parsed.opacity);
-          if (parsed.offset !== undefined) this.subVerticalOffset.set(parsed.offset);
+          if (parsed.opacity !== undefined)
+            this.subBgOpacity.set(parsed.opacity);
+          if (parsed.offset !== undefined)
+            this.subVerticalOffset.set(parsed.offset);
         } catch (e) {
           console.error("Failed to parse saved settings", e);
         }
       }
 
       // Listen to fullscreen changes on the document
-      document.addEventListener('fullscreenchange', () => {
+      document.addEventListener("fullscreenchange", () => {
         this.isFullscreen.set(!!document.fullscreenElement);
       });
 
       // Load YouTube API
       if (!(window as any).YT) {
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
         firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
-        
+
         (window as any).onYouTubeIframeAPIReady = () => {
           this.isYtReady.set(true);
         };
@@ -252,7 +302,7 @@ export class App implements OnDestroy, OnInit {
 
       // Sync loop: strictly checks the player's real time instead of a disconnected interval
       this.timer = setInterval(() => {
-        if (this.player && typeof this.player.getCurrentTime === 'function') {
+        if (this.player && typeof this.player.getCurrentTime === "function") {
           const state = this.player.getPlayerState();
           // state 1 = playing, 2 = paused
           if (state === 1 || state === 2) {
@@ -269,23 +319,23 @@ export class App implements OnDestroy, OnInit {
 
   toggleFullscreen() {
     if (!isPlatformBrowser(this.platformId)) return;
-    const container = document.getElementById('video-wrapper');
+    const container = document.getElementById("video-wrapper");
     if (!container) return;
-    
+
     if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(err => {
-            console.error(`Error attempting to enable fullscreen: ${err.message}`);
-        });
+      container.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
     } else {
-        document.exitFullscreen();
+      document.exitFullscreen();
     }
   }
 
   seekToLine(offset: number) {
-    if (this.player && typeof this.player.seekTo === 'function') {
+    if (this.player && typeof this.player.seekTo === "function") {
       this.player.seekTo(offset, true);
       const state = this.player.getPlayerState?.();
-      if (state !== 1 && typeof this.player.playVideo === 'function') {
+      if (state !== 1 && typeof this.player.playVideo === "function") {
         this.player.playVideo();
       }
     }
@@ -294,13 +344,17 @@ export class App implements OnDestroy, OnInit {
   private scrollContainerToElement(offset: number) {
     if (!isPlatformBrowser(this.platformId)) return;
     setTimeout(() => {
-      const container = document.getElementById('transcript-container');
+      const container = document.getElementById("transcript-container");
       const el = document.getElementById(`transcript-line-${offset}`);
       if (container && el) {
         const containerRect = container.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
-        const scrollTop = container.scrollTop + (elRect.top - containerRect.top) - (containerRect.height / 2) + (elRect.height / 2);
-        container.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        const scrollTop =
+          container.scrollTop +
+          (elRect.top - containerRect.top) -
+          containerRect.height / 2 +
+          elRect.height / 2;
+        container.scrollTo({ top: scrollTop, behavior: "smooth" });
       }
     }, 50);
   }
@@ -313,34 +367,60 @@ export class App implements OnDestroy, OnInit {
   }
 
   formatTime(seconds: number): string {
-    if (isNaN(seconds) || seconds < 0) return '00:00';
+    if (isNaN(seconds) || seconds < 0) return "00:00";
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    
+
     if (hrs > 0) {
-      return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     }
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   }
 
   clearAllData() {
-    if (this.player && typeof this.player.stopVideo === 'function') {
+    if (this.player && typeof this.player.stopVideo === "function") {
       this.player.stopVideo();
     }
-    
-    this.videoUrl.set('');
-    this.clearSubtitleFile();
+
+    this.videoUrl.set("");
+    this.clearSubtitleFiles();
   }
 
-  clearSubtitleFile(event?: Event) {
+  clearEnSubtitleFile(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.selectedEnFile.set(null);
+    if (this.enFileUploader && this.enFileUploader.nativeElement) {
+      this.enFileUploader.nativeElement.value = "";
+    }
+    this.parseAndLoadFiles();
+  }
+
+  clearViSubtitleFile(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.selectedViFile.set(null);
+    if (this.viFileUploader && this.viFileUploader.nativeElement) {
+      this.viFileUploader.nativeElement.value = "";
+    }
+    this.parseAndLoadFiles();
+  }
+
+  clearSubtitleFiles(event?: Event) {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
     this.analysisResult.set(null);
     this.currentTime.set(0);
-    this.selectedFile.set(null);
+    this.selectedEnFile.set(null);
+    this.selectedViFile.set(null);
+    this.showViUpload.set(false);
     this.analyzeError.set(null);
     this.translateError.set(null);
     this.translationCurrentChunk.set(0);
@@ -348,166 +428,240 @@ export class App implements OnDestroy, OnInit {
     this.translationCompletedText.set(null);
     if (this.translateTimerInterval) clearInterval(this.translateTimerInterval);
     this.isTranslating.set(false);
-    this.isVietnameseFile.set(false);
-    
-    // Clear DOM input file
-    if (this.fileUploader && this.fileUploader.nativeElement) {
-      this.fileUploader.nativeElement.value = '';
+
+    if (this.enFileUploader && this.enFileUploader.nativeElement) {
+      this.enFileUploader.nativeElement.value = "";
+    }
+    if (this.viFileUploader && this.viFileUploader.nativeElement) {
+      this.viFileUploader.nativeElement.value = "";
     }
   }
 
   onVideoUrlChange(url: string) {
     this.videoUrl.set(url);
-    if (!url || url.trim() === '') {
+    if (!url || url.trim() === "") {
       this.clearAllData();
     }
   }
 
-  onVietnameseFlagChange(checked: boolean) {
-    this.isVietnameseFile.set(checked);
-    // Re-trigger file parsing so subtitles render correctly 
-    if (this.selectedFile()) {
-      this.parseAndLoadFile(this.selectedFile()!);
+  onEnFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (file) {
+      const MAX_SIZE = 500 * 1024;
+      if (file.size > MAX_SIZE) {
+        this.addToast(
+          `File quá lớn (${(file.size / 1024).toFixed(1)} KB). Giới hạn tối đa là 500 KB.`,
+          "error",
+        );
+        input.value = "";
+        return;
+      }
+
+      const match = file.name.match(/silaSub_vi_([a-zA-Z0-9_-]{11})/);
+      if (match && match[1]) {
+        // If they drop a translated file here, kindly move it to the VI slot and show the vi box
+        this.selectedViFile.set(file);
+        this.showViUpload.set(true);
+        this.videoUrl.set(`https://www.youtube.com/watch?v=${match[1]}`);
+        this.addToast("Đã chuyển file dịch sẵn sang mục Tiếng Việt", "success");
+        input.value = "";
+        this.parseAndLoadFiles();
+        return;
+      }
+
+      this.selectedEnFile.set(file);
+      this.parseAndLoadFiles();
+    } else {
+      this.selectedEnFile.set(null);
+      this.parseAndLoadFiles();
     }
   }
 
-  onFileSelected(event: Event) {
+  onViFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    
+
     if (file) {
-      // 500 KB limit limit
       const MAX_SIZE = 500 * 1024;
       if (file.size > MAX_SIZE) {
-        this.addToast(`File phụ đề quá lớn (${(file.size / 1024).toFixed(1)} KB). Giới hạn tối đa là 500 KB.`, 'error');
-        this.selectedFile.set(null);
-        this.analysisResult.set(null);
-        input.value = ''; // Reset file input
+        this.addToast(`File quá lớn.`, "error");
+        input.value = "";
         return;
       }
-      this.selectedFile.set(file);
 
-      // Auto-detect previously translated file and reconstruct YouTube URL
       const match = file.name.match(/silaSub_vi_([a-zA-Z0-9_-]{11})/);
       let autoDetected = false;
       if (match && match[1]) {
         const extractedId = match[1];
-        this.isVietnameseFile.set(true);
         autoDetected = true;
         this.videoUrl.set(`https://www.youtube.com/watch?v=${extractedId}`);
-        this.addToast('Đã phát hiện file dịch sẵn, nạp Video thành công', 'success');
+        this.addToast("Đã nạp Video thành công", "success");
       }
 
-      this.parseAndLoadFile(file, autoDetected);
-
+      this.selectedViFile.set(file);
+      this.parseAndLoadFiles(autoDetected);
     } else {
-      this.selectedFile.set(null);
-      this.analysisResult.set(null);
+      this.selectedViFile.set(null);
+      this.parseAndLoadFiles();
     }
   }
 
-  private parseAndLoadFile(file: File, autoDetected = false) {
+  private readFileAsText(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.onerror = () => reject(new Error("Không thể đọc file"));
+      reader.readAsText(file);
+    });
+  }
+
+  private parseAndLoadFiles(autoDetected = false) {
     this.isAnalyzing.set(true);
     this.analyzeError.set(null);
     this.analysisResult.set(null);
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const text = e.target?.result as string;
-        const preserveNewlines = this.isVietnameseFile() || autoDetected;
-        const transcript = this.parseSRT(text, preserveNewlines);
-        if (transcript.length === 0) {
-          throw new Error('File không đúng định dạng SRT hoặc trống.');
-        }
+    const enFile = this.selectedEnFile();
+    const viFile = this.selectedViFile();
 
-        // Handle case where user provided an already translated Vietnamese file
-        if (this.isVietnameseFile() || autoDetected) {
-           transcript.forEach(line => {
-              line.viText = line.text;
-              line.text = '[Phụ đề Tiếng Việt có sẵn]'; // Hide original English logic
-           });
-        }
+    if (!enFile && !viFile) {
+      this.isAnalyzing.set(false);
+      return;
+    }
 
-        this.analysisResult.set({
-          lines: transcript.length,
-          transcript: transcript
-        });
-        
-        // Auto reset video time to beginning if loaded and not auto-detecting a new video
-        // since auto-detecting might load a fresh player
-        if (!autoDetected) {
+    Promise.all([
+      enFile ? this.readFileAsText(enFile) : Promise.resolve(null),
+      viFile ? this.readFileAsText(viFile) : Promise.resolve(null),
+    ])
+      .then(([enText, viText]) => {
+        try {
+          let mergedTranscript: TranscriptLine[] = [];
+          let enTranscript = enText ? this.parseSRT(enText, false) : [];
+          let viTranscript = viText ? this.parseSRT(viText, true) : [];
+
+          if (enText && viText) {
+            const maxLen = Math.max(enTranscript.length, viTranscript.length);
+            for (let i = 0; i < maxLen; i++) {
+              const enLine = enTranscript[i];
+              const viLine = viTranscript[i];
+              if (enLine && viLine) {
+                mergedTranscript.push({
+                  ...enLine,
+                  text: enLine.text,
+                  viText: viLine.text,
+                });
+              } else if (enLine) {
+                mergedTranscript.push({ ...enLine });
+              } else if (viLine) {
+                mergedTranscript.push({
+                  ...viLine,
+                  text: "[Bản dịch không có phụ đề gốc]",
+                  viText: viLine.text,
+                });
+              }
+            }
+          } else if (enText) {
+            mergedTranscript = enTranscript;
+          } else if (viText) {
+            mergedTranscript = viTranscript.map((line) => ({
+              ...line,
+              viText: line.text,
+              text: "[Bản dịch không có phụ đề gốc]",
+            }));
+          }
+
+          if (mergedTranscript.length === 0) {
+            throw new Error("File không đúng định dạng SRT hoặc trống.");
+          }
+
+          this.analysisResult.set({
+            lines: mergedTranscript.length,
+            transcript: mergedTranscript,
+          });
+
+          if (!autoDetected) {
             this.currentTime.set(0);
             if (this.player && this.player.seekTo) {
-                this.player.seekTo(0, true);
+              this.player.seekTo(0, true);
             }
+          }
+
+          this.isAnalyzing.set(false);
+        } catch (err: any) {
+          this.analyzeError.set(err.message || "Lỗi khi đọc file SRT.");
+          this.addToast("Lỗi khi đọc file SRT!", "error");
+          this.isAnalyzing.set(false);
         }
-        
+      })
+      .catch((err) => {
+        this.analyzeError.set(err.message || "Lỗi đọc file.");
+        this.addToast("Lỗi đọc file!", "error");
         this.isAnalyzing.set(false);
-      } catch (err: any) {
-        this.analyzeError.set(err.message || 'Lỗi khi đọc file SRT. Vui lòng kiểm tra lại định dạng.');
-        this.addToast('File SRT không đúng định dạng. Vui lòng kiểm tra lại!', 'error');
-        this.isAnalyzing.set(false);
-      }
-    };
-    reader.onerror = () => {
-      this.analyzeError.set('Không thể đọc được file này.');
-      this.addToast('Xảy ra lỗi khi đọc file từ máy của bạn.', 'error');
-      this.isAnalyzing.set(false);
-    };
-    reader.readAsText(file);
+      });
   }
 
   private cleanAudioTags(text: string): string {
     // Only target tags that contain common sound effect keywords (case insensitive)
     const audioTagRegex = /\[.*?(music|upbeat).*?\]/gi;
-    
-    const textWithoutTags = text.replace(audioTagRegex, '').trim();
-    
+
+    const textWithoutTags = text.replace(audioTagRegex, "").trim();
+
     // If there's no real text outside the tags, keep it (so we don't end up with empty lines)
     if (!/[a-zA-Z0-9\u00C0-\u017F]/.test(textWithoutTags)) {
       return text;
     }
-    
+
     const cleaned = text.replace(audioTagRegex, (match, _, offset) => {
       const beforeStr = text.substring(0, offset);
       const afterStr = text.substring(offset + match.length);
-      
+
       // Remove other tags temporarily just to check text presence
-      const cleanBefore = beforeStr.replace(/\[.*?\]/g, '');
+      const cleanBefore = beforeStr.replace(/\[.*?\]/g, "");
       const hasTextBefore = /[a-zA-Z0-9\u00C0-\u017F]/.test(cleanBefore);
-      
-      const cleanAfter = afterStr.replace(/\[.*?\]/g, '');
+
+      const cleanAfter = afterStr.replace(/\[.*?\]/g, "");
       const hasTextAfter = /[a-zA-Z0-9\u00C0-\u017F]/.test(cleanAfter);
 
       // Remove the tag only if there's real text both before AND after it
       if (hasTextBefore && hasTextAfter) {
-        return ' '; 
+        return " ";
       }
-      
+
       return match;
     });
 
-    return cleaned.replace(/\s{2,}/g, ' ').trim();
+    return cleaned.replace(/\s{2,}/g, " ").trim();
   }
 
-  private parseSRT(srtData: string, preserveNewlines = false): TranscriptLine[] {
-    const lines = srtData.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  private parseSRT(
+    srtData: string,
+    preserveNewlines = false,
+  ): TranscriptLine[] {
+    const lines = srtData
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n");
     const transcript: TranscriptLine[] = [];
     let current: Partial<TranscriptLine> = {};
     let textBuffer: string[] = [];
-    
+
     const timeToSeconds = (timeStr: string) => {
-      const [hours, minutes, rest] = timeStr.split(':');
-      const [seconds, ms] = rest.split(',');
-      return parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60 + parseInt(seconds, 10) + (parseInt(ms, 10) || 0) / 1000;
+      const [hours, minutes, rest] = timeStr.split(":");
+      const [seconds, ms] = rest.split(",");
+      return (
+        parseInt(hours, 10) * 3600 +
+        parseInt(minutes, 10) * 60 +
+        parseInt(seconds, 10) +
+        (parseInt(ms, 10) || 0) / 1000
+      );
     };
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) {
         if (current.offset !== undefined && textBuffer.length > 0) {
-          const joinedText = textBuffer.join(preserveNewlines ? '\n' : ' ');
+          const joinedText = textBuffer.join(preserveNewlines ? "\n" : " ");
           current.text = this.cleanAudioTags(joinedText);
           transcript.push(current as TranscriptLine);
         }
@@ -516,20 +670,24 @@ export class App implements OnDestroy, OnInit {
         continue;
       }
 
-      if (line.includes('-->')) {
-        const [start, end] = line.split('-->').map(s => s.trim());
+      if (line.includes("-->")) {
+        const [start, end] = line.split("-->").map((s) => s.trim());
         current.offset = timeToSeconds(start);
         current.duration = timeToSeconds(end) - current.offset;
-      } else if (!isNaN(parseInt(line, 10)) && textBuffer.length === 0 && current.offset === undefined) {
+      } else if (
+        !isNaN(parseInt(line, 10)) &&
+        textBuffer.length === 0 &&
+        current.offset === undefined
+      ) {
         // It's the block index, ignore
       } else {
         textBuffer.push(line);
       }
     }
-    
+
     // push the last block if file doesn't end with empty line
     if (current.offset !== undefined && textBuffer.length > 0) {
-      const joinedText = textBuffer.join(preserveNewlines ? '\n' : ' ');
+      const joinedText = textBuffer.join(preserveNewlines ? "\n" : " ");
       current.text = this.cleanAudioTags(joinedText);
       transcript.push(current as TranscriptLine);
     }
@@ -540,13 +698,19 @@ export class App implements OnDestroy, OnInit {
     const res = this.analysisResult();
     if (!res || !res.transcript) return;
 
-    if (this.translationMode() === 'music' && res.transcript.length > 500) {
-      this.addToast('Vượt quá 500 dòng. Không thể dịch ở chế độ Âm nhạc.', 'error');
+    if (this.translationMode() === "music" && res.transcript.length > 500) {
+      this.addToast(
+        "Vượt quá 500 dòng. Không thể dịch ở chế độ Âm nhạc.",
+        "error",
+      );
       return;
     }
 
-    if (this.translationMode() === 'video' && res.transcript.length > 5000) {
-      this.addToast('Vượt quá 5000 dòng. Vui lòng cắt nhỏ video hoặc file phụ đề để dịch.', 'error');
+    if (this.translationMode() === "video" && res.transcript.length > 5000) {
+      this.addToast(
+        "Vượt quá 5000 dòng. Vui lòng cắt nhỏ video hoặc file phụ đề để dịch.",
+        "error",
+      );
       return;
     }
 
@@ -556,37 +720,44 @@ export class App implements OnDestroy, OnInit {
     this.translationSeconds.set(0);
     this.translationCurrentChunk.set(0);
     this.translationTotalChunks.set(0);
-    
+
     this.translateTimerInterval = setInterval(() => {
-      this.translationSeconds.update(s => s + 1);
+      this.translationSeconds.update((s) => s + 1);
     }, 1000);
 
     try {
-      let systemInstruction = '';
-      let promptTemplate = '';
-      
+      let systemInstruction = "";
+      let promptTemplate = "";
+
       try {
         const timestamp = Date.now();
         const mode = this.translationMode();
-        const siUrl = mode === 'music' ? '/prompts/music_system_instructions.md' : '/prompts/video_system_instructions.md';
-        const promptUrl = mode === 'music' ? '/prompts/music_prompt.md' : '/prompts/video_prompt.md';
-        
+        const siUrl =
+          mode === "music"
+            ? "/prompts/music_system_instructions.md"
+            : "/prompts/video_system_instructions.md";
+        const promptUrl =
+          mode === "music"
+            ? "/prompts/music_prompt.md"
+            : "/prompts/video_prompt.md";
+
         const [siRes, promptRes] = await Promise.all([
           fetch(`${siUrl}?t=${timestamp}`),
-          fetch(`${promptUrl}?t=${timestamp}`)
+          fetch(`${promptUrl}?t=${timestamp}`),
         ]);
-        
-        if (!siRes.ok || !promptRes.ok) throw new Error('Network response bounds error.');
+
+        if (!siRes.ok || !promptRes.ok)
+          throw new Error("Network response bounds error.");
         systemInstruction = await siRes.text();
         promptTemplate = await promptRes.text();
       } catch (fetchErr) {
-        throw new Error('SYSTEM_PROMPT_FETCH_ERROR');
+        throw new Error("SYSTEM_PROMPT_FETCH_ERROR");
       }
 
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
       const mode = this.translationMode();
-      const CHUNK_SIZE = mode === 'music' ? res.transcript.length : 600;
+      const CHUNK_SIZE = mode === "music" ? res.transcript.length : 600;
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
       const translatedTranscript = [...fullTranscript];
@@ -598,17 +769,23 @@ export class App implements OnDestroy, OnInit {
         }
 
         const startIndex = chunkIndex * CHUNK_SIZE;
-        const endIndex = Math.min(startIndex + CHUNK_SIZE, fullTranscript.length);
+        const endIndex = Math.min(
+          startIndex + CHUNK_SIZE,
+          fullTranscript.length,
+        );
         const currentChunk = fullTranscript.slice(startIndex, endIndex);
-        const textsToTranslate = currentChunk.map((line, idx) => ({ id: startIndex + idx, en: line.text }));
+        const textsToTranslate = currentChunk.map((line, idx) => ({
+          id: startIndex + idx,
+          en: line.text,
+        }));
 
-        let contextText = '';
+        let contextText = "";
         if (chunkIndex > 0) {
-           const prevStart = Math.max(0, startIndex - 30);
-           const prevLines = translatedTranscript.slice(prevStart, startIndex);
-           contextText = `[THÔNG TIN NGỮ CẢNH - KHÔNG DỊCH PHẦN NÀY]
+          const prevStart = Math.max(0, startIndex - 30);
+          const prevLines = translatedTranscript.slice(prevStart, startIndex);
+          contextText = `[THÔNG TIN NGỮ CẢNH - KHÔNG DỊCH PHẦN NÀY]
 Người nói vừa kết thúc đoạn trước bằng các câu sau:
-${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${l.viText}"`).join('\n')}
+${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${l.viText}"`).join("\n")}
 
 (Dựa vào ngữ cảnh đang nói dở dang ở trên, hãy tiếp tục dịch mảng JSON dưới đây)
 
@@ -616,8 +793,11 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
         }
 
         const prompt = promptTemplate
-           .replace('{{CONTEXT_TEXT}}', contextText)
-           .replace('{{JSON_PAYLOAD}}', JSON.stringify(textsToTranslate, null, 2));
+          .replace("{{CONTEXT_TEXT}}", contextText)
+          .replace(
+            "{{JSON_PAYLOAD}}",
+            JSON.stringify(textsToTranslate, null, 2),
+          );
 
         const reqConfig: any = {
           systemInstruction: systemInstruction,
@@ -630,85 +810,107 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
               type: "object",
               properties: {
                 id: { type: "integer" },
-                vi: { type: "string" }
+                vi: { type: "string" },
               },
-              required: ["id", "vi"]
-            }
-          }
+              required: ["id", "vi"],
+            },
+          },
         };
 
         const response = await ai.models.generateContent({
           model: this.aiModel(),
           contents: prompt,
-          config: reqConfig
+          config: reqConfig,
         });
 
         const output = response.text;
         if (!output) throw new Error("Empty response from AI");
-        
+
         // Defensive programming: Lột bỏ markdown (nếu có) trước khi parse
-        const cleanOutput = output.replace(/```json\n?/gi, '').replace(/```\n?/g, '').trim();
-        
-        let translatedArray: { id: number, vi: string }[] = [];
+        const cleanOutput = output
+          .replace(/```json\n?/gi, "")
+          .replace(/```\n?/g, "")
+          .trim();
+
+        let translatedArray: { id: number; vi: string }[] = [];
         try {
           translatedArray = JSON.parse(cleanOutput);
         } catch (parseError) {
           throw new Error("AI returned invalid JSON format.");
         }
-        
+
         for (let i = 0; i < currentChunk.length; i++) {
-           const expectedId = startIndex + i;
-           const translatedItem = translatedArray.find(item => item.id === expectedId);
-           let finalViText = translatedItem ? translatedItem.vi : currentChunk[i].text;
-           // Giải bùa: Chuyển đổi ký tự thế thân <br> về \n thực sự
-           if (typeof finalViText === 'string') {
-             finalViText = finalViText.replace(/<br\s*\/?>/gi, '\n');
-           }
-           
-           translatedTranscript[expectedId] = {
-             ...translatedTranscript[expectedId],
-             viText: finalViText
-           };
+          const expectedId = startIndex + i;
+          const translatedItem = translatedArray.find(
+            (item) => item.id === expectedId,
+          );
+          let finalViText = translatedItem
+            ? translatedItem.vi
+            : currentChunk[i].text;
+          // Giải bùa: Chuyển đổi ký tự thế thân <br> về \n thực sự
+          if (typeof finalViText === "string") {
+            finalViText = finalViText.replace(/<br\s*\/?>/gi, "\n");
+          }
+
+          translatedTranscript[expectedId] = {
+            ...translatedTranscript[expectedId],
+            viText: finalViText,
+          };
         }
 
         // Update UI progressively
         this.analysisResult.set({
           lines: translatedTranscript.length,
-          transcript: [...translatedTranscript]
+          transcript: [...translatedTranscript],
         });
       }
-      
+
       clearInterval(this.translateTimerInterval);
       this.translationCurrentChunk.set(0);
       this.translationTotalChunks.set(0);
-      this.translationCompletedText.set(`Đã hoàn thành trong ${this.formattedTranslationTime()} phút`);
-      this.addToast(`Tuyệt vời! Đã dịch thành công trong ${this.formattedTranslationTime()} phút!`, 'success');
+      this.translationCompletedText.set(
+        `Đã hoàn thành trong ${this.formattedTranslationTime()} phút`,
+      );
+      this.addToast(
+        `Tuyệt vời! Đã dịch thành công trong ${this.formattedTranslationTime()} phút!`,
+        "success",
+      );
       this.isTranslating.set(false);
-    } catch(err: any) {
+    } catch (err: any) {
       console.error(err);
       clearInterval(this.translateTimerInterval);
       this.translationCurrentChunk.set(0);
       this.translationTotalChunks.set(0);
-      
-      const errMsg = err.message || '';
-      let toastMsg = 'Lỗi kết nối khi dịch thuật.';
-      let toastType: ToastType = 'error';
-      
-      if (errMsg === 'SYSTEM_PROMPT_FETCH_ERROR') {
-         toastMsg = 'Không thể tải file Cấu hình AI. Vui lòng kiểm tra lại thư mục public/prompts/';
-      } else if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota')) {
-        toastMsg = 'Hệ thống AI đang quá tải hoặc hết lượt dịch miễn phí. Vui lòng thử lại sau ít phút!';
-      } else if (errMsg.toLowerCase().includes('safet') || errMsg.toLowerCase().includes('block')) {
-        toastMsg = 'Nội dung đoạn này có chứa từ khóa nhạy cảm, AI đã từ chối dịch.';
-        toastType = 'warning';
-      } else if (errMsg.includes('JSON format') || errMsg.includes('parse')) {
-        toastMsg = 'AI phản hồi sai định dạng chuẩn. Vui lòng dịch lại đoạn này!';
-        toastType = 'warning';
+
+      const errMsg = err.message || "";
+      let toastMsg = "Lỗi kết nối khi dịch thuật.";
+      let toastType: ToastType = "error";
+
+      if (errMsg === "SYSTEM_PROMPT_FETCH_ERROR") {
+        toastMsg =
+          "Không thể tải file Cấu hình AI. Vui lòng kiểm tra lại thư mục public/prompts/";
+      } else if (
+        errMsg.includes("429") ||
+        errMsg.toLowerCase().includes("quota")
+      ) {
+        toastMsg =
+          "Hệ thống AI đang quá tải hoặc hết lượt dịch miễn phí. Vui lòng thử lại sau ít phút!";
+      } else if (
+        errMsg.toLowerCase().includes("safet") ||
+        errMsg.toLowerCase().includes("block")
+      ) {
+        toastMsg =
+          "Nội dung đoạn này có chứa từ khóa nhạy cảm, AI đã từ chối dịch.";
+        toastType = "warning";
+      } else if (errMsg.includes("JSON format") || errMsg.includes("parse")) {
+        toastMsg =
+          "AI phản hồi sai định dạng chuẩn. Vui lòng dịch lại đoạn này!";
+        toastType = "warning";
       }
-      
+
       this.translateError.set(errMsg || toastMsg);
       this.addToast(toastMsg, toastType);
-      
+
       this.isTranslating.set(false);
     }
   }
@@ -719,9 +921,9 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
 
     try {
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-      // We will use gemini-1.5-flash as it is fast and reliable for text task. 
+      // We will use gemini-1.5-flash as it is fast and reliable for text task.
       // User mentioned `gemini-flash-latest`, both will map to latest flash model.
-      
+
       const systemInstruction = `Bạn là một AI chuyên dịch truy vấn tìm kiếm (search queries) từ tiếng Việt sang tiếng Anh. Nhiệm vụ DUY NHẤT của bạn là trả về MỘT (1) truy vấn tìm kiếm tiếng Anh hiệu quả nhất, dựa trên đánh giá của bạn về ý định (search intent) và cách tìm kiếm phổ biến nhất trong tiếng Anh.
 
 QUY TẮC BẮT BUỘC TUÂN THỦ:
@@ -734,25 +936,33 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
       const prompt = `Provide the single best English search query translation for the following Vietnamese query. Output ONLY the raw English text, nothing else:\n[${this.searchQuery().trim()}]`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-flash-latest',
+        model: "gemini-flash-latest",
         contents: prompt,
         config: {
           systemInstruction: systemInstruction,
-          temperature: 0.1 // Low temperature for deterministic query generation
-        }
+          temperature: 0.1, // Low temperature for deterministic query generation
+        },
       });
 
-      const output = response.text || '';
-      const cleanKeyword = output.replace(/```/g, '').replace(/\n/g, '').replace(/\"/g, "").replace(/\'/g, "").trim();
+      const output = response.text || "";
+      const cleanKeyword = output
+        .replace(/```/g, "")
+        .replace(/\n/g, "")
+        .replace(/\"/g, "")
+        .replace(/\'/g, "")
+        .trim();
 
       if (cleanKeyword) {
-          window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(cleanKeyword)}`, '_blank');
+        window.open(
+          `https://www.youtube.com/results?search_query=${encodeURIComponent(cleanKeyword)}`,
+          "_blank",
+        );
       } else {
-          this.addToast('Không thể dịch từ khóa', 'error');
+        this.addToast("Không thể dịch từ khóa", "error");
       }
     } catch (err) {
       console.error(err);
-      this.addToast('Lỗi khi dịch từ khóa tìm kiếm', 'error');
+      this.addToast("Lỗi khi dịch từ khóa tìm kiếm", "error");
     } finally {
       this.isSearchingQuery.set(false);
     }
@@ -763,7 +973,7 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
     const res = this.analysisResult();
     if (!res || !res.transcript) return;
 
-    const pad = (num: number, size: number) => ('000' + num).slice(-size);
+    const pad = (num: number, size: number) => ("000" + num).slice(-size);
     const formatTime = (totalSeconds: number) => {
       const h = Math.floor(totalSeconds / 3600);
       const m = Math.floor((totalSeconds % 3600) / 60);
@@ -772,23 +982,26 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
       return `${pad(h, 2)}:${pad(m, 2)}:${pad(s, 2)},${pad(ms, 3)}`;
     };
 
-    let srtContent = '';
+    let srtContent = "";
     res.transcript.forEach((line, index) => {
       srtContent += `${index + 1}\n`;
       srtContent += `${formatTime(line.offset)} --> ${formatTime(line.offset + line.duration)}\n`;
       srtContent += `${line.viText || line.text}\n\n`;
     });
 
-    const blob = new Blob([srtContent], { type: 'text/srt' });
+    const blob = new Blob([srtContent], { type: "text/srt" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    const fileName = `silaSub_vi_${this.videoId() || 'subtitles'}.srt`;
+    const fileName = `silaSub_vi_${this.videoId() || "subtitles"}.srt`;
     a.download = fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
-    this.addToast(`Đã tải thành công file Phụ đề Tiếng Việt: ${fileName} về máy.`, 'success');
+    this.addToast(
+      `Đã tải thành công file Phụ đề Tiếng Việt: ${fileName} về máy.`,
+      "success",
+    );
   }
 }
