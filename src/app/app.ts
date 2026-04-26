@@ -52,11 +52,15 @@ export class App implements OnDestroy, OnInit {
 
   @ViewChild("enFileUploader") enFileUploader!: ElementRef<HTMLInputElement>;
   @ViewChild("viFileUploader") viFileUploader!: ElementRef<HTMLInputElement>;
+  @ViewChild("audioFileUploader") audioFileUploader!: ElementRef<HTMLInputElement>;
 
   videoUrl = signal("");
   selectedEnFile = signal<File | null>(null);
   selectedViFile = signal<File | null>(null);
+  selectedAudioFile = signal<File | null>(null);
+  audioDuration = signal<number | null>(null);
   showViUpload = signal(false); // Controls visibility of Vi file upload box
+  showAudioUpload = signal(false); // Controls visibility of Audio file upload box
 
   aiTemperature = signal<number>(0.5); // AI Temperature parameter
   aiModel = signal<string>("gemini-pro-latest"); // AI Model selection
@@ -421,7 +425,10 @@ export class App implements OnDestroy, OnInit {
     this.currentTime.set(0);
     this.selectedEnFile.set(null);
     this.selectedViFile.set(null);
+    this.selectedAudioFile.set(null);
+    this.audioDuration.set(null);
     this.showViUpload.set(false);
+    this.showAudioUpload.set(false);
     this.analyzeError.set(null);
     this.translateError.set(null);
     this.translationCurrentChunk.set(0);
@@ -435,6 +442,9 @@ export class App implements OnDestroy, OnInit {
     }
     if (this.viFileUploader && this.viFileUploader.nativeElement) {
       this.viFileUploader.nativeElement.value = "";
+    }
+    if (this.audioFileUploader && this.audioFileUploader.nativeElement) {
+      this.audioFileUploader.nativeElement.value = "";
     }
   }
 
@@ -509,12 +519,80 @@ export class App implements OnDestroy, OnInit {
     }
   }
 
+  clearAudioFile(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.selectedAudioFile.set(null);
+    this.audioDuration.set(null);
+    if (this.audioFileUploader && this.audioFileUploader.nativeElement) {
+      this.audioFileUploader.nativeElement.value = "";
+    }
+  }
+
+  onAudioFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (file) {
+      const MAX_SIZE = 40 * 1024 * 1024; // 40 MB
+      if (file.size > MAX_SIZE) {
+        this.addToast(`File âm thanh quá lớn (${(file.size / 1024 / 1024).toFixed(1)} MB). Giới hạn tối đa là 40 MB.`, "error");
+        input.value = "";
+        return;
+      }
+
+      // Read audio duration
+      const audioUrl = URL.createObjectURL(file);
+      const audio = new Audio(audioUrl);
+      audio.onloadedmetadata = () => {
+        const duration = audio.duration;
+        const MAX_DURATION = 30 * 60; // 30 minutes
+        if (duration > MAX_DURATION) {
+            this.addToast(`File âm thanh quá dài (${Math.round(duration / 60)} phút). Giới hạn tối đa là 30 phút.`, "error");
+            input.value = "";
+            this.selectedAudioFile.set(null);
+            this.audioDuration.set(null);
+        } else {
+            this.selectedAudioFile.set(file);
+            this.audioDuration.set(duration);
+            this.addToast(`Đã chọn file âm thanh (${Math.round(duration)}s)`, "success");
+        }
+        URL.revokeObjectURL(audioUrl);
+      };
+      audio.onerror = () => {
+          this.addToast("Không thể đọc thời lượng file âm thanh.", "error");
+          input.value = "";
+          this.selectedAudioFile.set(null);
+          this.audioDuration.set(null);
+          URL.revokeObjectURL(audioUrl);
+      }
+    } else {
+      this.selectedAudioFile.set(null);
+      this.audioDuration.set(null);
+    }
+  }
+
   private readFileAsText(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target?.result as string);
       reader.onerror = () => reject(new Error("Không thể đọc file"));
       reader.readAsText(file);
+    });
+  }
+
+  private readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64 = result.split(",")[1];
+        resolve(base64);
+      };
+      reader.onerror = () => reject(new Error("Lỗi đọc file âm thanh"));
+      reader.readAsDataURL(file);
     });
   }
 
@@ -699,6 +777,8 @@ export class App implements OnDestroy, OnInit {
     const res = this.analysisResult();
     if (!res || !res.transcript) return;
 
+    const hasAudio = !!this.selectedAudioFile();
+
     if (this.translationMode() === "music" && res.transcript.length > 500) {
       this.addToast(
         "Vượt quá 500 dòng. Không thể dịch ở chế độ Âm nhạc.",
@@ -707,12 +787,35 @@ export class App implements OnDestroy, OnInit {
       return;
     }
 
-    if (this.translationMode() === "video" && res.transcript.length > 5000) {
-      this.addToast(
-        "Vượt quá 5000 dòng. Vui lòng cắt nhỏ video hoặc file phụ đề để dịch.",
-        "error",
-      );
-      return;
+    if (hasAudio) {
+      if (res.transcript.length > 1000) {
+        this.addToast(
+          "Vượt quá 1000 dòng. Vui lòng tắt âm thanh đính kèm, hoặc cắt nhỏ file phụ đề và âm thanh tương ứng.",
+          "error",
+        );
+        return;
+      }
+
+      const audioDur = this.audioDuration();
+      if (audioDur !== null) {
+        const lastLine = res.transcript[res.transcript.length - 1];
+        const lastTime = lastLine.offset + lastLine.duration;
+        if (audioDur < lastTime - 5) {
+          this.addToast(
+            "Thời lượng audio quá ngắn so với phụ đề tiếng Anh đã tải lên.",
+            "error",
+          );
+          return;
+        }
+      }
+    } else {
+      if (this.translationMode() === "video" && res.transcript.length > 5000) {
+        this.addToast(
+          "Vượt quá 5000 dòng. Vui lòng cắt nhỏ video hoặc file phụ đề để dịch.",
+          "error",
+        );
+        return;
+      }
     }
 
     this.isTranslating.set(true);
@@ -758,7 +861,7 @@ export class App implements OnDestroy, OnInit {
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
       const mode = this.translationMode();
-      const CHUNK_SIZE = mode === "music" ? res.transcript.length : 600;
+      const CHUNK_SIZE = (mode === "music" || hasAudio) ? res.transcript.length : 600;
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
       const translatedTranscript = [...fullTranscript];
@@ -793,12 +896,16 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
 `;
         }
 
-        const prompt = promptTemplate
+        let prompt = promptTemplate
           .replace("{{CONTEXT_TEXT}}", contextText)
           .replace(
             "{{JSON_PAYLOAD}}",
             JSON.stringify(textsToTranslate, null, 2),
           );
+
+        if (hasAudio) {
+            prompt = `Hãy nghe file âm thanh đính kèm để phân tích sắc thái biểu cảm, giọng điệu, và ngữ cảnh, sử dụng thông tin đó đễ hỗ trợ thực hiện dịch file gốc theo mảng JSON dưới đây:\n\n${prompt}`;
+        }
 
         const reqConfig: any = {
           systemInstruction: systemInstruction,
@@ -822,9 +929,24 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
           reqConfig.tools = [{ googleSearch: {} }];
         }
 
+        let reqContents: any = prompt;
+        if (hasAudio && this.selectedAudioFile()) {
+            const audioFile = this.selectedAudioFile()!;
+            const base64Audio = await this.readFileAsBase64(audioFile);
+            reqContents = [
+                {
+                    inlineData: {
+                        mimeType: audioFile.type || "audio/mp3",
+                        data: base64Audio,
+                    }
+                },
+                prompt
+            ];
+        }
+
         const response = await ai.models.generateContent({
           model: this.aiModel(),
-          contents: prompt,
+          contents: reqContents,
           config: reqConfig,
         });
 
