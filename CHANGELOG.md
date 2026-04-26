@@ -8,7 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.30]- 2026-04-26
 ### Fixed
 - Sửa các tiêu đề hộp cho rõ ràng.
-- Sửa lại button thay đổi theo các cài đặt cho không nhầm lẫn.
+- Sửa lại button dịch thay đổi theo các cài đặt cho không nhầm lẫn.
 
 ## [v1.0.29]- 2026-04-26
 ### Fixed
