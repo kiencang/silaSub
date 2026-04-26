@@ -8,9 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.29]- 2026-04-26
 ### Fixed
 - Sửa lại hoàn toàn SI dịch lyric.
-
-### Added
-- Sửa lại tính năng up file .srt cho rõ ràng hơn.
+- Sửa lại tính năng up file .srt cho rõ ràng hơn (phân rõ up file tiếng Anh và tiếng Việt).
 
 ## [v1.0.28]- 2026-04-26
 ### Fixed
