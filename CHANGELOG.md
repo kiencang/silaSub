@@ -7,7 +7,10 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.31]- 2026-04-26
 ### Added
-- Bổ sung tính năng tra cứu với Google tìm kiếm.
+- Bổ sung tính năng tra cứu với Google tìm kiếm (trong khi AI dịch / grounding with google search).
+
+### Fixed
+- Cập nhật SI phiên bản mới nhất.
 
 ## [v1.0.30]- 2026-04-26
 ### Fixed
