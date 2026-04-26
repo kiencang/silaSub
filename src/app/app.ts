@@ -61,6 +61,7 @@ export class App implements OnDestroy, OnInit {
   aiTemperature = signal<number>(0.5); // AI Temperature parameter
   aiModel = signal<string>("gemini-pro-latest"); // AI Model selection
   translationMode = signal<"video" | "music">("video"); // Mode selection
+  useGoogleSearch = signal<boolean>(false); // Toggle for Grounding with Google Search
 
   // Settings State
   isSettingsOpen = signal(false);
@@ -816,6 +817,10 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
             },
           },
         };
+
+        if (this.useGoogleSearch()) {
+          reqConfig.tools = [{ googleSearch: {} }];
+        }
 
         const response = await ai.models.generateContent({
           model: this.aiModel(),
