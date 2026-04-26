@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.31]- 2026-04-26
+### Added
+- Bổ sung tính năng tra cứu với Google tìm kiếm.
+
 ## [v1.0.30]- 2026-04-26
 ### Fixed
 - Sửa các tiêu đề hộp cho rõ ràng.
