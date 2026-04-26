@@ -433,7 +433,7 @@
       >
         <div class="flex items-center gap-1.5 mb-3">
           <label class="block text-sm font-bold text-slate-800"
-            >Tải lên phụ đề (.srt)</label
+            >Tải lên phụ đề tiếng Anh (.srt)</label
           >
           <div
             class="group relative flex items-center justify-center cursor-help ml-1"
@@ -457,7 +457,7 @@
               </div>
               <span
                 class="text-[11px] font-medium text-red-600 leading-none mt-0.5 whitespace-nowrap"
-                >Lấy file ở đâu?</span
+                >Lấy ở đâu?</span
               >
             </div>
 
@@ -867,7 +867,10 @@
             formattedTranslationTime() }}) } @else { @if (translationMode() ===
             'music') { Đang dịch lời bài hát... ({{ formattedTranslationTime()
             }}) } @else { AI đang suy luận & Dịch... ({{
-            formattedTranslationTime() }}) } } } @else { Bắt đầu Dịch tự động }
+            formattedTranslationTime() }}) } } } @else { 
+            <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] mr-1.5 flex items-center justify-center">{{ aiModel() === 'gemini-pro-latest' ? 'psychology' : 'bolt' }}</mat-icon>
+            {{ translationMode() === 'music' ? 'Dịch lời bài hát' : 'Dịch đa chủ đề' }} 
+            }
           </button>
 
           @if (isTranslating() && translationCurrentChunk() > 1) {
@@ -893,11 +896,10 @@
     class="bg-white border-t border-slate-200 py-[10px] px-8 flex items-center justify-between shrink-0"
   >
     <p class="text-[10px] text-slate-400 font-medium">
-      © 2026 silaSub • Nguyễn Đức Anh • Dùng tốt nhất trên Google Chrome, màn
-      hình lớn
+    silaSub • Nguyễn Đức Anh • Dùng tốt nhất với Chrome, màn hình lớn
     </p>
     <p class="text-[10px] text-slate-400 font-medium">
-      v1.0.29 •
+      v1.0.30 •
       <a
         href="https://github.com/kiencang/silaSub"
         target="_blank"
