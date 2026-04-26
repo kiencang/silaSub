@@ -9,6 +9,9 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### Fixed
 - Sửa lại hoàn toàn SI dịch lyric.
 
+### Added
+- Bổ sung tính năng song ngữ.
+
 ## [v1.0.28]- 2026-04-26
 ### Fixed
 - Tinh chỉnh SI dịch thông thường.
