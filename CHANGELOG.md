@@ -10,7 +10,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Sửa lại hoàn toàn SI dịch lyric.
 
 ### Added
-- Bổ sung tính năng song ngữ.
+- Sửa lại tính năng up file .srt cho rõ ràng hơn.
 
 ## [v1.0.28]- 2026-04-26
 ### Fixed
