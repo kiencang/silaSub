@@ -53,14 +53,18 @@ export class App implements OnDestroy, OnInit {
   @ViewChild("enFileUploader") enFileUploader!: ElementRef<HTMLInputElement>;
   @ViewChild("viFileUploader") viFileUploader!: ElementRef<HTMLInputElement>;
   @ViewChild("audioFileUploader") audioFileUploader!: ElementRef<HTMLInputElement>;
+  @ViewChild("videoFileUploader") videoFileUploader!: ElementRef<HTMLInputElement>;
 
   videoUrl = signal("");
   selectedEnFile = signal<File | null>(null);
   selectedViFile = signal<File | null>(null);
   selectedAudioFile = signal<File | null>(null);
   audioDuration = signal<number | null>(null);
+  selectedVideoFile = signal<File | null>(null);
+  videoDuration = signal<number | null>(null);
   showViUpload = signal(false); // Controls visibility of Vi file upload box
   showAudioUpload = signal(false); // Controls visibility of Audio file upload box
+  showVideoUpload = signal(false); // Controls visibility of Video file upload box
 
   aiTemperature = signal<number>(0.5); // AI Temperature parameter
   aiModel = signal<string>("gemini-pro-latest"); // AI Model selection
@@ -416,6 +420,35 @@ export class App implements OnDestroy, OnInit {
     this.parseAndLoadFiles();
   }
 
+  changeTranslationMode(mode: "video" | "music") {
+    this.translationMode.set(mode);
+    if (mode === "music") {
+      this.selectedVideoFile.set(null);
+      this.videoDuration.set(null);
+      if (this.videoFileUploader && this.videoFileUploader.nativeElement) {
+        this.videoFileUploader.nativeElement.value = "";
+      }
+    }
+  }
+
+  toggleAudioUpload() {
+    if (this.showAudioUpload()) {
+      this.showAudioUpload.set(false);
+    } else {
+      this.showAudioUpload.set(true);
+      this.showVideoUpload.set(false);
+    }
+  }
+
+  toggleVideoUpload() {
+    if (this.showVideoUpload()) {
+      this.showVideoUpload.set(false);
+    } else {
+      this.showVideoUpload.set(true);
+      this.showAudioUpload.set(false);
+    }
+  }
+
   clearSubtitleFiles(event?: Event) {
     if (event) {
       event.preventDefault();
@@ -427,8 +460,11 @@ export class App implements OnDestroy, OnInit {
     this.selectedViFile.set(null);
     this.selectedAudioFile.set(null);
     this.audioDuration.set(null);
+    this.selectedVideoFile.set(null);
+    this.videoDuration.set(null);
     this.showViUpload.set(false);
     this.showAudioUpload.set(false);
+    this.showVideoUpload.set(false);
     this.analyzeError.set(null);
     this.translateError.set(null);
     this.translationCurrentChunk.set(0);
@@ -571,6 +607,70 @@ export class App implements OnDestroy, OnInit {
     } else {
       this.selectedAudioFile.set(null);
       this.audioDuration.set(null);
+    }
+  }
+
+  triggerVideoUpload() {
+    this.videoFileUploader.nativeElement.click();
+  }
+
+  removeVideoFile(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.selectedVideoFile.set(null);
+    this.videoDuration.set(null);
+    if (this.videoFileUploader && this.videoFileUploader.nativeElement) {
+      this.videoFileUploader.nativeElement.value = "";
+    }
+  }
+
+  onVideoFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const type = file.type;
+      if (!type.startsWith("video/")) {
+        this.addToast("Vui lòng chọn file video hợp lệ.", "error");
+        event.target.value = "";
+        return;
+      }
+
+      const MAX_SIZE = 70 * 1024 * 1024; // 70MB
+      if (file.size > MAX_SIZE) {
+        this.addToast("Dung lượng video vượt quá 70MB. Vui lòng chọn file nhỏ hơn.", "error");
+        event.target.value = "";
+        return;
+      }
+
+      const videoUrl = URL.createObjectURL(file);
+      const video = document.createElement("video");
+      video.src = videoUrl;
+      video.onloadedmetadata = () => {
+        const duration = video.duration;
+        const MAX_DURATION = 30 * 60; // 30 minutes
+        if (duration > MAX_DURATION) {
+            this.addToast(`File video quá dài (${Math.round(duration / 60)} phút). Giới hạn tối đa là 30 phút.`, "error");
+            event.target.value = "";
+            this.selectedVideoFile.set(null);
+            this.videoDuration.set(null);
+        } else {
+            this.selectedVideoFile.set(file);
+            this.videoDuration.set(duration);
+            this.addToast(`Đã chọn file video (${Math.round(duration)}s)`, "success");
+        }
+        URL.revokeObjectURL(videoUrl);
+      };
+      video.onerror = () => {
+          this.addToast("Không thể đọc thời lượng file video.", "error");
+          event.target.value = "";
+          this.selectedVideoFile.set(null);
+          this.videoDuration.set(null);
+          URL.revokeObjectURL(videoUrl);
+      }
+    } else {
+      this.selectedVideoFile.set(null);
+      this.videoDuration.set(null);
     }
   }
 
@@ -778,6 +878,7 @@ export class App implements OnDestroy, OnInit {
     if (!res || !res.transcript) return;
 
     const hasAudio = !!this.selectedAudioFile();
+    const hasVideo = !!this.selectedVideoFile();
 
     if (this.translationMode() === "music" && res.transcript.length > 500) {
       this.addToast(
@@ -787,22 +888,22 @@ export class App implements OnDestroy, OnInit {
       return;
     }
 
-    if (hasAudio) {
+    if (hasAudio || hasVideo) {
       if (res.transcript.length > 1000) {
         this.addToast(
-          "Vượt quá 1000 dòng. Vui lòng tắt âm thanh đính kèm, hoặc cắt nhỏ file phụ đề và âm thanh tương ứng.",
+          "Vượt quá 1000 dòng. Vui lòng tắt âm thanh/video đính kèm, hoặc cắt nhỏ file phụ đề và media tương ứng.",
           "error",
         );
         return;
       }
 
-      const audioDur = this.audioDuration();
-      if (audioDur !== null) {
+      const mediaDur = hasAudio ? this.audioDuration() : this.videoDuration();
+      if (mediaDur !== null) {
         const lastLine = res.transcript[res.transcript.length - 1];
         const lastTime = lastLine.offset + lastLine.duration;
-        if (audioDur < lastTime - 5) {
+        if (mediaDur < lastTime - 5) {
           this.addToast(
-            "Thời lượng audio quá ngắn so với phụ đề tiếng Anh đã tải lên.",
+            "Thời lượng media quá ngắn so với phụ đề tiếng Anh đã tải lên.",
             "error",
           );
           return;
@@ -836,10 +937,20 @@ export class App implements OnDestroy, OnInit {
       try {
         const timestamp = Date.now();
         const mode = this.translationMode();
-        const siUrl =
-          mode === "music"
-            ? (hasAudio ? "/prompts/oa_music_system_instructions.md" : "/prompts/music_system_instructions.md")
-            : (hasAudio ? "/prompts/oa_video_system_instructions.md" : "/prompts/video_system_instructions.md");
+        let siUrl = "";
+        
+        if (mode === "music") {
+            siUrl = hasAudio ? "/prompts/oa_music_system_instructions.md" : "/prompts/music_system_instructions.md";
+        } else {
+            if (hasVideo) {
+                 siUrl = "/prompts/ov_video_system_instructions.md";
+            } else if (hasAudio) {
+                 siUrl = "/prompts/oa_video_system_instructions.md";
+            } else {
+                 siUrl = "/prompts/video_system_instructions.md";
+            }
+        }
+        
         const promptUrl =
           mode === "music"
             ? "/prompts/music_prompt.md"
@@ -934,6 +1045,18 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
                     inlineData: {
                         mimeType: audioFile.type || "audio/mp3",
                         data: base64Audio,
+                    }
+                },
+                prompt
+            ];
+        } else if (hasVideo && this.selectedVideoFile()) {
+            const videoFile = this.selectedVideoFile()!;
+            const base64Video = await this.readFileAsBase64(videoFile);
+            reqContents = [
+                {
+                    inlineData: {
+                        mimeType: videoFile.type || "video/mp4",
+                        data: base64Video,
                     }
                 },
                 prompt
