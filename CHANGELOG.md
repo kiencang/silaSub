@@ -7,6 +7,10 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.35]- 2026-04-27
 ### Fixed
+- Cập nhật SI dành riêng cho việc có thêm dữ liệu âm thanh (tận dụng lợi thế xác định rõ ranh giới người nói).
+
+## [v1.0.35]- 2026-04-27
+### Fixed
 - Cập nhật SI dành riêng cho việc có thêm dữ liệu âm thanh.
 
 ## [v1.0.34]- 2026-04-27
