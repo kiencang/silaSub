@@ -838,8 +838,8 @@ export class App implements OnDestroy, OnInit {
         const mode = this.translationMode();
         const siUrl =
           mode === "music"
-            ? "/prompts/music_system_instructions.md"
-            : "/prompts/video_system_instructions.md";
+            ? (hasAudio ? "/prompts/oa_music_system_instructions.md" : "/prompts/music_system_instructions.md")
+            : (hasAudio ? "/prompts/oa_video_system_instructions.md" : "/prompts/video_system_instructions.md");
         const promptUrl =
           mode === "music"
             ? "/prompts/music_prompt.md"
@@ -902,10 +902,6 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
             "{{JSON_PAYLOAD}}",
             JSON.stringify(textsToTranslate, null, 2),
           );
-
-        if (hasAudio) {
-            prompt = `Hãy nghe file âm thanh đính kèm để phân tích sắc thái biểu cảm, giọng điệu, và ngữ cảnh, sử dụng thông tin đó đễ hỗ trợ thực hiện dịch file gốc theo mảng JSON dưới đây:\n\n${prompt}`;
-        }
 
         const reqConfig: any = {
           systemInstruction: systemInstruction,

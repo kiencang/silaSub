@@ -121,7 +121,7 @@
               >
               <span
                 class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap"
-                >Dịch đa chủ đề</span
+                >Dịch đa nhiệm</span
               >
             </button>
 
@@ -784,7 +784,7 @@
             <button
               (click)="isTranscriptExpanded.set(!isTranscriptExpanded())"
               class="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-md transition-all cursor-pointer outline-none focus:outline-none shadow-sm flex items-center justify-center"
-              [title]="isTranscriptExpanded() ? 'Thu gọn' : 'Mở rộng toàn bộ'"
+              [title]="isTranscriptExpanded() ? 'Thu gọn' : 'Mở rộng'"
             >
               @if (isTranscriptExpanded()) {
               <!-- Collapse Vertical Icon -->
@@ -955,7 +955,7 @@
             }}) } @else { AI đang suy luận & Dịch... ({{
             formattedTranslationTime() }}) } } } @else { 
             <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] mr-1.5 flex items-center justify-center">{{ aiModel() === 'gemini-pro-latest' ? 'psychology' : 'bolt' }}</mat-icon>
-            {{ translationMode() === 'music' ? 'Dịch lời bài hát' : 'Dịch đa chủ đề' }} 
+            {{ translationMode() === 'music' ? 'Dịch lời bài hát' : 'Dịch đa nhiệm' }} 
             @if (useGoogleSearch()) {
               <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] ml-1.5 flex items-center justify-center -scale-x-100">travel_explore</mat-icon>
             }
@@ -1008,24 +1008,24 @@
           [class.cursor-not-allowed]="isTranslating()"
           (click)="(!isTranslating()) && useGoogleSearch.set(!useGoogleSearch())"
           [class.text-slate-400]="!useGoogleSearch()" 
-          [class.text-blue-600]="useGoogleSearch()">Google Search</span>
+          [class.text-blue-600]="useGoogleSearch()">+Search</span>
         
         <!-- Tooltip -->
         <span
           class="absolute bottom-full left-0 mb-3 w-[220px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left"
         >
-          Giúp AI cập nhật các thông tin thời gian thực tốt hơn, tuy vậy sẽ tốn thời gian/token hơn khi bật. Không phải mọi subtitle đều cần tính năng này.
+          Tích hợp thêm máy tìm kiếm, giúp AI cập nhật các thông tin thời gian thực tốt hơn, tuy vậy sẽ tốn thời gian/token hơn khi bật. Không phải mọi subtitle khi dịch đều cần tính năng này.
           <!-- Arrow -->
           <span class="absolute -bottom-1 left-4 w-2 h-2 bg-slate-800 rotate-45"></span>
         </span>
       </div>
 
       <p class="text-[10px] text-slate-400 font-medium md:border-l md:border-slate-200 md:pl-6 leading-relaxed">
-      silaSub • Nguyễn Đức Anh • Dùng tốt nhất với Chrome, màn hình lớn
+      Nguyễn Đức Anh • Dùng tốt nhất với Chrome, màn hình lớn
       </p>
     </div>
     <p class="text-[10px] text-slate-400 font-medium mt-1 md:mt-0">
-      Chỉ dùng cho mục đích cá nhân • v1.0.33 •
+      Chỉ dùng cho mục đích cá nhân • v1.0.35 •
       <a
         href="https://github.com/kiencang/silaSub"
         target="_blank"
@@ -1078,7 +1078,7 @@
         <!-- Option: Font Family -->
         <div class="mb-6">
           <label class="block text-sm font-semibold text-slate-700 mb-2"
-            >Loại Font chữ</label
+            >Chọn font chữ</label
           >
           <select
             [ngModel]="subFontFamily()"
