@@ -701,7 +701,7 @@
                    <span class="text-white text-[10px] font-bold font-serif italic leading-none">i</span>
                  </div>
                  <span class="w-full text-amber-900 leading-snug">
-                   <b>Lưu ý:</b> Phân tích video tiêu tốn rất nhiều token. Khuyến nghị sử dụng model <b>Flash</b> để tiết kiệm chi phí nếu video dài.
+                   <b>Lưu ý:</b> Video tiêu tốn rất nhiều token đầu vào, một video 10 phút tốn khoảng 180 ngàn token đầu vào.
                  </span>
                </div>
             }
@@ -1018,25 +1018,33 @@
           } } @else {
           <button
             (click)="startTranslating()"
-            class="w-full py-3 bg-red-600 rounded-xl font-bold text-sm hover:bg-red-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            class="w-full py-3 bg-red-600 text-white rounded-xl font-bold text-sm hover:bg-red-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center relative overflow-hidden group"
             [disabled]="!analysisResult() || isTranslating()"
           >
-            @if (isTranslating()) {
-            <div
-              class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"
-            ></div>
-            @if (translationTotalChunks() > 1) { Đang dịch phần {{
-            translationCurrentChunk() }}/{{ translationTotalChunks() }} ({{
-            formattedTranslationTime() }}) } @else { @if (translationMode() ===
-            'music') { Đang dịch lời bài hát... ({{ formattedTranslationTime()
-            }}) } @else { AI đang suy luận & Dịch... ({{
-            formattedTranslationTime() }}) } } } @else { 
-            <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] mr-1.5 flex items-center justify-center">{{ aiModel() === 'gemini-pro-latest' ? 'psychology' : 'bolt' }}</mat-icon>
-            {{ translationMode() === 'music' ? 'Dịch lời bài hát' : 'Dịch đa nhiệm' }} 
-            @if (useGoogleSearch()) {
-              <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] ml-1.5 flex items-center justify-center -scale-x-100">travel_explore</mat-icon>
+            <!-- Background Icon -->
+            @if (translationMode() === 'music') {
+            <mat-icon class="absolute -right-2 -bottom-3 !text-[65px] !w-[65px] !h-[65px] !leading-[65px] text-white/20 -rotate-45 pointer-events-none group-hover:scale-110 transition-transform duration-300">
+              music_note
+            </mat-icon>
             }
-            }
+            <div class="relative z-10 flex items-center justify-center w-full">
+              @if (isTranslating()) {
+              <div
+                class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"
+              ></div>
+              @if (translationTotalChunks() > 1) { Đang dịch phần {{
+              translationCurrentChunk() }}/{{ translationTotalChunks() }} ({{
+              formattedTranslationTime() }}) } @else { @if (translationMode() ===
+              'music') { Đang dịch lời bài hát... ({{ formattedTranslationTime()
+              }}) } @else { AI đang suy luận & Dịch... ({{
+              formattedTranslationTime() }}) } } } @else { 
+              <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] mr-1.5 flex items-center justify-center">{{ aiModel() === 'gemini-pro-latest' ? 'psychology' : 'bolt' }}</mat-icon>
+              {{ translationMode() === 'music' ? 'Dịch lời bài hát' : 'Dịch đa nhiệm' }} 
+              @if (useGoogleSearch()) {
+                <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] ml-1.5 flex items-center justify-center -scale-x-100">travel_explore</mat-icon>
+              }
+              }
+            </div>
           </button>
 
           @if (isTranslating() && translationCurrentChunk() > 1) {
@@ -1102,7 +1110,7 @@
       </p>
     </div>
     <p class="text-[10px] text-slate-400 font-medium mt-1 md:mt-0">
-      Chỉ dùng cho mục đích cá nhân • v1.0.37 •
+      Chỉ dùng cho mục đích cá nhân • v1.0.38 •
       <a
         href="https://github.com/kiencang/silaSub"
         target="_blank"
