@@ -1308,7 +1308,7 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
     }
   }
 
-  exportSrt() {
+  async exportSrt() {
     if (!isPlatformBrowser(this.platformId)) return;
     const res = this.analysisResult();
     if (!res || !res.transcript) return;
@@ -1331,9 +1331,34 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
 
     const blob = new Blob([srtContent], { type: "text/srt" });
     const url = window.URL.createObjectURL(blob);
+    
+    let fileName = `silaSub_vi_${this.videoId() || "subtitles"}.srt`;
+    const videoIdStr = this.videoId();
+
+    if (videoIdStr) {
+      let videoTitle = "video-title-not-found";
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoIdStr}&format=json`, { 
+          signal: controller.signal 
+        });
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.title) {
+            videoTitle = data.title.replace(/[<>:"/\\|?*]/g, '').trim();
+          }
+        }
+      } catch (err) {
+        console.warn("Could not fetch video title for export", err);
+      }
+      fileName = `silaSub_vi_${videoIdStr}_[${videoTitle}].srt`;
+    }
+
     const a = document.createElement("a");
     a.href = url;
-    const fileName = `silaSub_vi_${this.videoId() || "subtitles"}.srt`;
     a.download = fileName;
     document.body.appendChild(a);
     a.click();
