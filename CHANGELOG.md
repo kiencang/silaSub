@@ -7,7 +7,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.38]- 2026-04-28
 ### Fixed
-- Tinh chỉnh SI.
+- Tinh chỉnh SI, đặc biệt cho phần đại từ nhân xưng.
 - Chỉnh một chút giao diện.
 
 ## [v1.0.37]- 2026-04-27
