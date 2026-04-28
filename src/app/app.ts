@@ -201,6 +201,9 @@ export class App implements OnDestroy, OnInit {
   isTranscriptHovered = signal(false);
   isTranscriptExpanded = signal(false);
 
+  // Instructions
+  showInstructions = signal(false);
+
   // Search video feature
   searchQuery = signal("");
   isSearchingQuery = signal(false);

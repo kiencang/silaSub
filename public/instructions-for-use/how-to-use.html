@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn sử dụng silaSub</title>
+    <style>
+        /* Thiết kế tối giản và hiện đại */
+        :root {
+            --primary-color: #333;
+            --secondary-color: #666;
+            --bg-color: #ffffff;
+            --border-color: #eee;
+            --text-color: #2c3e50;
+            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+		
+		p, li {
+			font-size: 1.1rem;
+		}
+		
+		li {
+			margin-bottom: 0.7rem;
+		}
+
+        h2 span {
+            background: var(--primary-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        /* CSS Căn giữa ảnh và khung chứa ảnh */
+        .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .image-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Khung ảnh chờ sẵn khi chưa có ảnh thực tế */
+        .img-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: #f9f9f9;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        /* Style cho mô tả ảnh */
+        .caption {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 8px;
+            font-style: italic;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        /* Tối ưu cho Iframe: Ẩn thanh cuộn ngang nếu có */
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Bước 1 -->
+    <div class="step">
+        <h2><span>1</span> Bước 1: Nhập link video</h2>
+        <div class="image-wrapper">
+            <img src="images/nhap-link-youtube.png" alt="Nhập link video">
+            <p class="caption">Giao diện ô nhập đường dẫn URL từ Youtube.</p>
+        </div>
+		<p>Ở bên tay cột phải, phía trên là nơi để bạn nhập link video YouTube. Tạm thời bạn đang đọc hướng dẫn này thì chưa cần nhập vội, vì khi nhập, video sẽ hiển thị ở đây thay cho bài hướng dẫn.</p>
+    </div>
+
+    <!-- Bước 2 -->
+    <div class="step">
+        <h2><span>2</span> Bước 2: Tải file .srt và up lên ứng dụng</h2>
+        <div class="image-wrapper">
+            <img src="images/tai-len-file-srt.png" alt="Tải file srt">
+            <p class="caption">Chọn tệp phụ đề (.srt) từ máy tính của bạn và nhấn nút Tải lên.</p>
+        </div>
+		<p>Tìm công cụ tải phụ đề YouTube trên mạng với từ khóa: 'download youtube subtitle'. Tải file định dạng <code>.srt</code> về.</p>
+		<p>Đa số các video tiếng Anh trên YouTube đều được tạo sẵn phụ đề rồi.</p>
+		<p>-</p>
+		<p>Phần thêm bối cảnh là không bắt buộc và chỉ cần khi nội dung video rất phức tạp. Trường hợp đó ứng dụng có thêm ngữ cảnh để dịch được tốt hơn.</p>
+		<p>Trong trường hợp có nhu cầu cung cấp thêm ngữ cảnh, bạn có thể chọn up lên audio hoặc video gốc của nội dung.</p>
+		<div class="image-wrapper">
+            <img src="images/them-boi-canh.png" alt="Tải lên video gốc">
+            <p class="caption">Tính năng up lên video gốc.</p>
+        </div>
+		<p>Dịch đa nhiệm có hai tùy chọn, up lên video hoặc audio.</p>
+		<p>Với dịch lời bài hát chỉ có một tùy chọn up lên audio.</p>
+    </div>
+
+    <!-- Bước 3 -->
+    <div class="step">
+        <h2><span>3</span> Bước 3: Cấu hình dịch thuật</h2>
+        <p style="margin-left: 38px; color: #666; font-size: 0.95rem;">Chọn mức độ sáng tạo, model AI khi dịch, kiểu dịch, và bổ sung khác.</p>
+        <div class="image-wrapper">
+            <img src="images/cac-cai-dat-ai.png" alt="Cấu hình">
+            <p class="caption">Tùy chỉnh các thông số AI để có bản dịch ưng ý nhất.</p>
+        </div>
+		
+		<p>Từ trái qua phải:</p>
+		<ul>
+		    <li>3 chấm tròn: Đại diện cho temperature, tức mức độ sáng tạo của AI khi dịch, mặc định là chế độ cân bằng. Hai chế độ khác là dịch sát nghĩa, và dịch uyển chuyển.</li>
+			<li>Model AI: Icon đầu người đại diện cho model AI tiên tiến nhất (Pro), Icon sấm sét đại diện cho model AI thấp hơn (Flash) nhưng thời gian dịch nhanh hơn. Mặc định Pro, nhìn chung người dùng nên dùng model cao nhất để cho chất lượng tốt nhất. Trừ khi các phụ đề nội dung đơn giản và rất dài thì mới nên cân nhắc dùng Flash.</li>
+			<li>Kiểu nội dung dịch: Đa nhiệm (icon quả địa cầu) và Lời bài hát (icon nốt nhạc). Tất cả các thể loại video đều dịch được bằng chế độ đa nhiệm. Riêng các bài hát nên chọn kiểu dịch 'Lời bài hát' để cho kết quả tốt hơn.</li>
+		</ul>
+		
+        <div class="image-wrapper">
+            <img src="images/bo-sung-tim-kiem.png" alt="Bổ sung công cụ tìm kiếm cho AI">
+            <p class="caption">Bật công cụ tìm kiếm cho AI trong khi dịch. Mặc định tắt.</p>
+        </div>	
+        <p>Ở góc dưới bên trái có tùy chọn bổ sung công cụ tìm kiếm cho AI khi dịch, điều này sẽ giúp bản dịch có chất lượng tốt hơn, đặc biệt khi phải dịch các nội dung rất khó hoặc có tính thời sự cao. Khi tính năng này được bật, trong khi dịch, AI có thể sử dụng thêm công cụ tìm kiếm để tra cứu thông tin.</p>
+    </div>
+
+    <!-- Bước 4 -->
+    <div class="step">
+        <h2><span>4</span> Bước 4: Nhấn nút dịch và đợi kết quả</h2>
+        <div class="image-wrapper">
+            <img src="images/button-dich.png" alt="Kết quả">
+            <p class="caption">Bấm và đợi vài phút để chương trình dịch xong.</p>
+        </div>
+		<p>Ứng dụng cần trung bình khoảng 1/4 cho đến 1/7 thời lượng của video để dịch toàn bộ phụ đề sang tiếng Việt.</p>
+		<p>Thời gian thực tế còn tùy thuộc vào model AI nào được chọn và mức phức tạp của nội dung.</p>
+		<p>Sau khi dịch xong, bạn có thể xem ngay video trên ứng dụng. Bạn cũng có thể tải phụ đề về và xem lại khi cần.</p>
+		<p>-</p>
+		<p>Các video dài có thể không thể xem hết ngay, hãy tải phụ đề về, sau đó khi cần xem lại chỉ cần up phụ đề lên, ứng dụng tự tìm video điền vào input để bạn tiện xem luôn:</p>
+		<div class="image-wrapper">
+            <img src="images/xem-lai-video-da-dich.png" alt="Xem lại video đã dịch phụ đề">
+            <p class="caption">Xem lại phụ đề đã dịch.</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
