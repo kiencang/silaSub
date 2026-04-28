@@ -1,5 +1,5 @@
 # silaSub
-silaSub là dự án dịch phụ đề video YouTube từ tiếng Anh sang tiếng Việt. Nó sử dụng SI & Prompt mẫu ở: https://github.com/kiencang/SI-Prompt-video-subtitle (**v1.0.28**) / Cùng tác giả.
+silaSub là dự án dịch phụ đề video YouTube từ tiếng Anh sang tiếng Việt. Nó sử dụng SI & Prompt mẫu ở: https://github.com/kiencang/SI-Prompt-video-subtitle (**v1.0.30**) / Cùng tác giả.
 
 Link dùng ứng dụng: https://ai.studio/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?fullscreenApplet=true
 
