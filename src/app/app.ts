@@ -204,6 +204,11 @@ export class App implements OnDestroy, OnInit {
   // Instructions
   showInstructions = signal(false);
 
+  // Favorite Channels
+  favoriteChannels = signal<string[]>([]);
+  dialogChannels = signal<string[]>([]);
+  showFavoritesDialog = signal(false);
+
   // Search video feature
   searchQuery = signal("");
   isSearchingQuery = signal(false);
@@ -231,6 +236,10 @@ export class App implements OnDestroy, OnInit {
   });
 
   constructor() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadFavorites();
+    }
+
     effect(() => {
       // Auto-scrolling logic
       if (!isPlatformBrowser(this.platformId)) return;
@@ -388,6 +397,88 @@ export class App implements OnDestroy, OnInit {
       return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     }
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  }
+
+  loadFavorites() {
+    try {
+      const stored = localStorage.getItem('silaSub_favorite_channels_v1');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          this.favoriteChannels.set(parsed);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load favorite channels', e);
+    }
+  }
+
+  openFavoritesDialog() {
+    const current = this.favoriteChannels();
+    if (current.length === 0) {
+      this.dialogChannels.set(["", "", ""]);
+    } else {
+      this.dialogChannels.set([...current]);
+    }
+    this.showFavoritesDialog.set(true);
+  }
+
+  saveFavorites() {
+    const toSave = this.dialogChannels().map(s => s.trim()).filter(s => s !== "");
+    this.favoriteChannels.set(toSave);
+    try {
+      localStorage.setItem('silaSub_favorite_channels_v1', JSON.stringify(toSave));
+      this.addToast("Đã lưu kênh ưa thích", "success");
+    } catch(e) {
+      this.addToast("Lỗi khi lưu cài đặt", "error");
+    }
+    this.showFavoritesDialog.set(false);
+  }
+
+  addDialogChannel() {
+    if (this.dialogChannels().length < 10) {
+      this.dialogChannels.update(c => [...c, ""]);
+    }
+  }
+
+  removeDialogChannel(index: number) {
+    if (this.dialogChannels().length === 1) {
+       this.dialogChannels.update(c => {
+         const newC = [...c];
+         newC[0] = "";
+         return newC;
+       });
+    } else {
+       this.dialogChannels.update(c => c.filter((_, i) => i !== index));
+    }
+  }
+
+  updateDialogChannel(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.dialogChannels.update(c => {
+      const newC = [...c];
+      newC[index] = input.value;
+      return newC;
+    });
+  }
+
+  isValidUrl(url: string): boolean {
+    if (!url || url.trim() === '') return false;
+    try {
+      new URL(url.startsWith('http') ? url : `https://${url}`);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  getValidUrl(url: string): string {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (!trimmed.startsWith('http') && trimmed !== '') {
+      return `https://${trimmed}`;
+    }
+    return trimmed;
   }
 
   clearAllData() {
