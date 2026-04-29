@@ -5,9 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.43]- 2026-04-29
+## [v1.0.43]- 2026-04-30
 ### fixed
 - Tái cấu trúc lại mã, chia mã khổng lồ trong app.ts và app.html thành các phần nhỏ hơn.
+- Bổ sung thêm thông tin vào tên file tải về (model, temp, search).
+- Điều chỉnh subtile đầu vào có thêm thông tin start và end của thời gian phụ đề (nhắm cung cấp thêm ngữ cảnh và giúp AI tiện đối chiếu hơn).
+- Điều chỉnh SI tương ứng để phù hợp với kiểu thông tin đầu vào mới.
 
 ## [v1.0.42]- 2026-04-29
 ### fixed
