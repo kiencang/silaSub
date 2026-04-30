@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.44]- 2026-04-30
+### fixed
+- Cập nhật SI/Prompt phiên bản mới nhất.
+- Chỉnh nhẹ giao diện.
+
 ## [v1.0.43]- 2026-04-30
 ### fixed
 - Tái cấu trúc lại mã, chia mã khổng lồ trong app.ts và app.html thành các phần nhỏ hơn.
