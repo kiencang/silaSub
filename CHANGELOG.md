@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.46]- 2026-04-30
+### fixed
+- Thêm một font chữ kiểu monospace cho người dùng.
+
 ## [v1.0.45]- 2026-04-30
 ### fixed
 - Bổ sung gap vào thông tin đầu vào cho AI.
