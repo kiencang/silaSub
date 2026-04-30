@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.46]- 2026-04-30
 ### fixed
 - Thêm một font chữ kiểu monospace cho người dùng.
+- Khóa chế tải audio, video lên ở chế độ Flash, do các chỉ thị phức tạp chỉ dùng ở chế độ Pro mới hiệu quả.
 
 ## [v1.0.45]- 2026-04-30
 ### fixed
