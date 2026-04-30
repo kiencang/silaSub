@@ -89,7 +89,7 @@ import { SettingsService } from './settings.service';
           <!-- Option: Font Size -->
           <div class="mb-6">
             <span class="block text-sm font-semibold text-slate-700 mb-2 flex justify-between">
-              <span>Kích cỡ chữ (Tương đối)</span>
+              <span>Kích cỡ chữ (tương đối)</span>
               <span class="text-slate-500">{{ settingsService.subFontSize() }}</span>
             </span>
             <input

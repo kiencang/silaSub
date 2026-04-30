@@ -208,7 +208,7 @@ import { PLATFORM_ID } from "@angular/core";
                   [class.decoration-slate-300]="!fileService.showAudioUpload()"
                   [class.hover:text-slate-900]="!fileService.showAudioUpload()"
                 >
-                  Tải lên Audio (tùy chọn)
+                  Tải lên Audio
                 </button>
                 @if (fileService.selectedVideoFile()) {
                   <div class="absolute inset-x-0 bg-transparent flex opacity-0 group-hover/abtn:opacity-100 transition-opacity z-10 -translate-y-7 left-0 top-0">
@@ -236,7 +236,7 @@ import { PLATFORM_ID } from "@angular/core";
                     [class.decoration-slate-300]="!fileService.showVideoUpload()"
                     [class.hover:text-slate-900]="!fileService.showVideoUpload()"
                   >
-                    Tải lên Video (tùy chọn)
+                    Tải lên Video
                   </button>
                   @if (fileService.selectedAudioFile()) {
                     <div class="absolute inset-x-0 bg-transparent flex opacity-0 group-hover/vbtn:opacity-100 transition-opacity z-10 -translate-y-7 left-0 top-0">
@@ -246,7 +246,7 @@ import { PLATFORM_ID } from "@angular/core";
                 </div>
               } @else {
                 <div class="flex items-center text-[13px] text-slate-400 pointer-events-none opacity-50 w-fit" title="Chế độ Tải lên Video bị vô hiệu hóa trong Dịch lời bài hát">
-                    <button class="underline pr-2 underline-offset-4 decoration-slate-300">Tải lên Video (tùy chọn)</button>
+                    <button class="underline pr-2 underline-offset-4 decoration-slate-300">Tải lên Video</button>
                     <mat-icon class="text-[15px] w-[15px] h-[15px] mb-[2px]">lock</mat-icon>
                 </div>
               }
