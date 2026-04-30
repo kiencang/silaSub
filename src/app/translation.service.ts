@@ -162,12 +162,22 @@ export class TranslationService {
           fullTranscript.length,
         );
         const currentChunk = fullTranscript.slice(startIndex, endIndex);
-        const textsToTranslate = currentChunk.map((line, idx) => ({
-          id: startIndex + idx,
-          start: parseFloat((line.offset / 1000).toFixed(2)),
-          end: parseFloat(((line.offset + line.duration) / 1000).toFixed(2)),
-          en: line.text,
-        }));
+        const textsToTranslate = currentChunk.map((line, idx) => {
+          const globalIdx = startIndex + idx;
+          let gap: number | null = null;
+          if (globalIdx > 0) {
+            const prevLine = fullTranscript[globalIdx - 1];
+            const prevEnd = prevLine.offset + prevLine.duration;
+            gap = parseFloat(((line.offset - prevEnd) / 1000).toFixed(2));
+          }
+          return {
+            id: globalIdx,
+            start: parseFloat((line.offset / 1000).toFixed(2)),
+            end: parseFloat(((line.offset + line.duration) / 1000).toFixed(2)),
+            gap: gap,
+            en: line.text,
+          };
+        });
 
         let contextText = "";
         if (chunkIndex > 0) {

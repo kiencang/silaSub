@@ -53,7 +53,7 @@ import { TranslationService } from "./translation.service";
         </p>
       </div>
       <p class="text-[10px] text-slate-400 font-medium mt-1 md:mt-0">
-        Chỉ dùng cho mục đích cá nhân • v1.0.44 •
+        Chỉ dùng cho mục đích cá nhân • v1.0.45 •
         <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600 underline decoration-slate-300 underline-offset-2 transition-colors duration-200">GitHub</a>
       </p>
     </footer>
