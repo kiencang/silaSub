@@ -14,7 +14,7 @@ export class TranslationService {
   aiTemperature = signal<number>(0.5);
   aiModel = signal<string>("gemini-pro-latest");
   translationMode = signal<"multi-task" | "lyric">("multi-task");
-  useGoogleSearch = signal<boolean>(false);
+  useGoogleSearch = signal<boolean>(true);
 
   isTranslating = signal(false);
   translateError = signal<string | null>(null);

@@ -11,16 +11,16 @@ export class SettingsService {
 
   isOpen = signal<boolean>(false);
   subFontSize = signal<number>(20);
-  subFontFamily = signal<string>("Lexend");
+  subFontFamily = signal<string>("Space Mono");
   subTextColor = signal<string>("#FFD700");
-  subBgOpacity = signal<number>(0.5);
+  subBgOpacity = signal<number>(0.75);
   subVerticalOffset = signal<number>(2); // 2rem default
 
   private backupSettings = {
     size: 20,
-    font: "Lexend",
+    font: "Space Mono",
     color: "#FFD700",
-    opacity: 0.5,
+    opacity: 0.75,
     offset: 2,
   };
 
@@ -58,9 +58,9 @@ export class SettingsService {
 
   resetSettings() {
     this.subFontSize.set(20);
-    this.subFontFamily.set("Lexend");
+    this.subFontFamily.set("Space Mono");
     this.subTextColor.set("#FFD700");
-    this.subBgOpacity.set(0.5);
+    this.subBgOpacity.set(0.75);
     this.subVerticalOffset.set(2);
     
     this.storageService.removeSettings();
@@ -92,7 +92,7 @@ export class SettingsService {
       case "Space Mono":
         return '"Space Mono", monospace';
       default:
-        return '"Lexend", sans-serif';
+        return '"Space Mono", monospace';
     }
   }
 }
