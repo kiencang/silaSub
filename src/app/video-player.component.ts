@@ -1,6 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AppStateService } from './app.state.service';
 import { PlayerService } from './player.service';
 import { SettingsService } from './settings.service';
@@ -70,7 +71,7 @@ import { FileService } from './file.service';
                </button>
             </div>
             <iframe
-              src="/instructions-for-use/how-to-use.html"
+              [src]="instructionUrl"
               class="w-full flex-1 border-0"
             ></iframe>
           </div>
@@ -174,4 +175,7 @@ export class VideoPlayerComponent {
   public settingsService = inject(SettingsService);
   public storageService = inject(StorageService);
   public fileService = inject(FileService);
+  private sanitizer = inject(DomSanitizer);
+
+  public instructionUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl('/instructions-for-use/how-to-use.html?v=' + Date.now());
 }
