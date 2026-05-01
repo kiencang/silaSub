@@ -784,7 +784,7 @@ export class ControlPanelComponent {
     if (json) {
        this.fileService.downloadFile(json, fileName, "application/json");
        this.toastService.addToast(
-         `Đã tải file ranh giới người nói cho dev: ${fileName}`,
+         `Đã tải file data ngữ cảnh cho dev: ${fileName}`,
          "success"
        );
     }

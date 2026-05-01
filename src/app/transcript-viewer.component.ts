@@ -175,7 +175,7 @@ import { MatIconModule } from '@angular/material/icon';
                 (click)="onExportPhase1()"
                 class="w-full py-2 rounded-xl font-medium text-[11px] bg-slate-800 text-slate-400 hover:text-slate-300 hover:bg-slate-700 transition-all flex items-center justify-center"
               >
-                Tải file phân tích ngữ cảnh cho dev (JSON)
+                Tải file dev data (ngữ cảnh / input JSON)
               </button>
             }
           </div>

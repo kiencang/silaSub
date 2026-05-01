@@ -155,6 +155,7 @@ export class TranslationService {
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
       const translatedTranscript = [...fullTranscript];
+      const allDevData: any[] = [];
 
       for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
         if (totalChunks > 1) {
@@ -174,12 +175,12 @@ export class TranslationService {
           if (globalIdx > 0) {
             const prevLine = fullTranscript[globalIdx - 1];
             const prevEnd = prevLine.offset + prevLine.duration;
-            gap = parseFloat(((line.offset - prevEnd) / 1000).toFixed(2));
+            gap = parseFloat((line.offset - prevEnd).toFixed(2));
           }
           return {
             id: globalIdx,
-            start: parseFloat((line.offset / 1000).toFixed(2)),
-            end: parseFloat(((line.offset + line.duration) / 1000).toFixed(2)),
+            start: parseFloat(line.offset.toFixed(2)),
+            end: parseFloat((line.offset + line.duration).toFixed(2)),
             gap: gap,
             en: line.text,
           };
@@ -249,7 +250,8 @@ export class TranslationService {
             const subName = subFile ? subFile.name.replace(/\.[^/.]+$/, "") : "subtitle";
             this.analyzedBlocksFileName.set(`silaSub_${subName}_blocks.json`);
 
-            this.analyzedBlocksJson.set(JSON.stringify(textsToTranslate, null, 2));
+            allDevData.push(...textsToTranslate);
+            this.analyzedBlocksJson.set(JSON.stringify(allDevData, null, 2));
           } catch (phase1Err) {
             console.error("Phase 1 error:", phase1Err);
             throw new Error("Lỗi khi phân tích ranh giới người nói. Vui lòng thử lại.");
@@ -257,6 +259,14 @@ export class TranslationService {
           
           this.translationPhaseInfo.set("PHASE 2: Dịch thuật ngữ nghĩa...");
         } else {
+          const subFile = this.fileService.selectedEnFile();
+          const subName = subFile ? subFile.name.replace(/\.[^/.]+$/, "") : "subtitle";
+          this.analyzedBlocksFileName.set(`silaSub_${subName}_input.json`);
+          // Loại bỏ properties 'block' không cần thiết ở normal mode
+          const devData = textsToTranslate.map(t => { const { block, ...rest } = t; return rest; });
+          allDevData.push(...devData);
+          this.analyzedBlocksJson.set(JSON.stringify(allDevData, null, 2));
+
           this.translationPhaseInfo.set(null);
         }
 
