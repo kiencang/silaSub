@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Cập nhật hướng dẫn sử dụng.
 - Cập nhật SI cho phần xác định ranh giới người nói.
+- Sửa lỗi sai thời gian start, end do chia thêm cho 1000!
 
 ## [v1.0.49]- 2026-05-01
 ### fixed
