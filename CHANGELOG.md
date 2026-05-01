@@ -12,6 +12,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Chuyển dịch chế độ 'Thêm bối cảnh' thành dạng 2 phase để cải thiện chất lượng xử lý
 - Điều chỉnh nhẹ SI để phù hợp với chế độ 2 phase.
 - Rút gọn 3 SI tương đối nhiều với chế độ dịch đa nhiệm (loại bỏ các chỉ thị phù hợp về lý thuyết nhưng khó thực thi hiệu quả).
+- Đổi tên các SI cho phù hợp hơn.
 
 ## [v1.0.45]- 2026-04-30
 ### fixed
