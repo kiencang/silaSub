@@ -7,7 +7,8 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.51]- 2026-05-02
 ### fixed
-- Xử lý tự động từ mồ côi (chỉ áp dụng khi có phase 2, ranh giới người nói được xác định với độ tin cậy cao).
+- Xử lý tự động từ mồ côi (chỉ áp dụng khi với kiểu dịch 2 phase, khi ranh giới người nói được xác định với độ tin cậy cao).
+- Không áp dụng xử lý từ mồ côi với chế độ dịch lời bài hát (vì lời bài hát có đặc thù nhả chữ riêng, nên tôn trọng).
 
 ## [v1.0.50]- 2026-05-02
 ### fixed
