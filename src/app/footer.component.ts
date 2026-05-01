@@ -43,7 +43,7 @@ import { TranslationService } from "./translation.service";
           
           <!-- Tooltip -->
           <span class="absolute bottom-full left-0 mb-3 w-[220px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
-            <span class="font-bold" [class.text-blue-400]="translationService.useGoogleSearch()" [class.text-slate-400]="!translationService.useGoogleSearch()">[{{ translationService.useGoogleSearch() ? 'Đang bật' : 'Đang tắt' }}]</span> Cho phép AI giải nghĩa thuật ngữ, tiếng lóng, tên riêng bằng thông tin mạng, giúp bản dịch chính xác và tự nhiên hơn. Rất khuyến nghị bật, dù sẽ tốn thêm chi phí/thời gian một chút so với khi tắt.
+            <span class="font-bold" [class.text-blue-400]="translationService.useGoogleSearch()" [class.text-slate-400]="!translationService.useGoogleSearch()">[{{ translationService.useGoogleSearch() ? 'Đang bật' : 'Đang tắt' }}]</span> Đa số các video thông thường không cần bật tính năng này. Bật công cụ tìm kiếm cho AI sẽ hữu ích nhất cho nội dung có tính chuyên ngành cao hoặc nội dung có tính thời sự cao cần cập nhật thông tin mới nhất.
             <!-- Arrow -->
             <span class="absolute -bottom-1 left-4 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
           </span>
@@ -54,7 +54,7 @@ import { TranslationService } from "./translation.service";
         </p>
       </div>
       <p class="text-[10px] text-slate-500 font-medium mt-1 md:mt-0">
-        Chỉ dùng cho mục đích cá nhân • v1.0.50 •
+        Chỉ dùng cho mục đích cá nhân • v1.0.51 •
         <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200">GitHub</a>
       </p>
     </footer>

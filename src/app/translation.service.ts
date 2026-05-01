@@ -14,7 +14,7 @@ export class TranslationService {
   aiTemperature = signal<number>(0.5);
   aiModel = signal<string>("gemini-pro-latest");
   translationMode = signal<"multi-task" | "lyric">("multi-task");
-  useGoogleSearch = signal<boolean>(true);
+  useGoogleSearch = signal<boolean>(false);
 
   isTranslating = signal(false);
   translateError = signal<string | null>(null);
@@ -244,7 +244,43 @@ export class TranslationService {
                const bInfo = phase1Data.find((b: { id: number, block: number | null }) => b.id === t.id);
                t.block = bInfo ? (bInfo.block !== undefined ? bInfo.block : null) : null;
             });
-            
+
+            // -----------------------------------------------------------------
+            // [Quy tắc dồn chữ] Xử lý từ mồ côi (Orphan words)
+            // Lấy từ đầu tiên có kèm dấu ngắt câu lên vị trí cuối dòng trước
+            // (Chỉ áp dụng khi không phải chế độ dịch bài hát - lyric)
+            // -----------------------------------------------------------------
+            if (this.translationMode() !== "lyric") {
+              for (let i = 1; i < textsToTranslate.length; i++) {
+                const prev = textsToTranslate[i - 1];
+                const curr = textsToTranslate[i];
+
+                if (
+                  curr.block != null &&
+                  prev.block === curr.block &&
+                  typeof curr.gap === "number" &&
+                  curr.gap < 0.1
+                ) {
+                  // Đảm bảo dòng trước đó chưa kết thúc bằng dấu câu
+                  const prevEndsWithPunctuation = /[.,!?;:]["']?$/.test(prev.en.trim());
+                  
+                  if (!prevEndsWithPunctuation) {
+                    const words = curr.en.trim().split(/\s+/);
+                    if (words.length >= 4) {
+                      const firstWord = words[0];
+                      if (/[.,!?;:]["']?$/.test(firstWord)) {
+                        // Di chuyển từ đầu tiên của curr lên cuối prev
+                        prev.en = prev.en.trim() + " " + firstWord;
+                        // Loại bỏ từ đầu tiên khỏi curr
+                        curr.en = words.slice(1).join(" ");
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            // -----------------------------------------------------------------
+
             // Generate filename based on subtitle file
             const subFile = this.fileService.selectedEnFile();
             const subName = subFile ? subFile.name.replace(/\.[^/.]+$/, "") : "subtitle";
