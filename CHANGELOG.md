@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.50]- 2026-05-02
+### fixed
+- Cập nhật hướng dẫn sử dụng.
+- Cập nhật SI cho phần xác định ranh giới người nói.
+
 ## [v1.0.49]- 2026-05-01
 ### fixed
 - Thay đổi font chữ & mức độ trong của màu nền cho font chữ.
