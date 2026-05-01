@@ -93,12 +93,15 @@ import { MatIconModule } from '@angular/material/icon';
           <div
             id="transcript-line-{{line.offset}}"
             (click)="playerService.seekToLine(line.offset)" (keyup.enter)="playerService.seekToLine(line.offset)" tabindex="0"
-            class="rounded-xl transition-all border border-transparent cursor-pointer group hover:bg-slate-800/80 hover:shadow-sm"
+             class="rounded-xl transition-all border border-transparent cursor-pointer group hover:bg-slate-800/80 hover:shadow-sm"
             [class.p-3]="!appState.isTranscriptExpanded()"
             [class.py-2]="appState.isTranscriptExpanded()"
             [class.px-3]="appState.isTranscriptExpanded()"
             [class.bg-slate-800]="appState.currentLine() === line"
-            [class.border-slate-700]="appState.currentLine() === line"
+            [class.border-y-slate-700]="appState.currentLine() === line"
+            [class.border-r-slate-700]="appState.currentLine() === line"
+            [class.border-l-red-500]="appState.currentLine() === line"
+            [class.border-l-2]="appState.currentLine() === line"
             [class.shadow-md]="appState.currentLine() === line"
           >
             <div class="flex justify-between items-center mb-1">
@@ -134,9 +137,10 @@ import { MatIconModule } from '@angular/material/icon';
           </div>
           } } @else {
           <div
-            class="flex items-center justify-center h-full text-sm text-slate-500 italic"
+            class="flex flex-col items-center justify-center h-full text-slate-500 gap-4 opacity-60"
           >
-            Chưa có dữ liệu phân tích...
+            <mat-icon class="!text-[48px] !w-[48px] !h-[48px] mb-2 opacity-20">subtitles</mat-icon>
+            <p class="text-sm italic font-medium">Chưa có dữ liệu phân tích...</p>
           </div>
           }
         </div>
@@ -152,12 +156,12 @@ import { MatIconModule } from '@angular/material/icon';
               (click)="onExportSrt()"
               [disabled]="!!fileService.selectedViFile() && !fileService.selectedEnFile()"
               class="w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center"
-              [class.bg-white]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-              [class.text-slate-900]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-              [class.hover:bg-slate-200]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.bg-slate-800]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.text-white]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.hover:bg-slate-700]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
               [class.cursor-pointer]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-              [class.bg-slate-800]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-              [class.text-slate-500]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.bg-slate-900/50]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.text-slate-600]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
               [class.cursor-not-allowed]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
             >
               @if (!!fileService.selectedViFile() && !fileService.selectedEnFile()) {

@@ -62,10 +62,10 @@ import { FileService } from './file.service';
 
         @if (!appState.videoId()) {
           @if (appState.showInstructions()) {
-          <div class="absolute inset-0 bg-white rounded-2xl overflow-hidden z-20 flex flex-col">
-            <div class="h-12 bg-white flex justify-between items-center px-4 border-b z-10 shadow-sm shrink-0">
-               <span class="font-bold text-slate-800">Hướng dẫn sử dụng</span>
-               <button (click)="appState.showInstructions.set(false)" class="p-1.5 hover:bg-slate-100 rounded-full text-slate-500 hover:text-slate-800 transition-colors">
+          <div class="absolute inset-0 bg-slate-900 rounded-2xl overflow-hidden z-20 flex flex-col border border-slate-700">
+            <div class="h-12 bg-slate-800 flex justify-between items-center px-4 border-b border-slate-700 z-10 shadow-sm shrink-0">
+               <span class="font-bold text-white">Hướng dẫn sử dụng</span>
+               <button (click)="appState.showInstructions.set(false)" class="p-1.5 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors">
                   <mat-icon class="text-[20px] w-[20px] h-[20px]">close</mat-icon>
                </button>
             </div>

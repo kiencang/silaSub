@@ -168,7 +168,7 @@ export class TranslationService {
           fullTranscript.length,
         );
         const currentChunk = fullTranscript.slice(startIndex, endIndex);
-        const textsToTranslate: any[] = currentChunk.map((line, idx) => {
+        const textsToTranslate: { id: number, start: number, end: number, gap: number | null, en: string, block?: number | null }[] = currentChunk.map((line, idx) => {
           const globalIdx = startIndex + idx;
           let gap: number | null = null;
           if (globalIdx > 0) {
@@ -212,7 +212,7 @@ export class TranslationService {
             };
 
             const phase1Prompt = "Phân tích ranh giới người nói cho mảng JSON sau:\n\n" + JSON.stringify(textsToTranslate, null, 2);
-            let reqContentsPhase1: any = phase1Prompt;
+            let reqContentsPhase1: string | (string | { inlineData: { mimeType: string, data: string } })[] = phase1Prompt;
 
             if (hasAudio && this.fileService.selectedAudioFile()) {
                 const audioFile = this.fileService.selectedAudioFile()!;
@@ -240,7 +240,7 @@ export class TranslationService {
             
             // Merge block into textsToTranslate
             textsToTranslate.forEach(t => {
-               const bInfo = phase1Data.find((b: any) => b.id === t.id);
+               const bInfo = phase1Data.find((b: { id: number, block: number | null }) => b.id === t.id);
                t.block = bInfo ? (bInfo.block !== undefined ? bInfo.block : null) : null;
             });
             

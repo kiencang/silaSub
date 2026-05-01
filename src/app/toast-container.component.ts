@@ -10,7 +10,7 @@ import { ToastService } from './toast.service';
     <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none">
       @for (toast of toastService.toasts(); track toast.id) {
       <div
-        class="pointer-events-auto flex items-center justify-between gap-3 min-w-[300px] max-w-md p-4 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-0 opacity-100 text-white"
+        class="pointer-events-auto flex items-center justify-between gap-3 min-w-[300px] max-w-md p-4 rounded-xl shadow-2xl transition-all duration-300 text-white animate-in slide-in-from-right-5 fade-in"
         [class.bg-red-600]="toast.type === 'error'"
         [class.bg-amber-500]="toast.type === 'warning'"
         [class.bg-emerald-500]="toast.type === 'success'"

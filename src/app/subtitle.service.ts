@@ -12,31 +12,16 @@ export interface TranscriptLine {
 })
 export class SubtitleService {
   cleanAudioTags(text: string): string {
-    const audioTagRegex = /\[.*?(music|upbeat).*?\]/gi;
+    const audioTagRegex = /\[.*?(music|upbeat|laughter|applause).*?\]/gi;
     const textWithoutTags = text.replace(audioTagRegex, "").trim();
 
+    // Nếu sau khi xóa thẻ mà không còn text nào có nghĩa (nó đứng một mình), giữ nguyên
     if (!/[a-zA-Z0-9\u00C0-\u017F]/.test(textWithoutTags)) {
       return text;
     }
 
-    const cleaned = text.replace(audioTagRegex, (match, _, offset) => {
-      const beforeStr = text.substring(0, offset);
-      const afterStr = text.substring(offset + match.length);
-
-      const cleanBefore = beforeStr.replace(/\[.*?\]/g, "");
-      const hasTextBefore = /[a-zA-Z0-9\u00C0-\u017F]/.test(cleanBefore);
-
-      const cleanAfter = afterStr.replace(/\[.*?\]/g, "");
-      const hasTextAfter = /[a-zA-Z0-9\u00C0-\u017F]/.test(cleanAfter);
-
-      if (hasTextBefore && hasTextAfter) {
-        return " ";
-      }
-
-      return match;
-    });
-
-    return cleaned.replace(/\s{2,}/g, " ").trim();
+    // Nếu còn text, xóa sạch các thẻ này và chuẩn hóa khoảng trắng
+    return text.replace(audioTagRegex, " ").replace(/\s{2,}/g, " ").trim();
   }
 
   parseSRT(srtData: string, preserveNewlines = false): TranscriptLine[] {

@@ -24,7 +24,7 @@ import { PLATFORM_ID } from "@angular/core";
   imports: [CommonModule, MatIconModule, TranscriptViewerComponent],
   template: `
     <div
-      class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full overflow-y-auto pr-2 pb-4 pt-1 custom-scrollbar-lg"
+      class="flex-[1.2] flex flex-col gap-6 shrink-0 md:min-w-[300px] lg:min-w-[400px] h-full overflow-y-auto overflow-x-hidden pr-2 pb-4 pt-1 custom-scrollbar-lg"
     >
       <!-- YouTube Link Input -->
       <div
@@ -37,13 +37,13 @@ import { PLATFORM_ID } from "@angular/core";
           (input)="onVideoUrlChange($any($event.target).value)"
           [disabled]="isAnalyzing() || translationService.isTranslating()"
           placeholder="Dán link Video YouTube vào đây..."
-          class="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[16px] leading-[20px] truncate disabled:opacity-50 pr-12 placeholder-slate-400 shadow-sm font-medium"
+          class="w-full px-5 py-3.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-[16px] leading-[20px] truncate disabled:opacity-50 pr-12 placeholder-slate-500 shadow-sm font-medium"
         />
         @if (videoUrl()) {
         <button
           (click)="clearAllData()"
           [disabled]="translationService.isTranslating()"
-          class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+          class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-300 hover:bg-slate-700 rounded-lg transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
           title="Thiết lập lại / Xóa Link"
         >
           <svg
@@ -64,17 +64,17 @@ import { PLATFORM_ID } from "@angular/core";
 
       <!-- Upload SRT Card (Moved from Left) -->
       <div
-        class="bg-white p-5 rounded-2xl border transition-all duration-700 shrink-0"
+        class="bg-slate-900/80 p-5 rounded-2xl border transition-all duration-700 shrink-0"
         [class.hidden]="isTranscriptExpanded()"
         [class.shadow-sm]="fileService.selectedEnFile() || fileService.selectedViFile() || !videoId()"
-        [class.border-slate-200]="fileService.selectedEnFile() || fileService.selectedViFile() || !videoId()"
-        [class.border-yellow-400]="videoId() && !fileService.selectedEnFile() && !fileService.selectedViFile()"
-        [style.box-shadow]="(videoId() && !fileService.selectedEnFile() && !fileService.selectedViFile()) ? 'inset 0 0 40px rgba(234, 179, 8, 0.25), 0 0 15px rgba(234, 179, 8, 0.3)' : ''"
+        [class.border-slate-700]="fileService.selectedEnFile() || fileService.selectedViFile() || !videoId()"
+        [class.border-yellow-500]="videoId() && !fileService.selectedEnFile() && !fileService.selectedViFile()"
+        [style.box-shadow]="(videoId() && !fileService.selectedEnFile() && !fileService.selectedViFile()) ? 'inset 0 0 40px rgba(234, 179, 8, 0.15), 0 0 15px rgba(234, 179, 8, 0.2)' : ''"
         [class.opacity-50]="translationService.isTranslating()"
         [class.pointer-events-none]="translationService.isTranslating()"
       >
         <div class="flex items-center gap-1.5 mb-3">
-          <span class="block text-sm font-bold text-slate-800"
+          <span class="block text-sm font-bold text-white"
             >Tải lên phụ đề tiếng Anh (.srt)</span
           >
           <div
@@ -82,7 +82,7 @@ import { PLATFORM_ID } from "@angular/core";
           >
             <!-- Hộp cảnh báo sinh động thay cho Icon mờ nhạt -->
             <div
-              class="relative flex items-center gap-1.5 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full group-hover:bg-red-100 transition-colors shadow-sm"
+              class="relative flex items-center gap-1.5 bg-red-900/30 border border-red-500/30 px-2 py-0.5 rounded-full group-hover:bg-red-900/50 transition-colors shadow-sm"
             >
               <div class="relative flex h-3 w-3 items-center justify-center">
                 <!-- Hiệu ứng tỏa sóng (Ping) liên tục -->
@@ -98,14 +98,14 @@ import { PLATFORM_ID } from "@angular/core";
                 </div>
               </div>
               <span
-                class="text-[11px] font-medium text-red-600 leading-none mt-0.5 whitespace-nowrap"
+                class="text-[11px] font-medium text-red-400 leading-none mt-0.5 whitespace-nowrap"
                 >Lấy ở đâu?</span
               >
             </div>
 
             <!-- Bảng Tooltip (mở xuống dưới) -->
             <div
-              class="absolute top-full mt-2.5 right-0 w-max max-w-[250px] bg-slate-800 text-white text-xs font-medium p-3 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 text-center leading-relaxed origin-top-right"
+              class="absolute top-full mt-2.5 right-0 w-max max-w-[250px] bg-slate-800 text-white text-xs font-medium p-3 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-top-right"
             >
               <!-- Mũi tên trỏ lên trên của Tooltip -->
               <div
@@ -144,7 +144,7 @@ import { PLATFORM_ID } from "@angular/core";
           <button
             (click)="clearEnSubtitleFile($event)"
             [disabled]="translationService.isTranslating()"
-            class="absolute right-2.5 top-[7px] p-1.5 text-red-400 hover:text-red-600 hover:bg-white/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+            class="absolute right-2.5 top-[7px] p-1.5 text-red-500 hover:text-red-400 hover:bg-slate-800 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
             title="Hủy chọn File"
           >
             <svg
@@ -164,36 +164,36 @@ import { PLATFORM_ID } from "@angular/core";
         </div>
 
         <!-- Extra Context Section -->
-        <div class="mt-4 border-t border-slate-100 pt-4 flex flex-col gap-3 w-full transition-opacity duration-300"
+        <div class="mt-4 border-t border-slate-700 pt-4 flex flex-col gap-3 w-full transition-opacity duration-300"
              [class.opacity-40]="translationService.aiModel() === 'gemini-flash-latest'"
              [class.pointer-events-none]="translationService.aiModel() === 'gemini-flash-latest'"
              [title]="translationService.aiModel() === 'gemini-flash-latest' ? 'Chế độ Thêm bối cảnh chỉ khả dụng ở model Tư duy sâu (Pro)' : ''">
           <div class="flex items-center gap-1.5 mb-1">
-            <span class="text-[13px] font-bold text-slate-700 block"
+            <span class="text-[13px] font-bold text-slate-300 block"
               >Thêm bối cảnh (không bắt buộc)</span
             >
             <div
               class="group relative flex items-center justify-center cursor-help ml-0.5"
             >
               <div
-                class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-200 hover:bg-slate-300 transition-colors rounded-full text-slate-500"
+                class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-700 hover:bg-slate-600 transition-colors rounded-full text-slate-400"
               >
                 <span class="text-[9px] font-bold font-serif italic">i</span>
               </div>
               <div
-                class="absolute bottom-full mb-1.5 right-[-20px] w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 text-center leading-relaxed origin-bottom-right"
+                class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom"
               >
                 Cung cấp thêm audio hoặc video gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định, nhưng điều này không phải là yêu cầu bắt buộc.
                 <!-- Arrow -->
                 <div
-                  class="absolute top-full right-[23px] border-[5px] border-transparent border-t-slate-800"
+                  class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-slate-800"
                 ></div>
               </div>
             </div>
           </div>
 
           <!-- Audio & Video Box Toggles -->
-          <div class="grid grid-cols-2 gap-4 w-full border-b border-slate-100 pb-2">
+          <div class="grid grid-cols-2 gap-4 w-full border-b border-slate-700 pb-2">
             <!-- Audio Toggle -->
             <div>
               <div class="relative group/abtn">
@@ -203,13 +203,13 @@ import { PLATFORM_ID } from "@angular/core";
                   [class.opacity-40]="!!fileService.selectedVideoFile()"
                   [class.pointer-events-none]="!!fileService.selectedVideoFile()"
                   class="text-[13px] text-left w-fit transition-colors cursor-pointer disabled:cursor-default underline underline-offset-4 hover:decoration-slate-400"
-                  [class.text-pink-600]="fileService.showAudioUpload()"
+                  [class.text-pink-400]="fileService.showAudioUpload()"
                   [class.font-bold]="fileService.showAudioUpload()"
-                  [class.decoration-pink-300]="fileService.showAudioUpload()"
-                  [class.text-slate-600]="!fileService.showAudioUpload()"
+                  [class.decoration-pink-500]="fileService.showAudioUpload()"
+                  [class.text-slate-400]="!fileService.showAudioUpload()"
                   [class.font-medium]="!fileService.showAudioUpload()"
-                  [class.decoration-slate-300]="!fileService.showAudioUpload()"
-                  [class.hover:text-slate-900]="!fileService.showAudioUpload()"
+                  [class.decoration-slate-600]="!fileService.showAudioUpload()"
+                  [class.hover:text-slate-200]="!fileService.showAudioUpload()"
                 >
                   Tải lên Audio
                 </button>
@@ -231,13 +231,13 @@ import { PLATFORM_ID } from "@angular/core";
                     [class.opacity-40]="!!fileService.selectedAudioFile()"
                     [class.pointer-events-none]="!!fileService.selectedAudioFile()"
                     class="text-[13px] text-left w-fit transition-colors cursor-pointer disabled:cursor-default underline underline-offset-4 hover:decoration-slate-400"
-                    [class.text-amber-600]="fileService.showVideoUpload()"
+                    [class.text-amber-400]="fileService.showVideoUpload()"
                     [class.font-bold]="fileService.showVideoUpload()"
-                    [class.decoration-amber-300]="fileService.showVideoUpload()"
-                    [class.text-slate-600]="!fileService.showVideoUpload()"
+                    [class.decoration-amber-500]="fileService.showVideoUpload()"
+                    [class.text-slate-400]="!fileService.showVideoUpload()"
                     [class.font-medium]="!fileService.showVideoUpload()"
-                    [class.decoration-slate-300]="!fileService.showVideoUpload()"
-                    [class.hover:text-slate-900]="!fileService.showVideoUpload()"
+                    [class.decoration-slate-600]="!fileService.showVideoUpload()"
+                    [class.hover:text-slate-200]="!fileService.showVideoUpload()"
                   >
                     Tải lên Video
                   </button>
@@ -248,8 +248,8 @@ import { PLATFORM_ID } from "@angular/core";
                   }
                 </div>
               } @else {
-                <div class="flex items-center text-[13px] text-slate-400 pointer-events-none opacity-50 w-fit" title="Chế độ Tải lên Video bị vô hiệu hóa trong Dịch lời bài hát">
-                    <button class="underline pr-2 underline-offset-4 decoration-slate-300">Tải lên Video</button>
+                <div class="flex items-center text-[13px] text-slate-500 pointer-events-none opacity-50 w-fit" title="Chế độ Tải lên Video bị vô hiệu hóa trong Dịch lời bài hát">
+                    <button class="underline pr-2 underline-offset-4 decoration-slate-600">Tải lên Video</button>
                     <mat-icon class="text-[15px] w-[15px] h-[15px] mb-[2px]">lock</mat-icon>
                 </div>
               }
@@ -261,11 +261,11 @@ import { PLATFORM_ID } from "@angular/core";
           <!-- Audio Box -->
           @if (fileService.showAudioUpload()) {
             <div
-              class="w-full flex flex-col gap-3 p-3 bg-pink-50/50 border border-pink-100 rounded-xl relative transition-opacity min-h-[90px]"
+              class="w-full flex flex-col gap-3 p-3 bg-pink-900/20 border border-pink-500/20 rounded-xl relative transition-opacity min-h-[90px]"
             >
               <div class="flex justify-between items-center px-1">
-                <span class="text-xs font-semibold text-pink-800"
-                  >Âm thanh (<span class="cursor-help border-b border-dotted border-pink-800" title="Tối đa 30 phút / 40MB">chi tiết</span>):</span
+                <span class="text-xs font-semibold text-pink-400"
+                  >Âm thanh (<span class="cursor-help border-b border-dotted border-pink-500/50" title="Tối đa 30 phút / 40MB">chi tiết</span>):</span
                 >
                 @if (!fileService.selectedAudioFile()) {
                 <button
@@ -284,23 +284,25 @@ import { PLATFORM_ID } from "@angular/core";
                   (change)="onAudioFileSelected($event)"
                   #audioFileUploader
                   [disabled]="translationService.isTranslating() || !!fileService.selectedVideoFile()"
-                  class="flex-1 w-full min-w-0 text-[13px] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-lg overflow-hidden text-ellipsis whitespace-nowrap bg-white"
-                  [class.border-pink-200]="!fileService.selectedAudioFile()"
-                  [class.text-pink-500]="!fileService.selectedAudioFile()"
-                  [class.file:bg-pink-100]="!fileService.selectedAudioFile()"
-                  [class.file:text-pink-700]="!fileService.selectedAudioFile()"
-                  [class.hover:file:bg-pink-200]="!fileService.selectedAudioFile()"
-                  [class.border-pink-400]="fileService.selectedAudioFile()"
-                  [class.text-pink-900]="fileService.selectedAudioFile()"
-                  [class.file:bg-pink-600]="fileService.selectedAudioFile()"
+                  class="flex-1 w-full min-w-0 text-[13px] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-lg overflow-hidden text-ellipsis whitespace-nowrap"
+                  [class.border-pink-500/30]="!fileService.selectedAudioFile()"
+                  [class.text-pink-400]="!fileService.selectedAudioFile()"
+                  [class.bg-slate-800]="!fileService.selectedAudioFile()"
+                  [class.file:bg-pink-900/40]="!fileService.selectedAudioFile()"
+                  [class.file:text-pink-300]="!fileService.selectedAudioFile()"
+                  [class.hover:file:bg-pink-900/60]="!fileService.selectedAudioFile()"
+                  [class.border-pink-500/60]="fileService.selectedAudioFile()"
+                  [class.text-pink-300]="fileService.selectedAudioFile()"
+                  [class.bg-pink-900/20]="fileService.selectedAudioFile()"
+                  [class.file:bg-pink-700]="fileService.selectedAudioFile()"
                   [class.file:text-white]="fileService.selectedAudioFile()"
-                  [class.hover:file:bg-pink-700]="fileService.selectedAudioFile()"
+                  [class.hover:file:bg-pink-600]="fileService.selectedAudioFile()"
                 />
                 @if (fileService.selectedAudioFile()) {
                 <button
                   (click)="clearAudioFile($event)"
                   [disabled]="translationService.isTranslating()"
-                  class="absolute right-2.5 top-[3px] p-1.5 text-pink-400 hover:text-pink-600 hover:bg-pink-50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                  class="absolute right-2.5 top-[3px] p-1.5 text-pink-400 hover:text-pink-300 hover:bg-pink-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                   title="Hủy chọn File"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -313,11 +315,11 @@ import { PLATFORM_ID } from "@angular/core";
           <!-- Video Box -->
           @if (fileService.showVideoUpload() && translationService.translationMode() !== 'lyric') {
             <div
-              class="w-full flex flex-col gap-3 p-3 bg-amber-50/50 border border-amber-100 rounded-xl relative transition-opacity min-h-[90px]"
+              class="w-full flex flex-col gap-3 p-3 bg-amber-900/20 border border-amber-500/20 rounded-xl relative transition-opacity min-h-[90px]"
             >
               <div class="flex justify-between items-center px-1">
-                <span class="text-xs font-semibold text-amber-800"
-                  >Video (<span title="Tối đa 30 phút / 70MB" class="cursor-help border-b border-dotted border-amber-800">chi tiết</span>):</span
+                <span class="text-xs font-semibold text-amber-400"
+                  >Video (<span title="Tối đa 30 phút / 70MB" class="cursor-help border-b border-dotted border-amber-500/50">chi tiết</span>):</span
                 >
                 @if (!fileService.selectedVideoFile()) {
                 <button
@@ -336,23 +338,25 @@ import { PLATFORM_ID } from "@angular/core";
                   (change)="onVideoFileSelected($event)"
                   #videoFileUploader
                   [disabled]="translationService.isTranslating() || !!fileService.selectedAudioFile()"
-                  class="flex-1 w-full min-w-0 text-[13px] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-lg overflow-hidden text-ellipsis whitespace-nowrap bg-white"
-                  [class.border-amber-200]="!fileService.selectedVideoFile()"
-                  [class.text-amber-500]="!fileService.selectedVideoFile()"
-                  [class.file:bg-amber-100]="!fileService.selectedVideoFile()"
-                  [class.file:text-amber-700]="!fileService.selectedVideoFile()"
-                  [class.hover:file:bg-amber-200]="!fileService.selectedVideoFile()"
-                  [class.border-amber-400]="fileService.selectedVideoFile()"
-                  [class.text-amber-900]="fileService.selectedVideoFile()"
-                  [class.file:bg-amber-600]="fileService.selectedVideoFile()"
+                  class="flex-1 w-full min-w-0 text-[13px] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-lg overflow-hidden text-ellipsis whitespace-nowrap"
+                  [class.border-amber-500/30]="!fileService.selectedVideoFile()"
+                  [class.text-amber-400]="!fileService.selectedVideoFile()"
+                  [class.bg-slate-800]="!fileService.selectedVideoFile()"
+                  [class.file:bg-amber-900/40]="!fileService.selectedVideoFile()"
+                  [class.file:text-amber-300]="!fileService.selectedVideoFile()"
+                  [class.hover:file:bg-amber-900/60]="!fileService.selectedVideoFile()"
+                  [class.border-amber-500/60]="fileService.selectedVideoFile()"
+                  [class.text-amber-300]="fileService.selectedVideoFile()"
+                  [class.bg-amber-900/20]="fileService.selectedVideoFile()"
+                  [class.file:bg-amber-700]="fileService.selectedVideoFile()"
                   [class.file:text-white]="fileService.selectedVideoFile()"
-                  [class.hover:file:bg-amber-700]="fileService.selectedVideoFile()"
+                  [class.hover:file:bg-amber-600]="fileService.selectedVideoFile()"
                 />
                 @if (fileService.selectedVideoFile()) {
                 <button
                   (click)="removeVideoFile($event)"
                   [disabled]="translationService.isTranslating()"
-                  class="absolute right-2.5 top-[3px] p-1.5 text-amber-400 hover:text-amber-600 hover:bg-amber-50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                  class="absolute right-2.5 top-[3px] p-1.5 text-amber-400 hover:text-amber-300 hover:bg-amber-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                   title="Hủy chọn File"
                 >
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -364,12 +368,12 @@ import { PLATFORM_ID } from "@angular/core";
 
           <div class="w-full mt-2">
             @if (fileService.showVideoUpload() && translationService.translationMode() !== 'lyric') {
-               <div class="text-[12px] text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg flex items-start gap-2 shadow-sm mb-3 relative overflow-hidden">
-                 <div class="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-300"></div>
+               <div class="text-[12px] text-amber-300 bg-amber-900/30 border border-amber-500/30 px-3 py-2 rounded-lg flex items-start gap-2 shadow-sm mb-3 relative overflow-hidden">
+                 <div class="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-500"></div>
                  <div class="w-[13px] h-[13px] rounded-full bg-amber-500 flex items-center justify-center shrink-0 mt-[3px]">
                    <span class="text-white text-[10px] font-bold font-serif italic leading-none">i</span>
                  </div>
-                 <span class="w-full text-amber-900 leading-snug">
+                 <span class="w-full text-amber-200 leading-snug">
                    <b>Lưu ý:</b> Video tiêu tốn rất nhiều token đầu vào, một video 10 phút tốn khoảng 180 ngàn token đầu vào.
                  </span>
                </div>
@@ -379,7 +383,7 @@ import { PLATFORM_ID } from "@angular/core";
 
         @if (analyzeError()) {
         <p
-          class="mt-3 text-sm text-red-500 bg-red-50 px-3 py-2 rounded-lg border border-red-100"
+          class="mt-3 text-sm text-red-400 bg-red-900/30 px-3 py-2 rounded-lg border border-red-500/30"
         >
           {{ analyzeError() }}
         </p>
@@ -390,13 +394,13 @@ import { PLATFORM_ID } from "@angular/core";
       <div
         class="p-5 rounded-2xl border transition-all duration-700 shrink-0"
         [class.hidden]="isTranscriptExpanded()"
-        [class.bg-slate-50/50]="!fileService.selectedViFile()"
-        [class.border-slate-200]="!fileService.selectedViFile()"
+        [class.bg-slate-800/50]="!fileService.selectedViFile()"
+        [class.border-slate-700]="!fileService.selectedViFile()"
         [class.border-dashed]="!fileService.selectedViFile()"
         [class.shadow-sm]="fileService.selectedViFile()"
         [class.border-solid]="fileService.selectedViFile()"
-        [class.border-indigo-300]="fileService.selectedViFile()"
-        [class.bg-indigo-50]="fileService.selectedViFile()"
+        [class.border-cyan-500/50]="fileService.selectedViFile()"
+        [class.bg-cyan-900/20]="fileService.selectedViFile()"
         [class.opacity-50]="translationService.isTranslating()"
         [class.pointer-events-none]="translationService.isTranslating()"
       >
@@ -406,7 +410,7 @@ import { PLATFORM_ID } from "@angular/core";
             <button
               (click)="fileService.showViUpload.set(true)"
               [disabled]="translationService.isTranslating()"
-              class="text-[14px] text-left w-fit text-slate-700 hover:text-slate-950 font-bold underline underline-offset-4 decoration-slate-300 hover:decoration-slate-400 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-default"
+              class="text-[14px] text-left w-fit text-white hover:text-slate-200 font-bold underline underline-offset-4 decoration-slate-600 hover:decoration-slate-400 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-default"
             >
               Tải lên phụ đề tiếng Việt (tùy chọn)
             </button>
@@ -414,10 +418,10 @@ import { PLATFORM_ID } from "@angular/core";
               <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-200 hover:bg-slate-300 transition-colors rounded-full text-slate-500">
                 <span class="text-[9px] font-bold font-serif italic">i</span>
               </div>
-              <div class="absolute bottom-full mb-1.5 right-[-20px] w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 text-center leading-relaxed origin-bottom-right">
+              <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
                 Nếu bạn đã có sẵn bản dịch tiếng Việt cho phụ đề và muốn xem lại với video trên YouTube.
                 <!-- Arrow -->
-                <div class="absolute top-full right-[23px] border-[5px] border-transparent border-t-slate-800"></div>
+                <div class="absolute top-full right-[3px] border-[5px] border-transparent border-t-slate-800"></div>
               </div>
             </div>
           </div>
@@ -427,23 +431,23 @@ import { PLATFORM_ID } from "@angular/core";
             class="w-full flex flex-col gap-3 relative"
           >
             <div class="flex items-center gap-1.5 mb-1">
-              <span class="text-[14px] font-bold text-slate-800"
+              <span class="text-[14px] font-bold text-white"
                 >Tải lên phụ đề tiếng Việt (tùy chọn)</span
               >
               <div class="group relative flex items-center justify-center cursor-help ml-0.5">
-                <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-200 hover:bg-slate-300 transition-colors rounded-full text-slate-500">
+                <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-700 hover:bg-slate-600 transition-colors rounded-full text-slate-400">
                   <span class="text-[9px] font-bold font-serif italic">i</span>
                 </div>
-                <div class="absolute bottom-full mb-1.5 right-[-20px] w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 text-center leading-relaxed origin-bottom-right">
+                <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
                   Nếu bạn đã có sẵn bản dịch tiếng Việt cho phụ đề và muốn xem lại với video trên YouTube.
                   <!-- Arrow -->
-                  <div class="absolute top-full right-[23px] border-[5px] border-transparent border-t-slate-800"></div>
+                  <div class="absolute top-full right-[3px] border-[5px] border-transparent border-t-slate-800"></div>
                 </div>
               </div>
               @if (!fileService.selectedViFile() && !fileService.selectedEnFile()) {
               <button
                 (click)="fileService.showViUpload.set(false)"
-                class="text-indigo-400 hover:text-indigo-600 focus:outline-none cursor-pointer ml-auto bg-indigo-50 hover:bg-indigo-100 p-1 rounded-full transition-colors"
+                class="text-cyan-400 hover:text-cyan-300 focus:outline-none cursor-pointer ml-auto bg-cyan-900/30 hover:bg-cyan-900/50 p-1 rounded-full transition-colors"
                 title="Đóng tùy chọn này"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -458,24 +462,24 @@ import { PLATFORM_ID } from "@angular/core";
                 #viFileUploader
                 [disabled]="translationService.isTranslating()"
                 class="flex-1 w-full min-w-0 text-sm file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-xl overflow-hidden text-ellipsis whitespace-nowrap"
-                [class.border-slate-200]="!fileService.selectedViFile()"
-                [class.bg-slate-50]="!fileService.selectedViFile()"
-                [class.text-slate-500]="!fileService.selectedViFile()"
-                [class.file:bg-slate-100]="!fileService.selectedViFile()"
-                [class.file:text-slate-700]="!fileService.selectedViFile()"
-                [class.hover:file:bg-slate-200]="!fileService.selectedViFile()"
-                [class.border-indigo-300]="fileService.selectedViFile()"
-                [class.bg-white]="fileService.selectedViFile()"
-                [class.text-indigo-800]="fileService.selectedViFile()"
-                [class.file:bg-indigo-100]="fileService.selectedViFile()"
-                [class.file:text-indigo-700]="fileService.selectedViFile()"
-                [class.hover:file:bg-indigo-200]="fileService.selectedViFile()"
+                [class.border-slate-700]="!fileService.selectedViFile()"
+                [class.bg-slate-800]="!fileService.selectedViFile()"
+                [class.text-slate-400]="!fileService.selectedViFile()"
+                [class.file:bg-slate-700]="!fileService.selectedViFile()"
+                [class.file:text-slate-300]="!fileService.selectedViFile()"
+                [class.hover:file:bg-slate-600]="!fileService.selectedViFile()"
+                [class.border-cyan-500/50]="fileService.selectedViFile()"
+                [class.bg-cyan-900/20]="fileService.selectedViFile()"
+                [class.text-cyan-300]="fileService.selectedViFile()"
+                [class.file:bg-cyan-900/40]="fileService.selectedViFile()"
+                [class.file:text-cyan-300]="fileService.selectedViFile()"
+                [class.hover:file:bg-cyan-900/60]="fileService.selectedViFile()"
               />
               @if (fileService.selectedViFile()) {
               <button
                 (click)="clearViSubtitleFile($event)"
                 [disabled]="translationService.isTranslating()"
-                class="absolute right-2.5 top-[7px] p-1.5 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                class="absolute right-2.5 top-[7px] p-1.5 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                 title="Hủy chọn File"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -489,11 +493,11 @@ import { PLATFORM_ID } from "@angular/core";
 
       <!-- Detection Status -->
       <div
-        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 shrink-0"
+        class="bg-slate-900/80 p-5 rounded-2xl shadow-sm border border-slate-700 shrink-0"
         [class.hidden]="isTranscriptExpanded()"
       >
         <h3
-          class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2"
+          class="text-sm font-bold text-white mb-4 flex items-center gap-2"
         >
           <svg
             class="w-4 h-4"
@@ -514,28 +518,28 @@ import { PLATFORM_ID } from "@angular/core";
         </h3>
         <div class="space-y-4">
           <div class="flex justify-between items-center text-sm">
-            <span class="text-slate-500">Phụ đề SRT</span>
+            <span class="text-slate-400">Phụ đề SRT</span>
             @if (analysisResult()) {
             <span
-              class="font-mono font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded"
+              class="font-mono font-medium text-green-400 bg-green-900/30 px-2 py-0.5 rounded"
               >{{ (fileService.selectedViFile() && !fileService.selectedEnFile()) ? 'Đã tải bản tiếng
               Việt' : 'Đã tải lên' }}</span
             >
             } @else if (analyzeError()) {
             <span
-              class="font-mono font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded"
+              class="font-mono font-medium text-red-400 bg-red-900/30 px-2 py-0.5 rounded"
               >Lỗi</span
             >
             } @else {
             <span
-              class="font-mono font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded"
+              class="font-mono font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded"
               >Đang chờ</span
             >
             }
           </div>
           <div class="flex justify-between items-center text-sm">
-            <span class="text-slate-500">Số phân đoạn</span>
-            <span class="font-medium text-slate-900"
+            <span class="text-slate-400">Số phân đoạn</span>
+            <span class="font-medium text-white"
               >{{ analysisResult()?.lines || 0 }} dòng</span
             >
           </div>
