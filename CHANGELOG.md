@@ -5,10 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.46]- 2026-04-30
+## [v1.0.46]- 2026-05-01
 ### fixed
 - Thêm một font chữ kiểu monospace cho người dùng.
-- Khóa chế tải audio, video lên ở chế độ Flash, do các chỉ thị phức tạp chỉ dùng ở chế độ Pro mới hiệu quả.
+- Khóa chết tải audio, video lên ở chế độ Flash, do các chỉ thị phức tạp chỉ dùng ở chế độ Pro mới hiệu quả.
+- Chuyển dịch chế độ 'Thêm bối cảnh' thành dạng 2 phase để cải thiện chất lượng xử lý
+- Điều chỉnh nhẹ SI để phù hợp với chế độ 2 phase.
 
 ## [v1.0.45]- 2026-04-30
 ### fixed
