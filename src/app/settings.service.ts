@@ -89,6 +89,8 @@ export class SettingsService {
         return '"Inter", sans-serif';
       case "Lexend":
         return '"Lexend", sans-serif';
+      case "Space Mono":
+        return '"Space Mono", monospace';
       default:
         return '"Lexend", sans-serif';
     }

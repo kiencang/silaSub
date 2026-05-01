@@ -43,6 +43,7 @@ import { SettingsService } from './settings.service';
               <option value="Inter">Inter (Gọn gàng, UI chuẩn)</option>
               <option value="Roboto">Roboto (Truyền thống của YouTube)</option>
               <option value="Merriweather">Merriweather (Có chân, rõ nét)</option>
+              <option value="Space Mono">Space Mono (Font Monospace)</option>
             </select>
           </div>
 

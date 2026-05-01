@@ -62,7 +62,7 @@ import { FileService } from "./file.service";
             <!-- AI Model Controls -->
             <div class="flex items-center gap-2">
               <button
-                (click)="translationService.aiModel.set('gemini-pro-latest')"
+                (click)="changeAiModel('gemini-pro-latest')"
                 class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
                 [class.bg-blue-500]="translationService.aiModel() === 'gemini-pro-latest'"
                 [class.text-white]="translationService.aiModel() === 'gemini-pro-latest'"
@@ -75,7 +75,7 @@ import { FileService } from "./file.service";
               </button>
 
               <button
-                (click)="translationService.aiModel.set('gemini-flash-latest')"
+                (click)="changeAiModel('gemini-flash-latest')"
                 class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
                 [class.bg-amber-500]="translationService.aiModel() === 'gemini-flash-latest'"
                 [class.text-white]="translationService.aiModel() === 'gemini-flash-latest'"
@@ -198,6 +198,16 @@ export class HeaderComponent {
     this.translationService.translationMode.set(mode);
     if (mode === "lyric") {
       this.fileService.clearVideoFile();
+    }
+  }
+
+  changeAiModel(model: "gemini-pro-latest" | "gemini-flash-latest") {
+    this.translationService.aiModel.set(model);
+    if (model === "gemini-flash-latest") {
+      this.fileService.clearAudioFile();
+      this.fileService.clearVideoFile();
+      this.fileService.showAudioUpload.set(false);
+      this.fileService.showVideoUpload.set(false);
     }
   }
 }

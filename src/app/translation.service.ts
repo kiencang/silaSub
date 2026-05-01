@@ -30,6 +30,9 @@ export class TranslationService {
   translationCurrentChunk = signal<number>(0);
   translationTotalChunks = signal<number>(0);
   translationCompletedText = signal<string | null>(null);
+  analyzedBlocksJson = signal<string | null>(null);
+  analyzedBlocksFileName = signal<string | null>(null);
+  translationPhaseInfo = signal<string | null>(null);
   
   private translateTimerInterval: ReturnType<typeof setInterval> | undefined;
 
@@ -43,6 +46,9 @@ export class TranslationService {
     this.translationCurrentChunk.set(0);
     this.translationTotalChunks.set(0);
     this.translationCompletedText.set(null);
+    this.analyzedBlocksJson.set(null);
+    this.analyzedBlocksFileName.set(null);
+    this.translationPhaseInfo.set(null);
     this.stopTranslation();
   }
 
@@ -112,20 +118,20 @@ export class TranslationService {
         let siUrl = "";
         
         if (mode === "lyric") {
-            siUrl = (hasAudio) ? "/prompts/oa_music_system_instructions.md" : "/prompts/music_system_instructions.md";
+            siUrl = (hasAudio) ? "/prompts/oa_lyric_system_instructions.md" : "/prompts/lyric_system_instructions.md";
         } else {
             if (hasVideo) {
                  siUrl = "/prompts/ov_video_system_instructions.md";
             } else if (hasAudio) {
                  siUrl = "/prompts/oa_video_system_instructions.md";
             } else {
-                 siUrl = "/prompts/video_system_instructions.md";
+                 siUrl = "/prompts/no_context_video_system_instructions.md";
             }
         }
         
         const promptUrl =
           mode === "lyric"
-            ? "/prompts/music_prompt.md"
+            ? "/prompts/lyric_prompt.md"
             : "/prompts/video_prompt.md";
 
         const [siRes, promptRes] = await Promise.all([
@@ -162,7 +168,7 @@ export class TranslationService {
           fullTranscript.length,
         );
         const currentChunk = fullTranscript.slice(startIndex, endIndex);
-        const textsToTranslate = currentChunk.map((line, idx) => {
+        const textsToTranslate: any[] = currentChunk.map((line, idx) => {
           const globalIdx = startIndex + idx;
           let gap: number | null = null;
           if (globalIdx > 0) {
@@ -178,6 +184,81 @@ export class TranslationService {
             en: line.text,
           };
         });
+
+        // Phase 1: Muti-task with Extra Context -> Speaker Boundary Analysis
+        if (mode === "multi-task" && (hasAudio || hasVideo)) {
+          this.translationPhaseInfo.set("PHASE 1: Phân tích ranh giới...");
+          try {
+            const phase1SiRes = await fetch(`/prompts/speaker_boundary_system_instructions.md?t=${Date.now()}`);
+            if (!phase1SiRes.ok) throw new Error("Phase 1 SI fetch failed");
+            const phase1Si = await phase1SiRes.text();
+            
+            const reqConfigPhase1: Record<string, unknown> = {
+              systemInstruction: phase1Si,
+              responseMimeType: "application/json",
+              temperature: 0.1,
+              thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
+              responseSchema: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: { type: "integer" },
+                    block: { type: ["integer", "null"] },
+                  },
+                  required: ["id", "block"],
+                },
+              },
+            };
+
+            const phase1Prompt = "Phân tích ranh giới người nói cho mảng JSON sau:\n\n" + JSON.stringify(textsToTranslate, null, 2);
+            let reqContentsPhase1: any = phase1Prompt;
+
+            if (hasAudio && this.fileService.selectedAudioFile()) {
+                const audioFile = this.fileService.selectedAudioFile()!;
+                const base64Audio = await this.fileService.readFileAsBase64(audioFile);
+                reqContentsPhase1 = [
+                    { inlineData: { mimeType: audioFile.type || "audio/mp3", data: base64Audio } },
+                    phase1Prompt
+                ];
+            } else if (hasVideo && this.fileService.selectedVideoFile()) {
+                const videoFile = this.fileService.selectedVideoFile()!;
+                const base64Video = await this.fileService.readFileAsBase64(videoFile);
+                reqContentsPhase1 = [
+                    { inlineData: { mimeType: videoFile.type || "video/mp4", data: base64Video } },
+                    phase1Prompt
+                ];
+            }
+
+            const phase1Res = await ai.models.generateContent({
+              model: this.aiModel(),
+              contents: reqContentsPhase1,
+              config: reqConfigPhase1
+            });
+            
+            const phase1Data = JSON.parse(phase1Res.text || "[]");
+            
+            // Merge block into textsToTranslate
+            textsToTranslate.forEach(t => {
+               const bInfo = phase1Data.find((b: any) => b.id === t.id);
+               t.block = bInfo ? (bInfo.block !== undefined ? bInfo.block : null) : null;
+            });
+            
+            // Generate filename based on subtitle file
+            const subFile = this.fileService.selectedEnFile();
+            const subName = subFile ? subFile.name.replace(/\.[^/.]+$/, "") : "subtitle";
+            this.analyzedBlocksFileName.set(`silaSub_${subName}_blocks.json`);
+
+            this.analyzedBlocksJson.set(JSON.stringify(textsToTranslate, null, 2));
+          } catch (phase1Err) {
+            console.error("Phase 1 error:", phase1Err);
+            throw new Error("Lỗi khi phân tích ranh giới người nói. Vui lòng thử lại.");
+          }
+          
+          this.translationPhaseInfo.set("PHASE 2: Dịch thuật ngữ nghĩa...");
+        } else {
+          this.translationPhaseInfo.set(null);
+        }
 
         let contextText = "";
         if (chunkIndex > 0) {

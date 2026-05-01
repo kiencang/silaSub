@@ -147,24 +147,34 @@ import { MatIconModule } from '@angular/material/icon';
           [class.p-4]="!(appState.isTranscriptExpanded() && !fileService.selectedEnFile())"
         >
           @if (appState.analysisResult()?.transcript?.[0]?.viText && !translationService.isTranslating()) {
-          <button
-            (click)="onExportSrt()"
-            [disabled]="!!fileService.selectedViFile() && !fileService.selectedEnFile()"
-            class="w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center"
-            [class.bg-white]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-            [class.text-slate-900]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-            [class.hover:bg-slate-200]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-            [class.cursor-pointer]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-            [class.bg-slate-800]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-            [class.text-slate-500]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-            [class.cursor-not-allowed]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
-          >
-            @if (!!fileService.selectedViFile() && !fileService.selectedEnFile()) {
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            Đã nạp Phụ đề Việt từ máy } @else {
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Tải về Phụ đề Tiếng Việt (.srt) }
-          </button>
+          <div class="flex flex-col gap-2">
+            <button
+              (click)="onExportSrt()"
+              [disabled]="!!fileService.selectedViFile() && !fileService.selectedEnFile()"
+              class="w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center"
+              [class.bg-white]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.text-slate-900]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.hover:bg-slate-200]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.cursor-pointer]="!(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.bg-slate-800]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.text-slate-500]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+              [class.cursor-not-allowed]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
+            >
+              @if (!!fileService.selectedViFile() && !fileService.selectedEnFile()) {
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              Đã nạp Phụ đề Việt từ máy } @else {
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Tải về Phụ đề Tiếng Việt (.srt) }
+            </button>
+            @if (translationService.analyzedBlocksJson()) {
+              <button
+                (click)="onExportPhase1()"
+                class="w-full py-2 rounded-xl font-medium text-[11px] bg-slate-800 text-slate-400 hover:text-slate-300 hover:bg-slate-700 transition-all flex items-center justify-center"
+              >
+                Tải file phân tích ngữ cảnh cho dev (JSON)
+              </button>
+            }
+          </div>
           } @else {
           <button
             (click)="onStartTranslating()"
@@ -186,8 +196,13 @@ import { MatIconModule } from '@angular/material/icon';
               translationService.translationCurrentChunk() }}/{{ translationService.translationTotalChunks() }} ({{
               translationService.formattedTranslationTime() }}) } @else { @if (translationService.translationMode() ===
               'lyric') { Đang dịch lời bài hát... ({{ translationService.formattedTranslationTime()
-              }}) } @else { AI đang suy luận & Dịch... ({{
-              translationService.formattedTranslationTime() }}) } } } @else { 
+              }}) } @else { 
+                @if (translationService.translationPhaseInfo()) {
+                   {{ translationService.translationPhaseInfo() }} ({{ translationService.formattedTranslationTime() }})
+                } @else {
+                   AI đang suy luận & Dịch... ({{ translationService.formattedTranslationTime() }}) 
+                }
+              } } } @else { 
               <mat-icon class="text-[18px] w-[18px] h-[18px] mb-[2px] mr-1.5 flex items-center justify-center">{{ translationService.aiModel() === 'gemini-pro-latest' ? 'psychology' : 'bolt' }}</mat-icon>
               {{ translationService.translationMode() === 'lyric' ? 'Dịch lời bài hát' : 'Dịch đa nhiệm' }} 
               @if (translationService.useGoogleSearch()) {
@@ -224,6 +239,7 @@ export class TranscriptViewerComponent {
   private platformId = inject(PLATFORM_ID);
 
   @Input() exportSrtAction!: () => void;
+  @Input() exportPhase1Action!: () => void;
   @Input() startTranslatingAction!: () => Promise<void>;
 
   constructor() {
@@ -267,6 +283,12 @@ export class TranscriptViewerComponent {
   onExportSrt() {
     if (this.exportSrtAction) {
       this.exportSrtAction();
+    }
+  }
+
+  onExportPhase1() {
+    if (this.exportPhase1Action) {
+      this.exportPhase1Action();
     }
   }
 

@@ -164,7 +164,10 @@ import { PLATFORM_ID } from "@angular/core";
         </div>
 
         <!-- Extra Context Section -->
-        <div class="mt-4 border-t border-slate-100 pt-4 flex flex-col gap-3 w-full">
+        <div class="mt-4 border-t border-slate-100 pt-4 flex flex-col gap-3 w-full transition-opacity duration-300"
+             [class.opacity-40]="translationService.aiModel() === 'gemini-flash-latest'"
+             [class.pointer-events-none]="translationService.aiModel() === 'gemini-flash-latest'"
+             [title]="translationService.aiModel() === 'gemini-flash-latest' ? 'Chế độ Thêm bối cảnh chỉ khả dụng ở model Tư duy sâu (Pro)' : ''">
           <div class="flex items-center gap-1.5 mb-1">
             <span class="text-[13px] font-bold text-slate-700 block"
               >Thêm bối cảnh (không bắt buộc)</span
@@ -540,7 +543,7 @@ import { PLATFORM_ID } from "@angular/core";
       </div>
 
       <!-- Transcript Card -->
-      <app-transcript-viewer class="contents" [exportSrtAction]="exportSrtAction" [startTranslatingAction]="startTranslatingAction"></app-transcript-viewer>
+      <app-transcript-viewer class="contents" [exportSrtAction]="exportSrtAction" [exportPhase1Action]="exportPhase1Action" [startTranslatingAction]="startTranslatingAction"></app-transcript-viewer>
     </div>
   `
 })
@@ -768,6 +771,19 @@ export class ControlPanelComponent {
       `Đã tải thành công file Phụ đề Tiếng Việt: ${fileName} về máy.`,
       "success",
     );
+  };
+
+  exportPhase1Action = () => {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const json = this.translationService.analyzedBlocksJson();
+    const fileName = this.translationService.analyzedBlocksFileName() || "silaSub_blocks.json";
+    if (json) {
+       this.fileService.downloadFile(json, fileName, "application/json");
+       this.toastService.addToast(
+         `Đã tải file ranh giới người nói cho dev: ${fileName}`,
+         "success"
+       );
+    }
   };
 
   startTranslatingAction = async () => {
