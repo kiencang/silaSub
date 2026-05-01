@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.48]- 2026-05-01
 ### fixed
 - Điều chỉnh hướng dẫn sử dụng.
+- Khắc phục lỗi trang hướng dẫn sử dụng bị cache.
 
 ## [v1.0.47]- 2026-05-01
 ### fixed
