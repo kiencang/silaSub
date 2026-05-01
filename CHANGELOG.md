@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.52]- 2026-05-02
+### fixed
+- Chỉnh sửa tooltip lặt vặt.
+- Chỉnh sửa chút hướng dẫn sử dụng.
+
 ## [v1.0.51]- 2026-05-02
 ### fixed
 - Xử lý tự động từ mồ côi (chỉ áp dụng khi với kiểu dịch 2 phase, khi ranh giới người nói được xác định với độ tin cậy cao).
