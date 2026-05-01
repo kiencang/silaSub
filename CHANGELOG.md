@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Tinh chỉnh SI.
 - Loại bỏ thẻ audio tags (music|upbeat|laughter|applause) bất kể vị trí nào trong index, trừ khi chúng chỉ có một mình.
+- Chỉnh lại giao diện của ứng dụng, thống nhất tông màu.
 
 ## [v1.0.46]- 2026-05-01
 ### fixed
