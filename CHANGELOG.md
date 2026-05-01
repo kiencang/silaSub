@@ -8,7 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.49]- 2026-05-01
 ### fixed
 - Thay đổi font chữ & mức độ trong của màu nền cho font chữ.
-- Thay đổi mặc định tắt +search thành bật +search.
+- Thay đổi mặc định tắt +search thành bật +search và điều chỉnh lại thông tin ở tooltips cho phù hợp với bối cảnh mới.
 
 ## [v1.0.48]- 2026-05-01
 ### fixed
