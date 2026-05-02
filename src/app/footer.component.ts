@@ -11,7 +11,7 @@ import { TranslationService } from "./translation.service";
     <footer class="bg-slate-900 border-t border-slate-800 py-3 md:py-[10px] px-4 md:px-8 flex flex-col md:flex-row md:items-center justify-between shrink-0 gap-2 md:gap-0">
       <!-- Left side -->
       <p class="text-[10px] text-slate-500 font-medium mt-1 md:mt-0 order-2 md:order-1">
-        Chỉ dùng cho mục đích cá nhân • v1.0.52 •
+        Chỉ dùng cho mục đích cá nhân • v1.0.53 •
         <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200">GitHub</a>
       </p>
 

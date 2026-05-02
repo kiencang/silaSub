@@ -164,14 +164,25 @@ import { PLATFORM_ID } from "@angular/core";
         </div>
 
         <!-- Extra Context Section -->
-        <div class="mt-4 border-t border-slate-700 pt-4 flex flex-col gap-3 w-full transition-opacity duration-300"
-             [class.opacity-40]="translationService.aiModel() === 'gemini-flash-latest'"
-             [class.pointer-events-none]="translationService.aiModel() === 'gemini-flash-latest'"
-             [title]="translationService.aiModel() === 'gemini-flash-latest' ? 'Chế độ Thêm bối cảnh chỉ khả dụng ở model Tư duy sâu (Pro)' : ''">
-          <div class="flex items-center gap-1.5 mb-1">
-            <span class="text-[13px] font-bold text-slate-300 block"
-              >Thêm bối cảnh (không bắt buộc)</span
-            >
+        <div class="mt-4 border-t border-slate-700 pt-4 relative group/flashlock w-full">
+          
+          @if (translationService.aiModel() === 'gemini-flash-latest') {
+            <div class="absolute inset-0 z-50 cursor-not-allowed"></div>
+            <div class="absolute top-3 left-1/2 -translate-x-1/2 -translate-y-full w-max max-w-[200px] opacity-0 group-hover/flashlock:opacity-100 transition-opacity pointer-events-none z-[100]">
+                <span class="block bg-slate-800 text-white text-[11px] font-medium p-2 rounded-lg shadow-xl relative text-center leading-relaxed">
+                    Chế độ dịch Flash không đủ sức mạnh tính toán cho tác vụ Thêm bối cảnh.
+                    <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></span>
+                </span>
+            </div>
+          }
+
+          <div class="flex flex-col gap-3 w-full transition-opacity duration-300"
+               [class.opacity-40]="translationService.aiModel() === 'gemini-flash-latest'"
+               [class.pointer-events-none]="translationService.aiModel() === 'gemini-flash-latest'">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-[13px] font-bold text-slate-300 block"
+                >Thêm bối cảnh (không bắt buộc)</span
+              >
             <div
               class="group relative flex items-center justify-center cursor-help ml-0.5"
             >
@@ -248,9 +259,16 @@ import { PLATFORM_ID } from "@angular/core";
                   }
                 </div>
               } @else {
-                <div class="flex items-center text-[13px] text-slate-500 pointer-events-none opacity-50 w-fit" title="Chế độ Tải lên Video bị vô hiệu hóa trong Dịch lời bài hát">
-                    <button class="underline pr-2 underline-offset-4 decoration-slate-600">Tải lên Video</button>
-                    <mat-icon class="text-[15px] w-[15px] h-[15px] mb-[2px]">lock</mat-icon>
+                <div class="group/videolock relative flex items-center text-[13px] w-fit cursor-not-allowed">
+                    <button class="text-slate-500 opacity-50 underline pr-2 underline-offset-4 decoration-slate-600 pointer-events-none">Tải lên Video</button>
+                    <mat-icon class="text-slate-500 opacity-50 text-[15px] w-[15px] h-[15px] mb-[2px]">lock</mat-icon>
+
+                    <div class="absolute bottom-full right-0 mb-2 w-48 opacity-0 group-hover/videolock:opacity-100 transition-opacity pointer-events-none z-[100]">
+                        <span class="block bg-slate-800 text-white text-[11px] font-medium p-2 rounded-lg shadow-xl relative text-center leading-relaxed">
+                            Tính năng tải lên video không khả dụng ở chế độ dịch lời bài hát.
+                            <span class="absolute -bottom-1 right-4 w-2 h-2 bg-slate-800 rotate-45"></span>
+                        </span>
+                    </div>
                 </div>
               }
             </div>
@@ -380,6 +398,7 @@ import { PLATFORM_ID } from "@angular/core";
             }
         </div>
         </div>
+        </div>
 
         @if (analyzeError()) {
         <p
@@ -410,15 +429,15 @@ import { PLATFORM_ID } from "@angular/core";
             <button
               (click)="fileService.showViUpload.set(true)"
               [disabled]="translationService.isTranslating()"
-              class="text-[14px] text-left w-fit text-white hover:text-slate-200 font-bold underline underline-offset-4 decoration-slate-600 hover:decoration-slate-400 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-default"
+              class="text-[14px] text-left w-fit text-slate-400 hover:text-slate-300 font-medium hover:underline underline-offset-4 hover:decoration-slate-500 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-default"
             >
-              Tải lên phụ đề tiếng Việt (tùy chọn)
+              Sử dụng phụ đề tiếng Việt có sẵn
             </button>
             <div class="group relative flex items-center justify-center cursor-help ml-0.5">
               <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-200 hover:bg-slate-300 transition-colors rounded-full text-slate-500">
                 <span class="text-[9px] font-bold font-serif italic">i</span>
               </div>
-              <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
+              <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[220px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
                 Nếu bạn đã có sẵn bản dịch tiếng Việt cho phụ đề và muốn xem lại với video trên YouTube.
                 <!-- Arrow -->
                 <div class="absolute top-full right-[3px] border-[5px] border-transparent border-t-slate-800"></div>
@@ -431,14 +450,14 @@ import { PLATFORM_ID } from "@angular/core";
             class="w-full flex flex-col gap-3 relative"
           >
             <div class="flex items-center gap-1.5 mb-1">
-              <span class="text-[14px] font-bold text-white"
-                >Tải lên phụ đề tiếng Việt (tùy chọn)</span
+              <span class="text-[14px] font-medium text-slate-400"
+                >Sử dụng phụ đề tiếng Việt có sẵn</span
               >
               <div class="group relative flex items-center justify-center cursor-help ml-0.5">
                 <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-700 hover:bg-slate-600 transition-colors rounded-full text-slate-400">
                   <span class="text-[9px] font-bold font-serif italic">i</span>
                 </div>
-                <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
+                <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[220px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
                   Nếu bạn đã có sẵn bản dịch tiếng Việt cho phụ đề và muốn xem lại với video trên YouTube.
                   <!-- Arrow -->
                   <div class="absolute top-full right-[3px] border-[5px] border-transparent border-t-slate-800"></div>

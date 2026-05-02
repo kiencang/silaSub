@@ -259,7 +259,7 @@ export class TranslationService {
                   curr.block != null &&
                   prev.block === curr.block &&
                   typeof curr.gap === "number" &&
-                  curr.gap < 0.1
+                  curr.gap <= 0.1
                 ) {
                   // Đảm bảo dòng trước đó chưa kết thúc bằng dấu câu
                   const prevEndsWithPunctuation = /[.,!?;:]["']?$/.test(prev.en.trim());
