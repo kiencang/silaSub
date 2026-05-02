@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Chỉnh nhẹ gap giữa 2 index cho phần xét từ mồ côi.
 - Giảm mức độ thu hút của Tải lên phụ đề tiếng Việt, để người dùng tránh hiểu nhầm.
+- Bổ sung các tooltip giải thích để người dùng dễ dùng hơn.
 
 ## [v1.0.52]- 2026-05-02
 ### fixed
