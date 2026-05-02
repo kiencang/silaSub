@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Chỉnh sửa tooltip lặt vặt.
 - Chỉnh sửa chút hướng dẫn sử dụng.
+- Điều chỉnh lại giao diện, sắp xếp luồng thao tác sang cột phải, không phân mảnh trái và phải đồng thời nữa.
 
 ## [v1.0.51]- 2026-05-02
 ### fixed
