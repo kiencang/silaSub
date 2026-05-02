@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.54]- 2026-05-02
+### fixed
+- Hạ mức độ gắt của dịch lyric hiphop, chuyển 'bố mày' thành 'anh mày'.
+
 ## [v1.0.53]- 2026-05-02
 ### fixed
 - Chỉnh nhẹ gap giữa 2 index cho phần xét từ mồ côi.
