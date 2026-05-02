@@ -9,6 +9,9 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Thêm lưu ý cho tab Tải lên Audio.
 
+### removed
+- Loại bỏ tính năng tải lên Video vì chi phí token quá đắt đỏ.
+
 ## [v1.0.54]- 2026-05-02
 ### fixed
 - Hạ mức độ gắt của dịch lyric hiphop, chuyển 'bố mày' thành 'anh mày' (điều chỉnh SI).
