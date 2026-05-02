@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.54]- 2026-05-02
 ### fixed
 - Hạ mức độ gắt của dịch lyric hiphop, chuyển 'bố mày' thành 'anh mày'.
+- Để phase1 cố định là Flash vẫn cho chất lượng phân tích cao trong khi lại nhanh và rẻ hơn Pro nhiều.
 
 ## [v1.0.53]- 2026-05-02
 ### fixed
