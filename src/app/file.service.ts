@@ -11,12 +11,9 @@ export class FileService {
   selectedViFile = signal<File | null>(null);
   selectedAudioFile = signal<File | null>(null);
   audioDuration = signal<number | null>(null);
-  selectedVideoFile = signal<File | null>(null);
-  videoDuration = signal<number | null>(null);
   
   showViUpload = signal(false);
   showAudioUpload = signal(false);
-  showVideoUpload = signal(false);
 
   readFileAsText(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -170,63 +167,6 @@ export class FileService {
     } else {
       this.selectedViFile.set(null);
       onParsed(false);
-    }
-  }
-
-  clearVideoFile(inputElement?: HTMLInputElement) {
-    this.selectedVideoFile.set(null);
-    this.videoDuration.set(null);
-    if (inputElement) {
-      inputElement.value = "";
-    }
-  }
-
-  onVideoFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (file) {
-      const type = file.type;
-      if (!type.startsWith("video/")) {
-        this.toastService.addToast("Vui lòng chọn file video hợp lệ.", "error");
-        input.value = "";
-        return;
-      }
-
-      const MAX_SIZE = 70 * 1024 * 1024; // 70MB
-      if (file.size > MAX_SIZE) {
-        this.toastService.addToast("Dung lượng video vượt quá 70MB. Vui lòng chọn file nhỏ hơn.", "error");
-        input.value = "";
-        return;
-      }
-
-      const videoUrl = URL.createObjectURL(file);
-      const video = document.createElement("video");
-      video.src = videoUrl;
-      video.onloadedmetadata = () => {
-        const duration = video.duration;
-        const MAX_DURATION = 30 * 60; // 30 minutes
-        if (duration > MAX_DURATION) {
-            this.toastService.addToast(`File video quá dài (${Math.round(duration / 60)} phút). Giới hạn tối đa là 30 phút.`, "error");
-            input.value = "";
-            this.selectedVideoFile.set(null);
-            this.videoDuration.set(null);
-        } else {
-            this.selectedVideoFile.set(file);
-            this.videoDuration.set(duration);
-            this.toastService.addToast(`Đã chọn file video (${Math.round(duration)}s)`, "success");
-        }
-        URL.revokeObjectURL(videoUrl);
-      };
-      video.onerror = () => {
-          this.toastService.addToast("Không thể đọc thời lượng file video.", "error");
-          input.value = "";
-          this.selectedVideoFile.set(null);
-          this.videoDuration.set(null);
-          URL.revokeObjectURL(videoUrl);
-      }
-    } else {
-      this.selectedVideoFile.set(null);
-      this.videoDuration.set(null);
     }
   }
 

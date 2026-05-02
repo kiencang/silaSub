@@ -211,18 +211,13 @@ export class HeaderComponent {
 
   changeTranslationMode(mode: "multi-task" | "lyric") {
     this.translationService.translationMode.set(mode);
-    if (mode === "lyric") {
-      this.fileService.clearVideoFile();
-    }
   }
 
   changeAiModel(model: "gemini-pro-latest" | "gemini-flash-latest") {
     this.translationService.aiModel.set(model);
     if (model === "gemini-flash-latest") {
       this.fileService.clearAudioFile();
-      this.fileService.clearVideoFile();
       this.fileService.showAudioUpload.set(false);
-      this.fileService.showVideoUpload.set(false);
     }
   }
 }

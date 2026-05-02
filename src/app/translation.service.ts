@@ -59,23 +59,22 @@ export class TranslationService {
     if (!res || !res.transcript) return;
 
     const hasAudio = !!this.fileService.selectedAudioFile();
-    const hasVideo = !!this.fileService.selectedVideoFile();
 
     if (this.translationMode() === "lyric" && res.transcript.length > 500) {
       this.toastService.addToast("Vượt quá 500 dòng. Không thể dịch ở chế độ Âm nhạc.", "error");
       return;
     }
 
-    if (hasAudio || hasVideo) {
+    if (hasAudio) {
       if (res.transcript.length > 1000) {
         this.toastService.addToast(
-          "Vượt quá 1000 dòng. Vui lòng tắt âm thanh/video đính kèm, hoặc cắt nhỏ file phụ đề và media tương ứng.",
+          "Vượt quá 1000 dòng. Vui lòng tắt âm thanh đính kèm, hoặc cắt nhỏ file phụ đề và media tương ứng.",
           "error",
         );
         return;
       }
 
-      const mediaDur = hasAudio ? this.fileService.audioDuration() : this.fileService.videoDuration();
+      const mediaDur = this.fileService.audioDuration();
       if (mediaDur !== null) {
         const lastLine = res.transcript[res.transcript.length - 1];
         const lastTime = lastLine.offset + lastLine.duration;
@@ -120,9 +119,7 @@ export class TranslationService {
         if (mode === "lyric") {
             siUrl = (hasAudio) ? "/prompts/oa_lyric_system_instructions.md" : "/prompts/lyric_system_instructions.md";
         } else {
-            if (hasVideo) {
-                 siUrl = "/prompts/ov_video_system_instructions.md";
-            } else if (hasAudio) {
+            if (hasAudio) {
                  siUrl = "/prompts/oa_video_system_instructions.md";
             } else {
                  siUrl = "/prompts/no_context_video_system_instructions.md";
@@ -151,11 +148,11 @@ export class TranslationService {
       const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
       const mode = this.translationMode();
-      const CHUNK_SIZE = (mode === "lyric" || hasAudio || hasVideo) ? res.transcript.length : 600;
+      const CHUNK_SIZE = (mode === "lyric" || hasAudio) ? res.transcript.length : 600;
       const fullTranscript = res.transcript;
       const totalChunks = Math.ceil(fullTranscript.length / CHUNK_SIZE);
       const translatedTranscript = [...fullTranscript];
-      const allDevData: any[] = [];
+      const allDevData: { id: number; start: number; end: number; gap: number | null; en: string; block?: number | null }[] = [];
 
       for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
         if (totalChunks > 1) {
@@ -187,7 +184,7 @@ export class TranslationService {
         });
 
         // Phase 1: Muti-task with Extra Context -> Speaker Boundary Analysis
-        if (mode === "multi-task" && (hasAudio || hasVideo)) {
+        if (mode === "multi-task" && hasAudio) {
           this.translationPhaseInfo.set("PHASE 1: Phân tích ranh giới...");
           try {
             const phase1SiRes = await fetch(`/prompts/speaker_boundary_system_instructions.md?t=${Date.now()}`);
@@ -215,18 +212,11 @@ export class TranslationService {
             const phase1Prompt = "Phân tích ranh giới người nói cho mảng JSON sau:\n\n" + JSON.stringify(textsToTranslate, null, 2);
             let reqContentsPhase1: string | (string | { inlineData: { mimeType: string, data: string } })[] = phase1Prompt;
 
-            if (hasAudio && this.fileService.selectedAudioFile()) {
+            if (this.fileService.selectedAudioFile()) {
                 const audioFile = this.fileService.selectedAudioFile()!;
                 const base64Audio = await this.fileService.readFileAsBase64(audioFile);
                 reqContentsPhase1 = [
                     { inlineData: { mimeType: audioFile.type || "audio/mp3", data: base64Audio } },
-                    phase1Prompt
-                ];
-            } else if (hasVideo && this.fileService.selectedVideoFile()) {
-                const videoFile = this.fileService.selectedVideoFile()!;
-                const base64Video = await this.fileService.readFileAsBase64(videoFile);
-                reqContentsPhase1 = [
-                    { inlineData: { mimeType: videoFile.type || "video/mp4", data: base64Video } },
                     phase1Prompt
                 ];
             }
@@ -299,7 +289,11 @@ export class TranslationService {
           const subName = subFile ? subFile.name.replace(/\.[^/.]+$/, "") : "subtitle";
           this.analyzedBlocksFileName.set(`silaSub_${subName}_input.json`);
           // Loại bỏ properties 'block' không cần thiết ở normal mode
-          const devData = textsToTranslate.map(t => { const { block, ...rest } = t; return rest; });
+          const devData = textsToTranslate.map(t => {
+            const line = { ...t };
+            if ('block' in line) delete line.block;
+            return line;
+          });
           allDevData.push(...devData);
           this.analyzedBlocksJson.set(JSON.stringify(allDevData, null, 2));
 
@@ -357,18 +351,6 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
                     inlineData: {
                         mimeType: audioFile.type || "audio/mp3",
                         data: base64Audio,
-                    }
-                },
-                prompt
-            ];
-        } else if (hasVideo && this.fileService.selectedVideoFile()) {
-            const videoFile = this.fileService.selectedVideoFile()!;
-            const base64Video = await this.fileService.readFileAsBase64(videoFile);
-            reqContents = [
-                {
-                    inlineData: {
-                        mimeType: videoFile.type || "video/mp4",
-                        data: base64Video,
                     }
                 },
                 prompt

@@ -114,7 +114,8 @@ import { PLATFORM_ID } from "@angular/core";
               Tìm công cụ tải phụ đề trên mạng với từ khóa:<br /><span
                 class="text-yellow-400 font-bold tracking-wide"
                 >"download youtube subtitles"</span
-              >
+              ><br />
+              Hãy nhớ tải về định dạng .srt để phù hợp với công cụ này.
             </div>
           </div>
         </div>
@@ -170,7 +171,7 @@ import { PLATFORM_ID } from "@angular/core";
             <div class="absolute inset-0 z-50 cursor-not-allowed"></div>
             <div class="absolute top-3 left-1/2 -translate-x-1/2 -translate-y-full w-max max-w-[200px] opacity-0 group-hover/flashlock:opacity-100 transition-opacity pointer-events-none z-[100]">
                 <span class="block bg-slate-800 text-white text-[11px] font-medium p-2 rounded-lg shadow-xl relative text-center leading-relaxed">
-                    Chế độ dịch Flash không đủ sức mạnh tính toán cho tác vụ Thêm bối cảnh.
+                    Model Flash không đủ sức mạnh tính toán cho tác vụ Thêm bối cảnh. Nếu muốn dùng, bạn hãy chuyển sang model Pro (icon hình đầu người).
                     <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></span>
                 </span>
             </div>
@@ -194,7 +195,7 @@ import { PLATFORM_ID } from "@angular/core";
               <div
                 class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom"
               >
-                Cung cấp thêm audio hoặc video gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định (ví dụ như có nhiều người nói), nhưng điều này không phải là yêu cầu bắt buộc.
+                Cung cấp thêm audio gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định (ví dụ như có nhiều người nói), nhưng tùy chọn này không phải là yêu cầu bắt buộc. Ngoài ra: Thêm bối cảnh chỉ bật được với model Pro (tư duy sâu), model Flash không đủ sức mạnh tính toán.
                 <!-- Arrow -->
                 <div
                   class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-slate-800"
@@ -203,75 +204,22 @@ import { PLATFORM_ID } from "@angular/core";
             </div>
           </div>
 
-          <!-- Audio & Video Box Toggles -->
-          <div class="grid grid-cols-2 gap-4 w-full border-b border-slate-700 pb-2">
-            <!-- Audio Toggle -->
-            <div>
-              <div class="relative group/abtn">
-                <button
-                  (click)="toggleAudioUpload()"
-                  [disabled]="translationService.isTranslating() || !!fileService.selectedVideoFile()"
-                  [class.opacity-40]="!!fileService.selectedVideoFile()"
-                  [class.pointer-events-none]="!!fileService.selectedVideoFile()"
-                  class="text-[13px] text-left w-fit transition-colors cursor-pointer disabled:cursor-default underline underline-offset-4 hover:decoration-slate-400"
-                  [class.text-pink-400]="fileService.showAudioUpload()"
-                  [class.font-bold]="fileService.showAudioUpload()"
-                  [class.decoration-pink-500]="fileService.showAudioUpload()"
-                  [class.text-slate-400]="!fileService.showAudioUpload()"
-                  [class.font-medium]="!fileService.showAudioUpload()"
-                  [class.decoration-slate-600]="!fileService.showAudioUpload()"
-                  [class.hover:text-slate-200]="!fileService.showAudioUpload()"
-                >
-                  Tải lên Audio
-                </button>
-                @if (fileService.selectedVideoFile()) {
-                  <div class="absolute inset-x-0 bg-transparent flex opacity-0 group-hover/abtn:opacity-100 transition-opacity z-10 -translate-y-7 left-0 top-0">
-                    <span class="bg-black/80 text-white text-[11px] px-2 py-1 rounded shadow pointer-events-none relative z-20 whitespace-nowrap">Đã đăng tải Video</span>
-                  </div>
-                }
-              </div>
-            </div>
-
-            <!-- Video Toggle -->
-            <div>
-              @if (translationService.translationMode() !== 'lyric') {
-                <div class="relative group/vbtn">
-                  <button
-                    (click)="toggleVideoUpload()"
-                    [disabled]="translationService.isTranslating() || !!fileService.selectedAudioFile()"
-                    [class.opacity-40]="!!fileService.selectedAudioFile()"
-                    [class.pointer-events-none]="!!fileService.selectedAudioFile()"
-                    class="text-[13px] text-left w-fit transition-colors cursor-pointer disabled:cursor-default underline underline-offset-4 hover:decoration-slate-400"
-                    [class.text-amber-400]="fileService.showVideoUpload()"
-                    [class.font-bold]="fileService.showVideoUpload()"
-                    [class.decoration-amber-500]="fileService.showVideoUpload()"
-                    [class.text-slate-400]="!fileService.showVideoUpload()"
-                    [class.font-medium]="!fileService.showVideoUpload()"
-                    [class.decoration-slate-600]="!fileService.showVideoUpload()"
-                    [class.hover:text-slate-200]="!fileService.showVideoUpload()"
-                  >
-                    Tải lên Video
-                  </button>
-                  @if (fileService.selectedAudioFile()) {
-                    <div class="absolute inset-x-0 bg-transparent flex opacity-0 group-hover/vbtn:opacity-100 transition-opacity z-10 -translate-y-7 left-0 top-0">
-                      <span class="bg-black/80 text-white text-[11px] px-2 py-1 rounded shadow pointer-events-none relative z-20 whitespace-nowrap">Đã đăng tải Âm thanh</span>
-                    </div>
-                  }
-                </div>
-              } @else {
-                <div class="group/videolock relative flex items-center text-[13px] w-fit cursor-not-allowed">
-                    <button class="text-slate-500 opacity-50 underline pr-2 underline-offset-4 decoration-slate-600 pointer-events-none">Tải lên Video</button>
-                    <mat-icon class="text-slate-500 opacity-50 text-[15px] w-[15px] h-[15px] mb-[2px]">lock</mat-icon>
-
-                    <div class="absolute bottom-full right-0 mb-2 w-48 opacity-0 group-hover/videolock:opacity-100 transition-opacity pointer-events-none z-[100]">
-                        <span class="block bg-slate-800 text-white text-[11px] font-medium p-2 rounded-lg shadow-xl relative text-center leading-relaxed">
-                            Tính năng tải lên video không khả dụng ở chế độ dịch lời bài hát.
-                            <span class="absolute -bottom-1 right-4 w-2 h-2 bg-slate-800 rotate-45"></span>
-                        </span>
-                    </div>
-                </div>
-              }
-            </div>
+          <!-- Audio Toggle Box -->
+          <div class="w-full border-b border-slate-700 pb-2 flex justify-center">
+            <button
+              (click)="toggleAudioUpload()"
+              [disabled]="translationService.isTranslating()"
+              class="text-[13px] text-left w-fit transition-colors cursor-pointer disabled:cursor-default underline underline-offset-4 hover:decoration-slate-400"
+              [class.text-pink-400]="fileService.showAudioUpload()"
+              [class.font-bold]="fileService.showAudioUpload()"
+              [class.decoration-pink-500]="fileService.showAudioUpload()"
+              [class.text-slate-400]="!fileService.showAudioUpload()"
+              [class.font-medium]="!fileService.showAudioUpload()"
+              [class.decoration-slate-600]="!fileService.showAudioUpload()"
+              [class.hover:text-slate-200]="!fileService.showAudioUpload()"
+            >
+              Tải lên Audio bối cảnh
+            </button>
           </div>
 
           <!-- Full Width Upload Boxes -->
@@ -301,7 +249,7 @@ import { PLATFORM_ID } from "@angular/core";
                   accept="audio/*"
                   (change)="onAudioFileSelected($event)"
                   #audioFileUploader
-                  [disabled]="translationService.isTranslating() || !!fileService.selectedVideoFile()"
+                  [disabled]="translationService.isTranslating()"
                   class="flex-1 w-full min-w-0 text-[13px] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-lg overflow-hidden text-ellipsis whitespace-nowrap"
                   [class.border-pink-500/30]="!fileService.selectedAudioFile()"
                   [class.text-pink-400]="!fileService.selectedAudioFile()"
@@ -330,74 +278,17 @@ import { PLATFORM_ID } from "@angular/core";
             </div>
           }
 
-          <!-- Video Box -->
-          @if (fileService.showVideoUpload() && translationService.translationMode() !== 'lyric') {
-            <div
-              class="w-full flex flex-col gap-3 p-3 bg-amber-900/20 border border-amber-500/20 rounded-xl relative transition-opacity min-h-[90px]"
-            >
-              <div class="flex justify-between items-center px-1">
-                <span class="text-xs font-semibold text-amber-400"
-                  >Video (<span title="Tối đa 30 phút / 70MB" class="cursor-help border-b border-dotted border-amber-500/50">chi tiết</span>):</span
-                >
-                @if (!fileService.selectedVideoFile()) {
-                <button
-                  (click)="fileService.showVideoUpload.set(false)"
-                  class="text-amber-400 hover:text-amber-600 focus:outline-none cursor-pointer"
-                  title="Đóng"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                </button>
-                }
-              </div>
-              <div class="flex gap-3 relative w-full h-[36px]">
-                <input
-                  type="file"
-                  accept="video/*"
-                  (change)="onVideoFileSelected($event)"
-                  #videoFileUploader
-                  [disabled]="translationService.isTranslating() || !!fileService.selectedAudioFile()"
-                  class="flex-1 w-full min-w-0 text-[13px] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold transition-all duration-300 font-medium cursor-pointer border rounded-lg overflow-hidden text-ellipsis whitespace-nowrap"
-                  [class.border-amber-500/30]="!fileService.selectedVideoFile()"
-                  [class.text-amber-400]="!fileService.selectedVideoFile()"
-                  [class.bg-slate-800]="!fileService.selectedVideoFile()"
-                  [class.file:bg-amber-900/40]="!fileService.selectedVideoFile()"
-                  [class.file:text-amber-300]="!fileService.selectedVideoFile()"
-                  [class.hover:file:bg-amber-900/60]="!fileService.selectedVideoFile()"
-                  [class.border-amber-500/60]="fileService.selectedVideoFile()"
-                  [class.text-amber-300]="fileService.selectedVideoFile()"
-                  [class.bg-amber-900/20]="fileService.selectedVideoFile()"
-                  [class.file:bg-amber-700]="fileService.selectedVideoFile()"
-                  [class.file:text-white]="fileService.selectedVideoFile()"
-                  [class.hover:file:bg-amber-600]="fileService.selectedVideoFile()"
-                />
-                @if (fileService.selectedVideoFile()) {
-                <button
-                  (click)="removeVideoFile($event)"
-                  [disabled]="translationService.isTranslating()"
-                  class="absolute right-2.5 top-[3px] p-1.5 text-amber-400 hover:text-amber-300 hover:bg-amber-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
-                  title="Hủy chọn File"
-                >
-                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                </button>
-                }
-              </div>
+          @if (fileService.showAudioUpload()) {
+            <div class="text-[12px] text-pink-300 bg-pink-900/30 border border-pink-500/30 px-3 py-2 rounded-lg flex items-start gap-2 shadow-sm mb-3 relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-[3px] bg-pink-500"></div>
+                <div class="w-[13px] h-[13px] rounded-full bg-pink-500 flex items-center justify-center shrink-0 mt-[3px]">
+                <span class="text-white text-[10px] font-bold font-serif italic leading-none">i</span>
+                </div>
+                <span class="w-full text-pink-200 leading-snug">
+                <b>Lưu ý:</b> 10 phút Audio tốn khoảng 15 ngàn token đầu vào.
+                </span>
             </div>
           }
-
-          <div class="w-full mt-2">
-            @if (fileService.showVideoUpload() && translationService.translationMode() !== 'lyric') {
-               <div class="text-[12px] text-amber-300 bg-amber-900/30 border border-amber-500/30 px-3 py-2 rounded-lg flex items-start gap-2 shadow-sm mb-3 relative overflow-hidden">
-                 <div class="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-500"></div>
-                 <div class="w-[13px] h-[13px] rounded-full bg-amber-500 flex items-center justify-center shrink-0 mt-[3px]">
-                   <span class="text-white text-[10px] font-bold font-serif italic leading-none">i</span>
-                 </div>
-                 <span class="w-full text-amber-200 leading-snug">
-                   <b>Lưu ý:</b> Video tiêu tốn rất nhiều token đầu vào, một video 10 phút tốn khoảng 180 ngàn token đầu vào.
-                 </span>
-               </div>
-            }
-        </div>
-        </div>
         </div>
 
         @if (analyzeError()) {
@@ -408,6 +299,7 @@ import { PLATFORM_ID } from "@angular/core";
         </p>
         }
       </div>
+    </div>
 
       <!-- Optional VN Subtitle Upload Card -->
       <div
@@ -583,7 +475,6 @@ export class ControlPanelComponent {
   @ViewChild("enFileUploader") enFileUploader!: ElementRef<HTMLInputElement>;
   @ViewChild("viFileUploader") viFileUploader!: ElementRef<HTMLInputElement>;
   @ViewChild("audioFileUploader") audioFileUploader!: ElementRef<HTMLInputElement>;
-  @ViewChild("videoFileUploader") videoFileUploader!: ElementRef<HTMLInputElement>;
 
   get videoUrl() { return this.appState.videoUrl; }
   get isAnalyzing() { return this.appState.isAnalyzing; }
@@ -617,21 +508,7 @@ export class ControlPanelComponent {
   }
 
   toggleAudioUpload() {
-    if (this.fileService.showAudioUpload()) {
-      this.fileService.showAudioUpload.set(false);
-    } else {
-      this.fileService.showAudioUpload.set(true);
-      this.fileService.showVideoUpload.set(false);
-    }
-  }
-
-  toggleVideoUpload() {
-    if (this.fileService.showVideoUpload()) {
-      this.fileService.showVideoUpload.set(false);
-    } else {
-      this.fileService.showVideoUpload.set(true);
-      this.fileService.showAudioUpload.set(false);
-    }
+    this.fileService.showAudioUpload.set(!this.fileService.showAudioUpload());
   }
 
   clearSubtitleFiles(event?: Event) {
@@ -645,11 +522,8 @@ export class ControlPanelComponent {
     this.fileService.selectedViFile.set(null);
     this.fileService.selectedAudioFile.set(null);
     this.fileService.audioDuration.set(null);
-    this.fileService.selectedVideoFile.set(null);
-    this.fileService.videoDuration.set(null);
     this.fileService.showViUpload.set(false);
     this.fileService.showAudioUpload.set(false);
-    this.fileService.showVideoUpload.set(false);
     this.appState.analyzeError.set(null);
     this.translationService.resetState();
 
@@ -705,22 +579,6 @@ export class ControlPanelComponent {
 
   onAudioFileSelected(event: Event) {
     this.fileService.onAudioFileSelected(event);
-  }
-
-  triggerVideoUpload() {
-    this.videoFileUploader?.nativeElement.click();
-  }
-
-  removeVideoFile(event?: Event) {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    this.fileService.clearVideoFile(this.videoFileUploader?.nativeElement);
-  }
-
-  onVideoFileSelected(event: Event) {
-    this.fileService.onVideoFileSelected(event);
   }
 
   private parseAndLoadFiles(autoDetected = false) {
