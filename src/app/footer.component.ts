@@ -9,7 +9,18 @@ import { TranslationService } from "./translation.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="bg-slate-900 border-t border-slate-800 py-3 md:py-[10px] px-4 md:px-8 flex flex-col md:flex-row md:items-center justify-between shrink-0 gap-2 md:gap-0">
-      <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+      <!-- Left side -->
+      <p class="text-[10px] text-slate-500 font-medium mt-1 md:mt-0 order-2 md:order-1">
+        Chỉ dùng cho mục đích cá nhân • v1.0.52 •
+        <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200">GitHub</a>
+      </p>
+
+      <!-- Right side -->
+      <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 order-1 md:order-2">
+        <p class="text-[10px] text-slate-500 font-medium md:border-r md:border-slate-800 md:pr-6 leading-relaxed">
+        Nguyễn Đức Anh • Dùng tốt nhất với Chrome, màn hình lớn
+        </p>
+
         <!-- Grounding with Google Search Toggle -->
         <div class="group relative flex items-center gap-2 self-start md:self-auto" [class.opacity-50]="translationService.isTranslating()">
           <button
@@ -42,21 +53,13 @@ import { TranslationService } from "./translation.service";
           >+Search</span>
           
           <!-- Tooltip -->
-          <span class="absolute bottom-full left-0 mb-3 w-[220px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
+          <span class="absolute bottom-full right-0 mb-3 w-[220px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
             <span class="font-bold" [class.text-blue-400]="translationService.useGoogleSearch()" [class.text-slate-400]="!translationService.useGoogleSearch()">[{{ translationService.useGoogleSearch() ? 'Đang bật' : 'Đang tắt' }}]</span> Đa số các video thông thường không cần bật tính năng này. Bật công cụ tìm kiếm cho AI sẽ hữu ích nhất cho nội dung có tính chuyên ngành cao hoặc nội dung có tính thời sự cao cần cập nhật thông tin mới nhất.
             <!-- Arrow -->
-            <span class="absolute -bottom-1 left-4 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
+            <span class="absolute -bottom-1 right-4 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
           </span>
         </div>
-
-        <p class="text-[10px] text-slate-500 font-medium md:border-l md:border-slate-800 md:pl-6 leading-relaxed">
-        Nguyễn Đức Anh • Dùng tốt nhất với Chrome, màn hình lớn
-        </p>
       </div>
-      <p class="text-[10px] text-slate-500 font-medium mt-1 md:mt-0">
-        Chỉ dùng cho mục đích cá nhân • v1.0.51 •
-        <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200">GitHub</a>
-      </p>
     </footer>
   `
 })

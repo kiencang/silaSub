@@ -183,7 +183,7 @@ import { PLATFORM_ID } from "@angular/core";
               <div
                 class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom"
               >
-                Cung cấp thêm audio hoặc video gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định, nhưng điều này không phải là yêu cầu bắt buộc.
+                Cung cấp thêm audio hoặc video gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định (ví dụ như có nhiều người nói), nhưng điều này không phải là yêu cầu bắt buộc.
                 <!-- Arrow -->
                 <div
                   class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-slate-800"
