@@ -23,6 +23,7 @@ export class AppStateService {
 
   // Instructions
   showInstructions = signal(false);
+  isShareModalOpen = signal(false);
 
   videoId = computed(() => {
     return this.videoService.extractYouTubeId(this.videoUrl());

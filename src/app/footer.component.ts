@@ -1,19 +1,31 @@
 import { Component, inject, ChangeDetectionStrategy } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { MatIconModule } from "@angular/material/icon";
 import { TranslationService } from "./translation.service";
+import { AppStateService } from "./app.state.service";
 
 @Component({
   selector: "app-footer",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="bg-slate-900 border-t border-slate-800 py-3 md:py-[10px] px-4 md:px-8 flex flex-col md:flex-row md:items-center justify-between shrink-0 gap-2 md:gap-0">
       <!-- Left side -->
-      <p class="text-[10px] text-slate-500 font-medium mt-1 md:mt-0 order-2 md:order-1">
-        Chỉ dùng cho mục đích cá nhân • v1.0.56 •
-        <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200">GitHub</a>
-      </p>
+      <div class="flex flex-row items-center gap-3 order-2 md:order-1 mt-1 md:mt-0">
+        <button
+          (click)="appState.isShareModalOpen.set(true)"
+          class="flex items-center justify-center gap-1 h-[20px] px-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded transition-colors border border-slate-700 cursor-pointer group focus:outline-none focus:ring-1 focus:ring-slate-500"
+          title="Chia sẻ ứng dụng"
+        >
+          <mat-icon class="text-[14px] w-[14px] h-[14px] transform scale-[0.7] origin-center flex items-center justify-center leading-none group-hover:text-blue-400 transition-colors">share</mat-icon>
+          <span class="text-[9px] font-medium tracking-wide leading-none mt-[1px]">Share</span>
+        </button>
+        <p class="text-[10px] text-slate-500 font-medium">
+          Chỉ dùng cho mục đích cá nhân • v1.0.57 •
+          <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200 ml-1">GitHub</a>
+        </p>
+      </div>
 
       <!-- Right side -->
       <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 order-1 md:order-2">
@@ -65,4 +77,5 @@ import { TranslationService } from "./translation.service";
 })
 export class FooterComponent {
   translationService = inject(TranslationService);
+  appState = inject(AppStateService);
 }

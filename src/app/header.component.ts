@@ -116,7 +116,7 @@ import { FileService } from "./file.service";
       <!-- Top Row Mobile / Left Desktop -->
       <div class="flex items-center justify-between w-full md:w-auto shrink-0 gap-4 xl:gap-8">
         <h1 class="text-xl font-bold tracking-tight text-white leading-none select-none">
-          sila<span class="text-red-500">Sub</span>
+          sila<span class="text-red-400">Sub</span>
         </h1>
 
         <!-- Mobile Controls & Settings Button -->

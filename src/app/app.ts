@@ -24,6 +24,7 @@ import { AppStateService } from "./app.state.service";
 
 import { SettingsModalComponent } from "./settings-modal.component";
 import { FavoritesModalComponent } from "./favorites-modal.component";
+import { ShareModalComponent } from "./share-modal.component";
 import { ToastContainerComponent } from "./toast-container.component";
 import { HeaderComponent } from "./header.component";
 import { FooterComponent } from "./footer.component";
@@ -39,6 +40,7 @@ import { ControlPanelComponent } from "./control-panel.component";
     MatIconModule,
     SettingsModalComponent,
     FavoritesModalComponent,
+    ShareModalComponent,
     ToastContainerComponent,
     HeaderComponent,
     FooterComponent,

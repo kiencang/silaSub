@@ -218,7 +218,7 @@ import { PLATFORM_ID } from "@angular/core";
               [class.decoration-slate-600]="!fileService.showAudioUpload()"
               [class.hover:text-slate-200]="!fileService.showAudioUpload()"
             >
-              Tải lên Audio bối cảnh
+              Tải lên Audio bối cảnh (tùy chọn)
             </button>
           </div>
 
@@ -285,7 +285,7 @@ import { PLATFORM_ID } from "@angular/core";
                 <span class="text-white text-[10px] font-bold font-serif italic leading-none">i</span>
                 </div>
                 <span class="w-full text-pink-200 leading-snug">
-                <b>Lưu ý:</b> 10 phút Audio tốn khoảng 15 ngàn token đầu vào.
+                <b>Lưu ý:</b> 10 phút Audio tốn khoảng 7 - 15 ngàn token đầu vào. Việc thêm audio bối cảnh là tùy chọn để gia tăng chất lượng dịch. Không phải là yêu cầu bắt buộc khi dịch phụ đề. Tính năng này thường hữu ích nhất khi nội dung có nhiều người nói. Hầu hết các định dạng audio đều được chấp nhận, ví dụ: .mp3, .m4a, .wav, .ogg, .flac, .aac, v.v..
                 </span>
             </div>
           }
