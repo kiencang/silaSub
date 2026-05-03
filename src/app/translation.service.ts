@@ -120,16 +120,16 @@ export class TranslationService {
             siUrl = (hasAudio) ? "/prompts/oa_lyric_system_instructions.md" : "/prompts/lyric_system_instructions.md";
         } else {
             if (hasAudio) {
-                 siUrl = "/prompts/oa_video_system_instructions.md";
+                 siUrl = "/prompts/oa_multi_system_instructions.md";
             } else {
-                 siUrl = "/prompts/no_context_video_system_instructions.md";
+                 siUrl = "/prompts/multi_system_instructions.md";
             }
         }
         
         const promptUrl =
           mode === "lyric"
             ? "/prompts/lyric_prompt.md"
-            : "/prompts/video_prompt.md";
+            : "/prompts/multi_prompt.md";
 
         const [siRes, promptRes] = await Promise.all([
           fetch(`${siUrl}?t=${timestamp}`),

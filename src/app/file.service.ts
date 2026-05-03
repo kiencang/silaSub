@@ -51,9 +51,9 @@ export class FileService {
     const file = input.files?.[0];
 
     if (file) {
-      const MAX_SIZE = 40 * 1024 * 1024; // 40 MB
+      const MAX_SIZE = 60 * 1024 * 1024; // 60 MB
       if (file.size > MAX_SIZE) {
-        this.toastService.addToast(`File âm thanh quá lớn (${(file.size / 1024 / 1024).toFixed(1)} MB). Giới hạn tối đa là 40 MB.`, "error");
+        this.toastService.addToast(`File âm thanh quá lớn (${(file.size / 1024 / 1024).toFixed(1)} MB). Giới hạn tối đa là 60 MB.`, "error");
         input.value = "";
         return;
       }

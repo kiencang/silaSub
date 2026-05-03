@@ -231,7 +231,7 @@ import { PLATFORM_ID } from "@angular/core";
             >
               <div class="flex justify-between items-center px-1">
                 <span class="text-xs font-semibold text-pink-400"
-                  >Âm thanh (<span class="cursor-help border-b border-dotted border-pink-500/50" title="Tối đa 30 phút / 40MB">chi tiết</span>):</span
+                  >Âm thanh (<span class="cursor-help border-b border-dotted border-pink-500/50" title="Tối đa 30 phút / 60MB">chi tiết</span>):</span
                 >
                 @if (!fileService.selectedAudioFile()) {
                 <button
