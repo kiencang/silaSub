@@ -9,6 +9,9 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Bổ sung xử lý khi từ mồ côi ở cuối dòng.
 
+### Added
+- Nút bật/tắt phụ đề tiếng Anh khi xem.
+
 ## [v1.0.59]- 2026-05-03
 ### fixed
 - Nâng giới hạn độ dài file audio (từ 30 lên 45 phút).
