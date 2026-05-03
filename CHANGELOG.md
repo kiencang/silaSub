@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.59]- 2026-05-03
 ### fixed
 - Nâng giới hạn độ dài file audio (từ 30 lên 45 phút).
+- Chỉnh lại một chút giao diện (màu nút bấm, đường viền).
 
 ## [v1.0.58]- 2026-05-03
 ### fixed
