@@ -8,7 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.56]- 2026-05-03
 ### fixed
 - Tình chỉnh SI.
-- Đổi tên file cho thống nhất tư duy.
+- Đổi tên file SI chế độ đa nhiệm cho thống nhất tư duy.
 
 ## [v1.0.55]- 2026-05-03
 ### fixed
