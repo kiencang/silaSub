@@ -6,23 +6,23 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v1.0.60]- 2026-05-03
-### fixed
+### Fixed
 - Bổ sung xử lý khi từ mồ côi ở cuối dòng.
 
 ### Added
 - Nút bật/tắt phụ đề tiếng Anh khi xem.
 
 ## [v1.0.59]- 2026-05-03
-### fixed
+### Fixed
 - Nâng giới hạn độ dài file audio (từ 30 lên 45 phút).
 - Chỉnh lại một chút giao diện (màu nút bấm, đường viền).
 
 ## [v1.0.58]- 2026-05-03
-### fixed
+### Fixed
 - Cập nhật lên SI phiên bản mới nhất.
 
 ## [v1.0.57]- 2026-05-03
-### fixed
+### Fixed
 - Điều chỉnh hướng dẫn sử dụng để tránh bị cache.
 - Thêm giải thích rõ ràng hơn cho phần up lên audio.
 
@@ -30,65 +30,65 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Thêm nút chia sẻ ứng dụng để người dùng tiện copy ngay.
 
 ## [v1.0.56]- 2026-05-03
-### fixed
+### Fixed
 - Tình chỉnh SI.
 - Đổi tên file SI chế độ đa nhiệm cho thống nhất tư duy.
 - Tăng giới hạn up lên của file audio lên 60 MB.
 
 ## [v1.0.55]- 2026-05-03
-### fixed
+### Fixed
 - Thêm lưu ý cho tab Tải lên Audio.
 
-### removed
+### Removed
 - Loại bỏ tính năng tải lên Video vì chi phí token quá đắt đỏ.
 
 ## [v1.0.54]- 2026-05-02
-### fixed
+### Fixed
 - Hạ mức độ gắt của dịch lyric hiphop, chuyển 'bố mày' thành 'anh mày' (điều chỉnh SI).
 - Chỉnh nhẹ SI ov_ để nhận diện giới tính và tuổi tác tốt hơn.
 
 ## [v1.0.53]- 2026-05-02
-### fixed
+### Fixed
 - Chỉnh nhẹ gap giữa 2 index cho phần xét từ mồ côi.
 - Giảm mức độ thu hút của Tải lên phụ đề tiếng Việt, để người dùng tránh hiểu nhầm.
 - Bổ sung các tooltip giải thích để người dùng dễ dùng hơn.
 
 ## [v1.0.52]- 2026-05-02
-### fixed
+### Fixed
 - Chỉnh sửa tooltip lặt vặt.
 - Chỉnh sửa chút hướng dẫn sử dụng.
 - Điều chỉnh lại giao diện, sắp xếp luồng thao tác sang cột phải, không phân mảnh trái và phải đồng thời nữa.
 
 ## [v1.0.51]- 2026-05-02
-### fixed
+### Fixed
 - Xử lý tự động từ mồ côi (chỉ áp dụng khi với kiểu dịch 2 phase, khi ranh giới người nói được xác định với độ tin cậy cao).
 - Không áp dụng xử lý từ mồ côi với chế độ dịch lời bài hát (vì lời bài hát có đặc thù nhả chữ riêng, nên tôn trọng).
 - Chuyển tính năng Search về mặc định tắt, phòng ngừa bị quá giới hạn miễn phí, chỉ dùng khi cần thiết.
 
 ## [v1.0.50]- 2026-05-02
-### fixed
+### Fixed
 - Cập nhật hướng dẫn sử dụng.
 - Cập nhật SI cho phần xác định ranh giới người nói.
 - Sửa lỗi sai thời gian start, end do chia thêm cho 1000!
 
 ## [v1.0.49]- 2026-05-01
-### fixed
+### Fixed
 - Thay đổi font chữ & mức độ trong của màu nền cho font chữ.
 - Thay đổi mặc định tắt +search thành bật +search và điều chỉnh lại thông tin ở tooltips cho phù hợp với bối cảnh mới.
 
 ## [v1.0.48]- 2026-05-01
-### fixed
+### Fixed
 - Điều chỉnh hướng dẫn sử dụng.
 - Khắc phục lỗi trang hướng dẫn sử dụng bị cache.
 
 ## [v1.0.47]- 2026-05-01
-### fixed
+### Fixed
 - Tinh chỉnh SI.
 - Loại bỏ thẻ audio tags (music|upbeat|laughter|applause) bất kể vị trí nào trong index, trừ khi chúng chỉ có một mình.
 - Chỉnh lại giao diện của ứng dụng, thống nhất tông màu.
 
 ## [v1.0.46]- 2026-05-01
-### fixed
+### Fixed
 - Thêm một font chữ kiểu monospace cho người dùng.
 - Khóa chết tải audio, video lên ở chế độ Flash, do các chỉ thị phức tạp chỉ dùng ở chế độ Pro mới hiệu quả.
 - Chuyển dịch chế độ 'Thêm bối cảnh' thành dạng 2 phase để cải thiện chất lượng xử lý
@@ -97,24 +97,24 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Đổi tên các SI cho phù hợp hơn.
 
 ## [v1.0.45]- 2026-04-30
-### fixed
+### Fixed
 - Bổ sung gap vào thông tin đầu vào cho AI.
 - Gap là khoảng cách thời gian giữa 2 câu.
 
 ## [v1.0.44]- 2026-04-30
-### fixed
+### Fixed
 - Cập nhật SI/Prompt phiên bản mới nhất.
 - Chỉnh nhẹ giao diện.
 
 ## [v1.0.43]- 2026-04-30
-### fixed
+### Fixed
 - Tái cấu trúc lại mã, chia mã khổng lồ trong app.ts và app.html thành các phần nhỏ hơn.
 - Bổ sung thêm thông tin vào tên file tải về (model, temp, search).
 - Điều chỉnh subtile đầu vào có thêm thông tin start và end của thời gian phụ đề (nhắm cung cấp thêm ngữ cảnh và giúp AI tiện đối chiếu hơn).
 - Điều chỉnh SI tương ứng để phù hợp với kiểu thông tin đầu vào mới.
 
 ## [v1.0.42]- 2026-04-29
-### fixed
+### Fixed
 - Thêm tên video vào file tải về.
 
 ## [v1.0.41]- 2026-04-28
