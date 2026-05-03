@@ -10,6 +10,9 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Điều chỉnh hướng dẫn sử dụng để tránh bị cache.
 - Thêm giải thích rõ ràng hơn cho phần up lên audio.
 
+### Added
+- Thêm nút chia sẻ ứng dụng để người dùng tiện copy ngay.
+
 ## [v1.0.56]- 2026-05-03
 ### fixed
 - Tình chỉnh SI.
