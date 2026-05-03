@@ -39,10 +39,26 @@ import { MatIconModule } from '@angular/material/icon';
               {{ translationService.translateError() }}
             </p>
             }
+            @if (hasBothSubtitles()) {
+            <button
+              (click)="appState.showEnglishSubtitle.set(!appState.showEnglishSubtitle())"
+              class="relative group w-7 h-6 flex items-center justify-center rounded-md font-bold text-[11px] transition-all cursor-pointer outline-none focus:outline-none"
+              [class.bg-slate-700]="appState.showEnglishSubtitle()"
+              [class.text-white]="appState.showEnglishSubtitle()"
+              [class.bg-slate-800]="!appState.showEnglishSubtitle()"
+              [class.text-slate-500]="!appState.showEnglishSubtitle()"
+              [class.hover:bg-slate-600]="appState.showEnglishSubtitle()"
+              [class.hover:text-slate-300]="!appState.showEnglishSubtitle()"
+            >
+              En
+              <span class="absolute top-full -right-4 mt-2 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 whitespace-nowrap origin-top-right">
+                {{ appState.showEnglishSubtitle() ? 'Ẩn phụ đề tiếng Anh' : 'Hiện phụ đề tiếng Anh' }}
+              </span>
+            </button>
+            }
             <button
               (click)="appState.isTranscriptExpanded.set(!appState.isTranscriptExpanded())"
-              class="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-md transition-all cursor-pointer outline-none focus:outline-none shadow-sm flex items-center justify-center"
-              [title]="appState.isTranscriptExpanded() ? 'Thu gọn' : 'Mở rộng'"
+              class="relative group p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-md transition-all cursor-pointer outline-none focus:outline-none shadow-sm flex items-center justify-center"
             >
               @if (appState.isTranscriptExpanded()) {
               <!-- Collapse Vertical Icon -->
@@ -79,6 +95,9 @@ import { MatIconModule } from '@angular/material/icon';
                 <path d="M12 3v18" />
               </svg>
               }
+              <span class="absolute top-full -right-2 mt-2 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 whitespace-nowrap origin-top-right">
+                {{ appState.isTranscriptExpanded() ? 'Thu gọn' : 'Mở rộng' }}
+              </span>
             </button>
           </div>
         </div>
@@ -117,7 +136,7 @@ import { MatIconModule } from '@angular/material/icon';
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
-            @if (!!fileService.selectedEnFile() || line.text !== '[Bản dịch không có phụ đề gốc]') {
+            @if (appState.showEnglishSubtitle() && (!!fileService.selectedEnFile() || line.text !== '[Bản dịch không có phụ đề gốc]')) {
             <p
               class="text-xs text-slate-400 leading-relaxed italic group-hover:text-slate-300 transition-colors"
               [class.mb-2]="!appState.isTranscriptExpanded()"
@@ -245,6 +264,15 @@ export class TranscriptViewerComponent {
   @Input() exportSrtAction!: () => void;
   @Input() exportPhase1Action!: () => void;
   @Input() startTranslatingAction!: () => Promise<void>;
+
+  hasBothSubtitles(): boolean {
+    const res = this.appState.analysisResult();
+    const firstLine = res?.transcript?.[0];
+    if (!firstLine) return false;
+    
+    // We have vietnamese (viText is present) and we have english (text is present and not the placeholder)
+    return !!firstLine.viText && !!firstLine.text && firstLine.text !== '[Bản dịch không có phụ đề gốc]';
+  }
 
   constructor() {
     effect(() => {

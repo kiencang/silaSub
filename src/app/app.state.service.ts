@@ -20,6 +20,7 @@ export class AppStateService {
   // Auto-scroll state
   isTranscriptHovered = signal(false);
   isTranscriptExpanded = signal(false);
+  showEnglishSubtitle = signal(true);
 
   // Instructions
   showInstructions = signal(false);

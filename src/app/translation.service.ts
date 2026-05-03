@@ -237,7 +237,8 @@ export class TranslationService {
 
             // -----------------------------------------------------------------
             // [Quy tắc dồn chữ] Xử lý từ mồ côi (Orphan words)
-            // Lấy từ đầu tiên có kèm dấu ngắt câu lên vị trí cuối dòng trước
+            // 1. Mang từ đầu tiên có kèm dấu ngắt câu lên vị trí cuối dòng trước
+            // 2. Đẩy từ cuối cùng mồ côi sau dấu ngắt câu xuống đầu dòng sau
             // (Chỉ áp dụng khi không phải chế độ dịch bài hát - lyric)
             // -----------------------------------------------------------------
             if (this.translationMode() !== "lyric") {
@@ -251,19 +252,34 @@ export class TranslationService {
                   typeof curr.gap === "number" &&
                   curr.gap <= 0.1
                 ) {
+                  // 1. Mang từ mồ côi ở ĐẦU dòng dưới lên CUỐI dòng trên
                   // Đảm bảo dòng trước đó chưa kết thúc bằng dấu câu
                   const prevEndsWithPunctuation = /[.,!?;:]["']?$/.test(prev.en.trim());
                   
                   if (!prevEndsWithPunctuation) {
-                    const words = curr.en.trim().split(/\s+/);
-                    if (words.length >= 4) {
-                      const firstWord = words[0];
+                    const cWords = curr.en.trim().split(/\s+/);
+                    if (cWords.length >= 4) {
+                      const firstWord = cWords[0];
                       if (/[.,!?;:]["']?$/.test(firstWord)) {
                         // Di chuyển từ đầu tiên của curr lên cuối prev
                         prev.en = prev.en.trim() + " " + firstWord;
                         // Loại bỏ từ đầu tiên khỏi curr
-                        curr.en = words.slice(1).join(" ");
+                        curr.en = cWords.slice(1).join(" ");
                       }
+                    }
+                  }
+
+                  // 2. Đẩy từ mồ côi ở CUỐI dòng trên xuống ĐẦU dòng dưới
+                  const pWords = prev.en.trim().split(/\s+/);
+                  if (pWords.length >= 4) {
+                    const lastWord = pWords[pWords.length - 1];
+                    const secondToLastWord = pWords[pWords.length - 2];
+
+                    if (/[.,!?;:]["']?$/.test(secondToLastWord) && !/[.,!?;:]["']?$/.test(lastWord)) {
+                      // Đẩy từ cuối cùng của prev xuống đầu curr
+                      curr.en = lastWord + " " + curr.en.trim();
+                      // Loại bỏ từ cuối cùng khỏi prev
+                      prev.en = pWords.slice(0, pWords.length - 1).join(" ");
                     }
                   }
                 }

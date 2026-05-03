@@ -129,7 +129,7 @@ import { FileService } from './file.service';
             class="flex flex-col items-center w-full max-w-[90%] md:max-w-[80%] lg:max-w-[900px]"
           >
             <!-- Optional Original Text (Hide if using pre-translated file) -->
-            @if (appState.currentLine()?.viText && (!!fileService.selectedEnFile() || (appState.currentLine()?.text &&
+            @if (appState.showEnglishSubtitle() && appState.currentLine()?.viText && (!!fileService.selectedEnFile() || (appState.currentLine()?.text &&
             appState.currentLine()!.text !== '[Bản dịch không có phụ đề gốc]'))) {
             <p
               class="bg-black/50 text-white px-4 py-1 mb-1 rounded italic text-center whitespace-pre-wrap"
