@@ -54,8 +54,8 @@ import { SettingsService } from './settings.service';
               <button
                 (click)="settingsService.subTextColor.set('#FFD700')"
                 class="py-2.5 rounded-xl border-2 transition-all font-medium text-sm flex items-center justify-center gap-2"
-                [class.border-red-500]="settingsService.subTextColor() === '#FFD700'"
-                [class.bg-red-900/30]="settingsService.subTextColor() === '#FFD700'"
+                [class.border-[#FFD700]]="settingsService.subTextColor() === '#FFD700'"
+                [class.bg-yellow-500/10]="settingsService.subTextColor() === '#FFD700'"
                 [class.border-slate-700]="settingsService.subTextColor() !== '#FFD700'"
                 [class.bg-slate-800]="settingsService.subTextColor() !== '#FFD700'"
                 [class.text-white]="true"
@@ -66,8 +66,8 @@ import { SettingsService } from './settings.service';
               <button
                 (click)="settingsService.subTextColor.set('#FFFFFF')"
                 class="py-2.5 rounded-xl border-2 transition-all font-medium text-sm flex items-center justify-center gap-2"
-                [class.border-red-500]="settingsService.subTextColor() === '#FFFFFF'"
-                [class.bg-red-900/30]="settingsService.subTextColor() === '#FFFFFF'"
+                [class.border-white]="settingsService.subTextColor() === '#FFFFFF'"
+                [class.bg-white/10]="settingsService.subTextColor() === '#FFFFFF'"
                 [class.border-slate-700]="settingsService.subTextColor() !== '#FFFFFF'"
                 [class.bg-slate-800]="settingsService.subTextColor() !== '#FFFFFF'"
                 [class.text-white]="true"
@@ -78,8 +78,8 @@ import { SettingsService } from './settings.service';
               <button
                 (click)="settingsService.subTextColor.set('#38BDF8')"
                 class="py-2.5 rounded-xl border-2 transition-all font-medium text-sm flex items-center justify-center gap-2"
-                [class.border-red-500]="settingsService.subTextColor() === '#38BDF8'"
-                [class.bg-red-900/30]="settingsService.subTextColor() === '#38BDF8'"
+                [class.border-[#38BDF8]]="settingsService.subTextColor() === '#38BDF8'"
+                [class.bg-sky-500/10]="settingsService.subTextColor() === '#38BDF8'"
                 [class.border-slate-700]="settingsService.subTextColor() !== '#38BDF8'"
                 [class.bg-slate-800]="settingsService.subTextColor() !== '#38BDF8'"
                 [class.text-white]="true"
@@ -149,7 +149,7 @@ import { SettingsService } from './settings.service';
           <button (click)="close('reset')" class="flex-1 px-4 py-2.5 rounded-xl font-semibold text-slate-300 bg-slate-800 border border-slate-600 hover:bg-slate-700 transition-colors cursor-pointer text-sm">
             Mặc định
           </button>
-          <button (click)="close('save')" class="flex-[2] px-4 py-2.5 rounded-xl font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer shadow-sm text-sm">
+          <button (click)="close('save')" class="flex-[2] px-4 py-2.5 rounded-xl font-semibold bg-red-600 hover:bg-red-500 text-white transition-colors cursor-pointer shadow-sm text-sm">
             Lưu cài đặt
           </button>
         </div>

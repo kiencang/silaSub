@@ -231,7 +231,7 @@ import { PLATFORM_ID } from "@angular/core";
             >
               <div class="flex justify-between items-center px-1">
                 <span class="text-xs font-semibold text-pink-400"
-                  >Âm thanh (<span class="cursor-help border-b border-dotted border-pink-500/50" title="Tối đa 30 phút / 60MB">chi tiết</span>):</span
+                  >Âm thanh (<span class="cursor-help border-b border-dotted border-pink-500/50" title="Tối đa 1000 dòng thoại / 45 phút / 60MB">chi tiết</span>):</span
                 >
                 @if (!fileService.selectedAudioFile()) {
                 <button
@@ -285,7 +285,7 @@ import { PLATFORM_ID } from "@angular/core";
                 <span class="text-white text-[10px] font-bold font-serif italic leading-none">i</span>
                 </div>
                 <span class="w-full text-pink-200 leading-snug">
-                <b>Lưu ý:</b> 10 phút Audio tốn khoảng 7 - 15 ngàn token đầu vào. Việc thêm audio bối cảnh là tùy chọn để gia tăng chất lượng dịch. Không phải là yêu cầu bắt buộc khi dịch phụ đề. Tính năng này thường hữu ích nhất khi nội dung có nhiều người nói. Hầu hết các định dạng audio đều được chấp nhận, ví dụ: .mp3, .m4a, .wav, .ogg, .flac, .aac, v.v..
+                <b>Lưu ý:</b> Lưu ý: 10 phút Audio tốn khoảng 15 - 20 ngàn token đầu vào. Việc thêm audio bối cảnh là tùy chọn để tăng chất lượng dịch. Không phải là yêu cầu bắt buộc khi dịch phụ đề. Tính năng này thường hữu ích nhất khi video có nhiều người nói. Hầu hết các định dạng audio đều được chấp nhận, ví dụ: .mp3, .m4a, .wav, .ogg, .flac, .aac, v.v.. 
                 </span>
             </div>
           }

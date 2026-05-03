@@ -63,9 +63,9 @@ export class FileService {
       const audio = new Audio(audioUrl);
       audio.onloadedmetadata = () => {
         const duration = audio.duration;
-        const MAX_DURATION = 30 * 60; // 30 minutes
+        const MAX_DURATION = 45 * 60; // 45 minutes
         if (duration > MAX_DURATION) {
-            this.toastService.addToast(`File âm thanh quá dài (${Math.round(duration / 60)} phút). Giới hạn tối đa là 30 phút.`, "error");
+            this.toastService.addToast(`File âm thanh quá dài (${Math.round(duration / 60)} phút). Giới hạn tối đa là 45 phút.`, "error");
             input.value = "";
             this.selectedAudioFile.set(null);
             this.audioDuration.set(null);

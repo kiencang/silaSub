@@ -22,7 +22,7 @@ import { AppStateService } from "./app.state.service";
           <span class="text-[9px] font-medium tracking-wide leading-none mt-[1px]">Share</span>
         </button>
         <p class="text-[10px] text-slate-500 font-medium">
-          Chỉ dùng cho mục đích cá nhân • v1.0.58 •
+          Chỉ dùng cho mục đích cá nhân • v1.0.59 •
           <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200 ml-1">GitHub</a>
         </p>
       </div>

@@ -91,7 +91,7 @@ import { VideoService } from './video.service';
           </button>
           <button
             (click)="storageService.saveFavoritesList()"
-            class="px-5 py-2 rounded-lg font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer shadow-sm text-[13px]"
+            class="px-5 py-2 rounded-lg font-semibold bg-red-600 hover:bg-red-500 text-white transition-colors cursor-pointer shadow-sm text-[13px]"
           >
             Lưu cài đặt
           </button>
