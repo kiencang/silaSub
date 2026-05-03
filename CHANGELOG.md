@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### fixed
 - Tình chỉnh SI.
 - Đổi tên file SI chế độ đa nhiệm cho thống nhất tư duy.
+- Tăng giới hạn up lên của file audio lên 60 MB.
 
 ## [v1.0.55]- 2026-05-03
 ### fixed
