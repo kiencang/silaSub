@@ -21,3 +21,8 @@ Một số chức năng chính:
 - Tùy chỉnh model AI. Pro (xịn nhất nhưng dịch hơi lâu) hoặc Flash (nhanh). Mặc định là Pro. 
 - Chỉnh font chữ (5 font), màu chữ (3 màu), kích cỡ chữ. Mặc định font Lexend / chữ vàng / 32px
 - Tải xuống phụ đề và xem lại khi cần (tải lên phụ đề đã dịch, tự động nhập luôn video tiện lợi xem ngay).
+
+## Tuyên bố từ chối trách nhiệm
+Công cụ này có thể được sử dụng cho mục đích nghiên cứu, giảng dạy và học tập cá nhân.
+
+silaSub cũng như người phát triển nó không đưa ra bất kỳ bảo đảm rõ ràng hay ngụ ý nào, cũng như không tuyên bố rằng công cụ sẽ vận hành hoàn hảo, chính xác hoặc cập nhật. Người phát triển sẽ không chịu trách nhiệm cho bất kỳ tổn thất hay thiệt hại nào phát sinh trực tiếp hoặc gián tiếp liên quan đến hoặc phát sinh từ việc sử dụng công cụ này.
