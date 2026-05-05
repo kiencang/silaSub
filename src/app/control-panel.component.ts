@@ -485,6 +485,7 @@ export class ControlPanelComponent {
 
   clearAllData() {
     this.appState.videoUrl.set("");
+    this.appState.showEnglishSubtitle.set(true);
     this.clearSubtitleFiles();
     this.playerService.stopVideo();
   }
@@ -540,6 +541,7 @@ export class ControlPanelComponent {
 
   onVideoUrlChange(url: string) {
     this.appState.videoUrl.set(url);
+    this.appState.showEnglishSubtitle.set(true);
     if (!url || url.trim() === "") {
       this.clearAllData();
     }
@@ -558,6 +560,15 @@ export class ControlPanelComponent {
   }
 
   onViFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      const modeMatch = file.name.match(/_\[(lyric|multi-task)\]/);
+      if (modeMatch && modeMatch[1]) {
+        this.translationService.translationMode.set(modeMatch[1] as 'lyric' | 'multi-task');
+      }
+    }
+
     this.fileService.onViFileSelected(
       event,
       (extractedId) => {

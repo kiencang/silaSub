@@ -69,7 +69,7 @@ import { MatIconModule } from '@angular/material/icon';
               {{ translationService.translateError() }}
             </p>
             }
-            @if (hasBothSubtitles()) {
+            @if (hasEnglishSubtitle()) {
             <button
               (click)="appState.showEnglishSubtitle.set(!appState.showEnglishSubtitle())"
               class="relative group w-7 h-6 flex items-center justify-center rounded-md font-bold text-[11px] transition-all cursor-pointer outline-none focus:outline-none"
@@ -295,13 +295,12 @@ export class TranscriptViewerComponent {
   @Input() exportPhase1Action!: () => void;
   @Input() startTranslatingAction!: () => Promise<void>;
 
-  hasBothSubtitles(): boolean {
+  hasEnglishSubtitle(): boolean {
     const res = this.appState.analysisResult();
     const firstLine = res?.transcript?.[0];
     if (!firstLine) return false;
     
-    // We have vietnamese (viText is present) and we have english (text is present and not the placeholder)
-    return !!firstLine.viText && !!firstLine.text && firstLine.text !== '[Bản dịch không có phụ đề gốc]';
+    return !!firstLine.text && firstLine.text !== '[Bản dịch không có phụ đề gốc]';
   }
 
   onPlaybackRateChange(value: string) {
