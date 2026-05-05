@@ -7,7 +7,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 
 ## [v1.0.62]- 2026-05-05
 ### Fixed
-- Bổ sung cơ chế kiểm tra tên file .srt tiếng Việt up lên để không hiển thị phần kiểm tra tốc độ đọc (vì cái này không áp dụng cho âm nhạc).
+- Bổ sung cơ chế kiểm tra tên file .srt tiếng Việt up lên có phải là lyric hay không, để không hiển thị phần kiểm tra tốc độ đọc (vì cái này không áp dụng cho âm nhạc).
 
 ## [v1.0.61]- 2026-05-05
 ### Added
