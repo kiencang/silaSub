@@ -42,4 +42,35 @@ export class AppStateService {
       ) || null
     );
   });
+
+  subtitleSpeedInfo = computed(() => {
+    const res = this.analysisResult();
+    if (!res || !res.transcript) return null;
+    
+    let totalWords = 0;
+    let totalDurationSec = 0;
+
+    for (const line of res.transcript) {
+      if (line.viText) {
+        const words = line.viText.trim().split(/\s+/).filter(w => w.length > 0).length;
+        if (words > 0) {
+          totalWords += words;
+          totalDurationSec += line.duration;
+        }
+      }
+    }
+
+    if (totalDurationSec === 0) return null;
+
+    const totalDurationMin = totalDurationSec / 60;
+    const speed = totalWords / totalDurationMin;
+    const STANDARD_SPEED = 200;
+    const THRESHOLD = 220;
+
+    if (speed > THRESHOLD) {
+      const excessPercent = Math.round(((speed / STANDARD_SPEED) - 1) * 100);
+      return { speed, excessPercent };
+    }
+    return null;
+  });
 }

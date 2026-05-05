@@ -11,6 +11,7 @@ export class PlayerService {
   currentTime = signal(0);
   isYtReady = signal(false);
   isFullscreen = signal(false);
+  playbackRate = signal(1);
   
   player: any;
   private timer: ReturnType<typeof setInterval> | undefined;
@@ -91,6 +92,13 @@ export class PlayerService {
       if (state !== 1 && typeof this.player.playVideo === "function") {
         this.player.playVideo();
       }
+    }
+  }
+
+  setPlaybackRate(rate: number) {
+    if (this.player && typeof this.player.setPlaybackRate === "function") {
+      this.player.setPlaybackRate(rate);
+      this.playbackRate.set(rate);
     }
   }
 

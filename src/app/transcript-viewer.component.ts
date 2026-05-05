@@ -13,6 +13,36 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+      @if (appState.subtitleSpeedInfo() && translationService.translationMode() !== 'lyric') {
+      <div class="mb-4 bg-orange-950/40 border border-orange-500/30 rounded-xl p-4 flex flex-col gap-2">
+        <div>
+          <mat-icon class="text-orange-400 block">speed</mat-icon>
+        </div>
+        
+        <div class="text-sm text-orange-200/90 leading-relaxed">
+          <span class="font-semibold text-orange-300">Tốc độ phụ đề đang cao hơn mức trung bình {{ appState.subtitleSpeedInfo()!.excessPercent }}%,</span> hãy điều chỉnh tốc độ phát video nếu bạn muốn.
+        </div>
+        
+        <div class="flex items-center gap-3 bg-black/40 px-3 py-2 rounded-lg border border-orange-500/20 shadow-inner w-full mt-2 box-border">
+          <div class="flex flex-col shrink-0 min-w-[70px]">
+            <span class="text-[11px] font-bold text-orange-400/80 tracking-wide">Tốc độ phát</span>
+            <span class="text-sm font-mono font-bold text-orange-300">{{ playerService.playbackRate() }}x</span>
+          </div>
+          <div class="w-[1px] h-6 bg-orange-500/20 shrink-0 mx-1"></div>
+          <input 
+            type="range" 
+            min="0.5" 
+            max="1.0" 
+            step="0.05" 
+            [value]="playerService.playbackRate()" 
+            (input)="onPlaybackRateChange(rateInput.value)"
+            #rateInput
+            class="accent-orange-500 flex-1 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer min-w-0"
+          />
+        </div>
+      </div>
+      }
+
       <!-- Transcript Card -->
       <div
         class="flex-1 bg-slate-900 rounded-2xl text-white overflow-hidden relative flex flex-col border border-slate-800 min-h-[400px]"
@@ -272,6 +302,13 @@ export class TranscriptViewerComponent {
     
     // We have vietnamese (viText is present) and we have english (text is present and not the placeholder)
     return !!firstLine.viText && !!firstLine.text && firstLine.text !== '[Bản dịch không có phụ đề gốc]';
+  }
+
+  onPlaybackRateChange(value: string) {
+    const rate = parseFloat(value);
+    if (!isNaN(rate)) {
+      this.playerService.setPlaybackRate(rate);
+    }
   }
 
   constructor() {
