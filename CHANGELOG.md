@@ -6,6 +6,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v1.0.64]- 2026-05-06
+### Fixed
+- Điều chỉnh lại giao diện của mục History.
+- Trong khi dịch, mục History phải bị khóa để tránh người dùng nạp lại thông tin khiến bản đang dịch bị cắt đứt giữa chừng.
+- Điều chỉnh vị trí nút History từ footer lên Khung video, tính năng này có khả năng được dùng thường xuyên nên cần có vị trí nổi bật hơn.
+
+## [v1.0.64]- 2026-05-06
 ### Added
 - Thêm tính năng lịch sử dịch để tiện xem lại video khi cần.
 
