@@ -488,6 +488,7 @@ export class ControlPanelComponent {
     this.appState.showEnglishSubtitle.set(true);
     this.clearSubtitleFiles();
     this.playerService.stopVideo();
+    this.playerService.setPlaybackRate(1);
   }
 
   clearEnSubtitleFile(event?: Event) {
@@ -542,6 +543,7 @@ export class ControlPanelComponent {
   onVideoUrlChange(url: string) {
     this.appState.videoUrl.set(url);
     this.appState.showEnglishSubtitle.set(true);
+    this.playerService.setPlaybackRate(1);
     if (!url || url.trim() === "") {
       this.clearAllData();
     }

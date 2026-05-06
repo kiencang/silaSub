@@ -21,6 +21,7 @@ export class AppStateService {
   isTranscriptHovered = signal(false);
   isTranscriptExpanded = signal(false);
   showEnglishSubtitle = signal(true);
+  isDevMode = signal(false);
 
   // Instructions
   showInstructions = signal(false);

@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-      @if (appState.subtitleSpeedInfo() && translationService.translationMode() !== 'lyric') {
+      @if (appState.subtitleSpeedInfo() && translationService.translationMode() !== 'lyric' && !appState.isTranscriptExpanded()) {
       <div class="mb-4 bg-orange-950/40 border border-orange-500/30 rounded-xl p-4 flex flex-col gap-2">
         <div>
           <mat-icon class="text-orange-400 block">speed</mat-icon>
@@ -219,7 +219,7 @@ import { MatIconModule } from '@angular/material/icon';
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Tải về Phụ đề Tiếng Việt (.srt) }
             </button>
-            @if (translationService.analyzedBlocksJson()) {
+            @if (translationService.analyzedBlocksJson() && appState.isDevMode()) {
               <button
                 (click)="onExportPhase1()"
                 class="w-full py-2 rounded-xl font-medium text-[11px] bg-slate-800 text-slate-400 hover:text-slate-300 hover:bg-slate-700 transition-all flex items-center justify-center"
