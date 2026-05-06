@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### Fixed
 - Video mới, tốc độ phát phải về mặc định
 - Phải ẩn được hộp điều chỉnh tốc độ khi chế độ mở của phụ đề được bung ra.
+- Phát triền thêm nút gạt Dev, chỉ hiện thị thông tin trung gian cho người phát triển, không cần thiết cho người dùng cuối.
 
 ## [v1.0.62]- 2026-05-05
 ### Fixed
