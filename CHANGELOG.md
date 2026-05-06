@@ -5,11 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.64]- 2026-05-06
+## [v1.0.65]- 2026-05-06
 ### Fixed
 - Điều chỉnh lại giao diện của mục History.
 - Trong khi dịch, mục History phải bị khóa để tránh người dùng nạp lại thông tin khiến bản đang dịch bị cắt đứt giữa chừng.
-- Điều chỉnh vị trí nút History từ footer lên Khung video, tính năng này có khả năng được dùng thường xuyên nên cần có vị trí nổi bật hơn.
+- Điều chỉnh vị trí nút History từ footer lên Khung video, tính năng này có khả năng được dùng thường xuyên nên cần có vị trí nổi bật hơn (khi chuyển lên khung video chính cái việc khóa mục history tự động thành hiện thực! Vì chuyển lên khung chính nghĩa là đang dịch thì không thấy nút để mà bấm).
 
 ## [v1.0.64]- 2026-05-06
 ### Added
