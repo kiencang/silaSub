@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.66]- 2026-05-07
+### Fixed
+- Đồng bộ về một bộ icon duy nhất (Angular Material).
+
 ## [v1.0.65]- 2026-05-06
 ### Fixed
 - Điều chỉnh lại giao diện của mục History.
