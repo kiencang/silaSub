@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.63]- 2026-05-06
+### Fixed
+- Video mới, tốc độ phát phải về mặc định
+- Phải ẩn được hộp điều chỉnh tốc độ khi chế độ mở của phụ đề được bung ra.
+
 ## [v1.0.62]- 2026-05-05
 ### Fixed
 - Bổ sung cơ chế kiểm tra tên file .srt tiếng Việt up lên có phải là lyric hay không, để không hiển thị phần kiểm tra tốc độ đọc (vì cái này không áp dụng cho âm nhạc).
