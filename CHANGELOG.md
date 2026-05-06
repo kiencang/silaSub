@@ -5,9 +5,13 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.64]- 2026-05-06
+### Added
+- Thêm tính năng lịch sử dịch để tiện xem lại video khi cần.
+
 ## [v1.0.63]- 2026-05-06
 ### Fixed
-- Video mới, tốc độ phát phải về mặc định
+- Video mới, tốc độ phát phải về mặc định.
 - Phải ẩn được hộp điều chỉnh tốc độ khi chế độ mở của phụ đề được bung ra.
 - Phát triền thêm nút gạt Dev, chỉ hiện thị thông tin trung gian cho người phát triển, không cần thiết cho người dùng cuối.
 
