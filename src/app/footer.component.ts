@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { TranslationService } from "./translation.service";
 import { AppStateService } from "./app.state.service";
+import { HistoryService } from "./history.service";
 
 @Component({
   selector: "app-footer",
@@ -22,8 +23,17 @@ import { AppStateService } from "./app.state.service";
             <mat-icon class="text-[14px] w-[14px] h-[14px] transform scale-[0.7] origin-center flex items-center justify-center leading-none group-hover:text-blue-400 transition-colors">share</mat-icon>
             <span class="text-[9px] font-medium tracking-wide leading-none mt-[1px]">Share</span>
           </button>
+          
+          <button
+            (click)="historyService.isHistoryModalOpen.set(true)"
+            class="flex items-center justify-center gap-1 h-[20px] px-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded transition-colors border border-slate-700 cursor-pointer group focus:outline-none focus:ring-1 focus:ring-slate-500"
+            title="Lịch sử dịch tóm tắt"
+          >
+            <svg class="w-[12px] h-[12px] text-slate-400 group-hover:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="text-[9px] font-medium tracking-wide leading-none mt-[1px]">History</span>
+          </button>
           <p class="text-[10px] text-slate-500 font-medium">
-            Chỉ dùng cho mục đích cá nhân • v1.0.63 •
+            Chỉ dùng cho mục đích cá nhân • v1.0.64 •
             <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200 ml-1">GitHub</a>
           </p>
         </div>
@@ -114,4 +124,5 @@ import { AppStateService } from "./app.state.service";
 export class FooterComponent {
   translationService = inject(TranslationService);
   appState = inject(AppStateService);
+  historyService = inject(HistoryService);
 }

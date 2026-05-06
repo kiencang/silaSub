@@ -30,6 +30,7 @@ import { HeaderComponent } from "./header.component";
 import { FooterComponent } from "./footer.component";
 import { VideoPlayerComponent } from "./video-player.component";
 import { ControlPanelComponent } from "./control-panel.component";
+import { HistoryModalComponent } from "./history-modal.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +47,7 @@ import { ControlPanelComponent } from "./control-panel.component";
     FooterComponent,
     VideoPlayerComponent,
     ControlPanelComponent,
+    HistoryModalComponent,
   ],
   templateUrl: "./app.html",
   styleUrl: "./app.css",

@@ -2,7 +2,10 @@ import { Injectable, signal, computed, inject, WritableSignal } from "@angular/c
 import { ToastService, ToastType } from "./toast.service";
 import { FileService } from "./file.service";
 import { GoogleGenAI, ThinkingLevel } from "@google/genai";
-import { TranscriptLine } from "./subtitle.service";
+import { TranscriptLine, SubtitleService } from "./subtitle.service";
+import { HistoryService } from "./history.service";
+import { AppStateService } from "./app.state.service";
+import { VideoService } from "./video.service";
 
 @Injectable({
   providedIn: "root",
@@ -10,6 +13,10 @@ import { TranscriptLine } from "./subtitle.service";
 export class TranslationService {
   private toastService = inject(ToastService);
   private fileService = inject(FileService);
+  private subtitleService = inject(SubtitleService);
+  private historyService = inject(HistoryService);
+  private appState = inject(AppStateService);
+  private videoService = inject(VideoService);
 
   aiTemperature = signal<number>(0.5);
   aiModel = signal<string>("gemini-pro-latest");
@@ -431,6 +438,28 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
         "success",
       );
       this.isTranslating.set(false);
+
+      // Save to History using the completed translatedTranscript
+      const youtubeUrl = this.appState.videoUrl() || null;
+      let videoName = "Không rõ video";
+      
+      const enFile = this.fileService.selectedEnFile();
+      if (enFile) {
+        videoName = enFile.name.replace(/\.[^/.]+$/, "");
+      }
+
+      const enSrtContent = this.subtitleService.generateSrtContent(
+        translatedTranscript.map(t => ({ ...t, text: t.text, viText: undefined }))
+      );
+      
+      const viSrtContent = this.subtitleService.generateSrtContent(translatedTranscript);
+
+      this.historyService.saveTranslation({
+        videoName,
+        youtubeUrl,
+        enSrtContent,
+        viSrtContent
+      });
     } catch (err) {
       const error = err as Error;
       console.error(error);
