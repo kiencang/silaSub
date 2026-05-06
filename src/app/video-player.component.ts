@@ -7,6 +7,7 @@ import { PlayerService } from './player.service';
 import { SettingsService } from './settings.service';
 import { StorageService } from './storage.service';
 import { FileService } from './file.service';
+import { HistoryService } from './history.service';
 
 @Component({
   selector: 'app-video-player',
@@ -98,20 +99,27 @@ import { FileService } from './file.service';
                 class="text-white/90 text-sm font-medium tracking-wide drop-shadow-md pointer-events-none"
                 >Chưa có link YouTube</span
               >
-              <div class="flex flex-col sm:flex-row gap-3 mt-2">
+              <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-3 mt-2">
                 <button
                   (click)="appState.showInstructions.set(true)"
-                  class="px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white rounded-lg transition-all text-[13px] font-medium shadow-sm flex items-center justify-center gap-2 pointer-events-auto"
+                  class="px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white rounded-lg transition-all text-[13px] font-medium shadow-sm flex items-center justify-center gap-2 pointer-events-auto cursor-pointer"
                 >
                   <mat-icon class="text-[18px] w-[18px] h-[18px]">menu_book</mat-icon>
                   Xem Hướng dẫn sử dụng
                 </button>
                 <button
                   (click)="storageService.openFavoritesDialog()"
-                  class="px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white rounded-lg transition-all text-[13px] font-medium shadow-sm flex items-center justify-center gap-2 pointer-events-auto"
+                  class="px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white rounded-lg transition-all text-[13px] font-medium shadow-sm flex items-center justify-center gap-2 pointer-events-auto cursor-pointer"
                 >
                   <mat-icon class="text-[18px] w-[18px] h-[18px]">{{ storageService.favoriteChannels().length > 0 ? 'featured_play_list' : 'playlist_add' }}</mat-icon>
                   {{ storageService.favoriteChannels().length > 0 ? 'Danh sách kênh ưa thích' : 'Thêm kênh ưa thích của bạn' }}
+                </button>
+                <button
+                  (click)="historyService.isHistoryModalOpen.set(true)"
+                  class="px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white rounded-lg transition-all text-[13px] font-medium shadow-sm flex items-center justify-center gap-2 pointer-events-auto cursor-pointer"
+                >
+                  <mat-icon class="text-[18px] w-[18px] h-[18px]">history</mat-icon>
+                  Lịch sử & Các bản dịch đang lưu
                 </button>
               </div>
             </div>
@@ -175,6 +183,7 @@ export class VideoPlayerComponent {
   public settingsService = inject(SettingsService);
   public storageService = inject(StorageService);
   public fileService = inject(FileService);
+  public historyService = inject(HistoryService);
   private sanitizer = inject(DomSanitizer);
 
   public instructionUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl('/instructions-for-use/how-to-use.html?v=' + Date.now());

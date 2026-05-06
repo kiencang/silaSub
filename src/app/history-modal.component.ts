@@ -31,13 +31,13 @@ import { SubtitleService } from './subtitle.service';
             <div class="flex items-center gap-4">
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
                 <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Lịch sử dịch tóm tắt
+                Lịch sử & Các bản dịch đang lưu
               </h2>
               @if (historyService.historyItems().length > 0) {
                 @if (!isConfirmingClearAll) {
                   <button 
                     (click)="isConfirmingClearAll = true"
-                    class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium transition-colors border border-red-500/20"
+                    class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium transition-colors border border-red-500/20 cursor-pointer"
                   >
                     Xóa tất cả
                   </button>
@@ -46,13 +46,13 @@ import { SubtitleService } from './subtitle.service';
                     <span class="text-xs text-red-400 font-medium tracking-tight">Chắc chắn xóa?</span>
                     <button 
                       (click)="clearAll()"
-                      class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors border border-red-500 shadow-sm"
+                      class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors border border-red-500 shadow-sm cursor-pointer"
                     >
                       Xóa
                     </button>
                     <button 
                       (click)="isConfirmingClearAll = false"
-                      class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors"
+                      class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors cursor-pointer"
                     >
                       Hủy
                     </button>
@@ -63,7 +63,7 @@ import { SubtitleService } from './subtitle.service';
             <div class="flex items-center gap-2">
               <button 
                 (click)="closeModal()"
-                class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 title="Đóng cửa sổ"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -127,7 +127,7 @@ import { SubtitleService } from './subtitle.service';
                       @if (deletingItemId !== item.id) {
                         <button 
                           (click)="confirmDelete(item.id, $event)"
-                          class="p-1 rounded bg-slate-800 text-slate-500 hover:text-red-400 hover:bg-slate-700 transition-colors border border-transparent shadow-none"
+                          class="p-1 rounded bg-slate-800 text-slate-500 hover:text-red-400 hover:bg-slate-700 transition-colors border border-transparent shadow-none cursor-pointer"
                           title="Xóa lịch sử này"
                         >
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -140,8 +140,9 @@ import { SubtitleService } from './subtitle.service';
                       }
                       <button 
                         (click)="loadItem(item)"
-                        class="px-3 py-1 bg-indigo-600/90 hover:bg-indigo-500 text-white text-[11px] font-bold rounded shadow-sm border border-indigo-500 transition-all cursor-pointer"
+                        class="flex items-center gap-1.5 px-4 py-1.5 bg-indigo-600/90 hover:bg-indigo-500 text-white text-xs font-bold rounded shadow-sm border border-indigo-500 transition-all cursor-pointer"
                       >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Nạp lại
                       </button>
                     </div>
