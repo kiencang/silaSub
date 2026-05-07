@@ -37,27 +37,9 @@ import { HistoryService } from './history.service';
             class="absolute bottom-16 right-4 md:bottom-20 md:right-6 z-50 text-white/70 bg-black/60 hover:bg-red-600 hover:text-white p-3 rounded-xl transition-all backdrop-blur-md cursor-pointer border border-white/10 opacity-70 group-hover:opacity-100 focus:outline-none"
           >
             @if (playerService.isFullscreen()) {
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              <!-- Exit pseudo icon -->
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20v-5H4M20 9h-5V4M20 15h-5v5M4 9h5V4" />
-            </svg>
+            <mat-icon class="text-[20px] w-[20px] h-[20px]">fullscreen_exit</mat-icon>
             } @else {
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-            </svg>
+            <mat-icon class="text-[20px] w-[20px] h-[20px]">fullscreen</mat-icon>
             }
           </button>
         </div>
@@ -67,8 +49,8 @@ import { HistoryService } from './history.service';
           <div class="absolute inset-0 bg-slate-900 rounded-2xl overflow-hidden z-20 flex flex-col border border-slate-700">
             <div class="h-12 bg-slate-800 flex justify-between items-center px-4 border-b border-slate-700 z-10 shadow-sm shrink-0">
                <span class="font-bold text-white">Hướng dẫn sử dụng</span>
-               <button (click)="appState.showInstructions.set(false)" class="p-1.5 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors">
-                  <mat-icon class="text-[20px] w-[20px] h-[20px]">close</mat-icon>
+               <button (click)="appState.showInstructions.set(false)" class="w-8 h-8 flex items-center justify-center hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors cursor-pointer focus:outline-none">
+                  <mat-icon class="text-[20px] w-[20px] h-[20px] block">close</mat-icon>
                </button>
             </div>
             <iframe

@@ -92,38 +92,10 @@ import { MatIconModule } from '@angular/material/icon';
             >
               @if (appState.isTranscriptExpanded()) {
               <!-- Collapse Vertical Icon -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m8 11 4 4 4-4" />
-                <path d="m8 13 4-4 4 4" />
-                <path d="M12 3v18" />
-              </svg>
+              <mat-icon class="text-[16px] w-[16px] h-[16px] flex items-center justify-center">unfold_less</mat-icon>
               } @else {
               <!-- Expand Vertical Icon -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m8 7 4-4 4 4" />
-                <path d="m8 17 4 4 4-4" />
-                <path d="M12 3v18" />
-              </svg>
+              <mat-icon class="text-[16px] w-[16px] h-[16px] flex items-center justify-center">unfold_more</mat-icon>
               }
               <span class="absolute top-full -right-2 mt-2 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50 whitespace-nowrap origin-top-right">
                 {{ appState.isTranscriptExpanded() ? 'Thu gọn' : 'Mở rộng' }}
@@ -158,13 +130,7 @@ import { MatIconModule } from '@angular/material/icon';
                 class="block text-[10px] text-slate-500 font-mono font-bold tracking-tighter group-hover:text-red-400 transition-colors"
                 >{{ videoService.formatTime(line.offset) }}</span
               >
-              <svg
-                class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
+              <mat-icon class="text-[14px] w-[14px] h-[14px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">play_arrow</mat-icon>
             </div>
             @if (appState.showEnglishSubtitle() && (!!fileService.selectedEnFile() || line.text !== '[Bản dịch không có phụ đề gốc]')) {
             <p
@@ -214,9 +180,9 @@ import { MatIconModule } from '@angular/material/icon';
               [class.cursor-not-allowed]="(!!fileService.selectedViFile() && !fileService.selectedEnFile())"
             >
               @if (!!fileService.selectedViFile() && !fileService.selectedEnFile()) {
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <mat-icon class="text-[16px] w-[16px] h-[16px] mr-2">check</mat-icon>
               Đã nạp Phụ đề Việt từ máy } @else {
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <mat-icon class="text-[16px] w-[16px] h-[16px] mr-2">download</mat-icon>
               Tải về Phụ đề Tiếng Việt (.srt) }
             </button>
             @if (translationService.analyzedBlocksJson() && appState.isDevMode()) {

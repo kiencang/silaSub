@@ -156,10 +156,7 @@ import { FileService } from "./file.service";
             class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-700 text-slate-400 hover:text-white focus:outline-none transition-colors"
             title="Xóa tìm kiếm"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <mat-icon class="text-[16px] w-[16px] h-[16px] leading-none text-slate-400 hover:text-white transition-colors cursor-pointer" title="Xóa tìm kiếm">close</mat-icon>
           </button>
           <div class="h-4 w-px bg-slate-700 mx-0.5"></div>
           }
@@ -172,10 +169,7 @@ import { FileService } from "./file.service";
             @if (searchService.isSearchingQuery()) {
             <div class="w-4.5 h-4.5 border-2 border-slate-600 border-t-slate-300 rounded-full animate-spin"></div>
             } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
+            <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none text-inherit">search</mat-icon>
             }
           </button>
         </div>

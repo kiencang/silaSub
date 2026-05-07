@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { HistoryService, TranslationHistoryItem } from './history.service';
 import { AppStateService } from './app.state.service';
 import { FileService } from './file.service';
@@ -7,6 +8,7 @@ import { SubtitleService } from './subtitle.service';
 @Component({
   selector: 'app-history-modal',
   standalone: true,
+  imports: [MatIconModule],
   template: `
     @if (historyService.isHistoryModalOpen()) {
       <div 
@@ -19,9 +21,7 @@ import { SubtitleService } from './subtitle.service';
         >
           <!-- Cảnh báo trên đầu -->
           <div class="bg-yellow-500/10 border-b border-yellow-500/20 p-4 shrink-0 flex items-start gap-3">
-            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
+            <mat-icon class="text-[20px] w-[20px] h-[20px] text-yellow-500 shrink-0">warning_amber</mat-icon>
             <p class="text-xs text-yellow-200/80 leading-relaxed font-medium">
               Danh sách tối đa 10 bản dịch gần nhất của bạn. Dữ liệu chỉ được <strong class="text-yellow-400">lưu trữ cục bộ</strong> tại <strong class="text-yellow-400">trình duyệt bạn đang dùng</strong>, để tiện xem lại khi cần và có thể bị xóa nếu bạn xóa lịch sử duyệt web. Luôn chủ động tải file (.srt) về máy tính để lưu trữ vĩnh viễn và an toàn.
             </p>
@@ -30,7 +30,7 @@ import { SubtitleService } from './subtitle.service';
           <div class="px-5 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-900 shrink-0 sticky top-0 z-10">
             <div class="flex items-center gap-4">
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <mat-icon class="text-[20px] w-[20px] h-[20px] text-indigo-400">history</mat-icon>
                 Lịch sử & Các bản dịch đang lưu
               </h2>
               @if (historyService.historyItems().length > 0) {
@@ -66,7 +66,7 @@ import { SubtitleService } from './subtitle.service';
                 class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 title="Đóng cửa sổ"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
               </button>
             </div>
           </div>
@@ -74,7 +74,7 @@ import { SubtitleService } from './subtitle.service';
           <div class="overflow-y-auto p-3 overflow-x-hidden flex-1">
             @if (historyService.historyItems().length === 0) {
               <div class="flex flex-col items-center justify-center py-12 text-slate-500 gap-3">
-                <svg class="w-12 h-12 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <mat-icon class="text-[48px] w-[48px] h-[48px] text-slate-700">inventory_2</mat-icon>
                 <p class="text-sm font-medium">Bạn chưa lưu bản dịch nào.</p>
               </div>
             } @else {
@@ -108,14 +108,12 @@ import { SubtitleService } from './subtitle.service';
                             class="flex items-center gap-1.5 text-[11px] text-blue-400 hover:text-blue-300 hover:underline min-w-0 truncate"
                             (click)="$event.stopPropagation()"
                           >
-                            <svg class="w-3.5 h-3.5 flex-none text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </svg>
+                            <mat-icon class="text-[14px] w-[14px] h-[14px] flex-none text-red-500">smart_display</mat-icon>
                             <span class="truncate">Xem YouTube</span>
                           </a>
                         } @else {
                           <span class="flex items-center gap-1.5 text-[11px] text-slate-500 italic block mt-0.5">
-                            <svg class="w-3.5 h-3.5 text-slate-600 block mt-[-1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+                            <mat-icon class="text-[14px] w-[14px] h-[14px] text-slate-600 block mt-[-1px]">link_off</mat-icon>
                             Không có link gốc
                           </span>
                         }
@@ -130,7 +128,7 @@ import { SubtitleService } from './subtitle.service';
                           class="p-1 rounded bg-slate-800 text-slate-500 hover:text-red-400 hover:bg-slate-700 transition-colors border border-transparent shadow-none cursor-pointer"
                           title="Xóa lịch sử này"
                         >
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                          <mat-icon class="text-[16px] w-[16px] h-[16px]">delete_outline</mat-icon>
                         </button>
                       } @else {
                         <div class="flex items-center gap-1 bg-slate-900 border border-slate-700 rounded p-0.5" (click)="$event.stopPropagation()">
@@ -142,7 +140,7 @@ import { SubtitleService } from './subtitle.service';
                         (click)="loadItem(item)"
                         class="flex items-center gap-1.5 px-4 py-1.5 bg-indigo-600/90 hover:bg-indigo-500 text-white text-xs font-bold rounded shadow-sm border border-indigo-500 transition-all cursor-pointer"
                       >
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        <mat-icon class="text-[14px] w-[14px] h-[14px]">refresh</mat-icon>
                         Nạp lại
                       </button>
                     </div>

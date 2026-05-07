@@ -46,18 +46,7 @@ import { PLATFORM_ID } from "@angular/core";
           class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-300 hover:bg-slate-700 rounded-lg transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
           title="Thiết lập lại / Xóa Link"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
         </button>
         }
       </div>
@@ -145,21 +134,10 @@ import { PLATFORM_ID } from "@angular/core";
           <button
             (click)="clearEnSubtitleFile($event)"
             [disabled]="translationService.isTranslating()"
-            class="absolute right-2.5 top-[7px] p-1.5 text-red-500 hover:text-red-400 hover:bg-slate-800 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+            class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 flex items-center justify-center text-red-500 hover:text-red-400 hover:bg-slate-800 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
             title="Hủy chọn File"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              />
-            </svg>
+            <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
           </button>
           }
         </div>
@@ -239,7 +217,7 @@ import { PLATFORM_ID } from "@angular/core";
                   class="text-pink-400 hover:text-pink-600 focus:outline-none cursor-pointer"
                   title="Đóng"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                  <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
                 </button>
                 }
               </div>
@@ -268,10 +246,10 @@ import { PLATFORM_ID } from "@angular/core";
                 <button
                   (click)="clearAudioFile($event)"
                   [disabled]="translationService.isTranslating()"
-                  class="absolute right-2.5 top-[3px] p-1.5 text-pink-400 hover:text-pink-300 hover:bg-pink-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                  class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 flex items-center justify-center text-pink-400 hover:text-pink-300 hover:bg-pink-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                   title="Hủy chọn File"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                  <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
                 </button>
                 }
               </div>
@@ -361,7 +339,7 @@ import { PLATFORM_ID } from "@angular/core";
                 class="text-cyan-400 hover:text-cyan-300 focus:outline-none cursor-pointer ml-auto bg-cyan-900/30 hover:bg-cyan-900/50 p-1 rounded-full transition-colors"
                 title="Đóng tùy chọn này"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
               </button>
               }
             </div>
@@ -390,10 +368,10 @@ import { PLATFORM_ID } from "@angular/core";
               <button
                 (click)="clearViSubtitleFile($event)"
                 [disabled]="translationService.isTranslating()"
-                class="absolute right-2.5 top-[7px] p-1.5 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 flex items-center justify-center text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/50 rounded-full transition-colors focus:outline-none cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                 title="Hủy chọn File"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
               </button>
               }
             </div>
@@ -410,21 +388,7 @@ import { PLATFORM_ID } from "@angular/core";
         <h3
           class="text-sm font-bold text-white mb-4 flex items-center gap-2"
         >
-          <svg
-            class="w-4 h-4"
-            [class.text-green-500]="analysisResult()"
-            [class.text-slate-400]="!analysisResult()"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"
-            ></path>
-          </svg>
+          <mat-icon class="text-[16px] w-[16px] h-[16px]" [class.text-green-500]="analysisResult()" [class.text-slate-400]="!analysisResult()">check</mat-icon>
           Trạng thái
         </h3>
         <div class="space-y-4">

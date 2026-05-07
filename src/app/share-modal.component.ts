@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
         <!-- Close Button -->
         <button
           (click)="closeModal()"
-          class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none"
+          class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none cursor-pointer"
         >
           <mat-icon class="text-[20px] w-[20px] h-[20px]">close</mat-icon>
         </button>

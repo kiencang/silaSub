@@ -23,9 +23,9 @@ import { VideoService } from './video.service';
           <h3 class="text-sm font-semibold text-white">Kênh YouTube Ưa Thích</h3>
           <button
             (click)="storageService.closeFavoritesDialog()" (keyup.enter)="storageService.closeFavoritesDialog()" tabindex="0"
-            class="p-1 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors"
+            class="w-8 h-8 flex items-center justify-center hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors cursor-pointer focus:outline-none"
           >
-            <mat-icon class="text-[20px] w-[20px] h-[20px]">close</mat-icon>
+            <mat-icon class="text-[20px] w-[20px] h-[20px] block">close</mat-icon>
           </button>
         </div>
 
