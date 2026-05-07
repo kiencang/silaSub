@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.66]- 2026-05-07
 ### Fixed
 - Đồng bộ về một bộ icon duy nhất (Angular Material).
+- Sửa các lỗi lặt vặt về vị trí icon không cân đối do hệ thống icon svg cũ để lại.
 
 ## [v1.0.65]- 2026-05-06
 ### Fixed
