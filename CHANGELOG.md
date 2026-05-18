@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.67]- 2026-05-14
 ### Fixed
 - Chỉnh lại nút toàn màn hình để xem video YouTube bị lệch.
+- AI Studio tự động đưa khóa API key chuyển về tầng server để an toàn hơn.
 
 ## [v1.0.66]- 2026-05-07
 ### Fixed
