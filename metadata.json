@@ -2,5 +2,5 @@
   "name": "silaSub",
   "description": "Dịch phụ đề video YouTube từ tiếng Anh sang tiếng Việt.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

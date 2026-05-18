@@ -34,7 +34,7 @@ import { HistoryService } from './history.service';
           <!-- Custom Fullscreen Button Overlay -->
           <button
             (click)="playerService.toggleFullscreen()"
-            class="absolute bottom-16 right-4 md:bottom-20 md:right-6 z-50 text-white/70 bg-black/60 hover:bg-red-600 hover:text-white p-3 rounded-xl transition-all backdrop-blur-md cursor-pointer border border-white/10 opacity-70 group-hover:opacity-100 focus:outline-none"
+            class="absolute bottom-16 right-4 md:bottom-20 md:right-6 z-50 text-white/70 bg-black/60 hover:bg-red-600 hover:text-white p-3 rounded-xl transition-all backdrop-blur-md cursor-pointer border border-white/10 opacity-70 group-hover:opacity-100 focus:outline-none flex items-center justify-center"
           >
             @if (playerService.isFullscreen()) {
             <mat-icon class="text-[20px] w-[20px] h-[20px]">fullscreen_exit</mat-icon>

@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { GoogleGenAI } from '@google/genai';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { ToastService } from './toast.service';
 
 @Injectable({
@@ -7,6 +8,7 @@ import { ToastService } from './toast.service';
 })
 export class SearchService {
   private toastService = inject(ToastService);
+  private http = inject(HttpClient);
   
   searchQuery = signal("");
   isSearchingQuery = signal(false);
@@ -16,10 +18,6 @@ export class SearchService {
     this.isSearchingQuery.set(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-      // We will use gemini-1.5-flash as it is fast and reliable for text task.
-      // User mentioned `gemini-flash-latest`, both will map to latest flash model.
-
       const systemInstruction = `Bạn là một AI chuyên dịch truy vấn tìm kiếm (search queries) từ tiếng Việt sang tiếng Anh. Nhiệm vụ DUY NHẤT của bạn là trả về MỘT (1) truy vấn tìm kiếm tiếng Anh hiệu quả nhất, dựa trên đánh giá của bạn về ý định (search intent) và cách tìm kiếm phổ biến nhất trong tiếng Anh.
 
 QUY TẮC BẮT BUỘC TUÂN THỦ:
@@ -31,14 +29,14 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
 
       const prompt = `Provide the single best English search query translation for the following Vietnamese query. Output ONLY the raw English text, nothing else:\n[${this.searchQuery().trim()}]`;
 
-      const response = await ai.models.generateContent({
-        model: "gemini-flash-latest",
-        contents: prompt,
+      const response = await firstValueFrom(this.http.post<{ text: string }>('/api/ai/generate', {
+        model: 'gemini-flash-latest',
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
         config: {
           systemInstruction: systemInstruction,
-          temperature: 0.1, // Low temperature for deterministic query generation
+          temperature: 0.1,
         },
-      });
+      }));
 
       const output = response.text || "";
       const cleanKeyword = output

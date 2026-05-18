@@ -1,7 +1,8 @@
 import { Injectable, signal, computed, inject, WritableSignal } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { firstValueFrom } from "rxjs";
 import { ToastService, ToastType } from "./toast.service";
 import { FileService } from "./file.service";
-import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import { TranscriptLine, SubtitleService } from "./subtitle.service";
 import { HistoryService } from "./history.service";
 import { AppStateService } from "./app.state.service";
@@ -17,6 +18,7 @@ export class TranslationService {
   private historyService = inject(HistoryService);
   private appState = inject(AppStateService);
   private videoService = inject(VideoService);
+  private http = inject(HttpClient);
 
   aiTemperature = signal<number>(0.5);
   aiModel = signal<string>("gemini-pro-latest");
@@ -152,8 +154,6 @@ export class TranslationService {
         throw new Error("SYSTEM_PROMPT_FETCH_ERROR");
       }
 
-      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
       const mode = this.translationMode();
       const CHUNK_SIZE = (mode === "lyric" || hasAudio) ? res.transcript.length : 600;
       const fullTranscript = res.transcript;
@@ -202,7 +202,7 @@ export class TranslationService {
               systemInstruction: phase1Si,
               responseMimeType: "application/json",
               temperature: 0.1,
-              thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
+              thinkingConfig: { thinkingLevel: 5 }, // 5 = HIGH
               responseSchema: {
                 type: "array",
                 items: {
@@ -217,22 +217,27 @@ export class TranslationService {
             };
 
             const phase1Prompt = "Phân tích ranh giới người nói cho mảng JSON sau:\n\n" + JSON.stringify(textsToTranslate, null, 2);
-            let reqContentsPhase1: string | (string | { inlineData: { mimeType: string, data: string } })[] = phase1Prompt;
+            let reqContentsPhase1: unknown[] = [{ role: 'user', parts: [{ text: phase1Prompt }] }];
 
             if (this.fileService.selectedAudioFile()) {
                 const audioFile = this.fileService.selectedAudioFile()!;
                 const base64Audio = await this.fileService.readFileAsBase64(audioFile);
                 reqContentsPhase1 = [
-                    { inlineData: { mimeType: audioFile.type || "audio/mp3", data: base64Audio } },
-                    phase1Prompt
+                  { 
+                    role: 'user', 
+                    parts: [
+                      { inlineData: { mimeType: audioFile.type || "audio/mp3", data: base64Audio } },
+                      { text: phase1Prompt }
+                    ] 
+                  }
                 ];
             }
 
-            const phase1Res = await ai.models.generateContent({
+            const phase1Res = await firstValueFrom(this.http.post<{ text: string }>('/api/ai/generate', {
               model: this.aiModel(),
               contents: reqContentsPhase1,
               config: reqConfigPhase1
-            });
+            }));
             
             const phase1Data = JSON.parse(phase1Res.text || "[]");
             
@@ -347,7 +352,7 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
           systemInstruction: systemInstruction,
           responseMimeType: "application/json",
           temperature: this.aiTemperature(),
-          thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
+          thinkingConfig: { thinkingLevel: 5 }, // 5 = HIGH
           responseSchema: {
             type: "array",
             items: {
@@ -365,26 +370,31 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
           reqConfig['tools'] = [{ googleSearch: {} }];
         }
 
-        let reqContents: unknown = prompt;
+        let reqContents: unknown[] = [{ role: 'user', parts: [{ text: prompt }] }];
         if (hasAudio && this.fileService.selectedAudioFile()) {
             const audioFile = this.fileService.selectedAudioFile()!;
             const base64Audio = await this.fileService.readFileAsBase64(audioFile);
             reqContents = [
-                {
+              {
+                role: 'user',
+                parts: [
+                  {
                     inlineData: {
-                        mimeType: audioFile.type || "audio/mp3",
-                        data: base64Audio,
+                      mimeType: audioFile.type || "audio/mp3",
+                      data: base64Audio,
                     }
-                },
-                prompt
+                  },
+                  { text: prompt }
+                ]
+              }
             ];
         }
 
-        const response = await ai.models.generateContent({
+        const response = await firstValueFrom(this.http.post<{ text: string }>('/api/ai/generate', {
           model: this.aiModel(),
-          contents: reqContents as never,
+          contents: reqContents,
           config: reqConfig,
-        });
+        }));
 
         const output = response.text;
         if (!output) throw new Error("Empty response from AI");
