@@ -62,7 +62,7 @@ import { FileService } from "./file.service";
           [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-pro-latest'"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">psychology</mat-icon>
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tư duy sâu (Pro)</span>
+          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tư duy sâu (Pro) - cho chất lượng dịch tốt hơn, nhưng thường bị hạn chế với API miễn phí.</span>
         </button>
 
         <button
@@ -75,7 +75,7 @@ import { FileService } from "./file.service";
           [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-flash-latest'"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">bolt</mat-icon>
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tốc độ & Tiết kiệm (Flash)</span>
+          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Tốc độ & Tiết kiệm (Flash) - rất phù hợp với nhu cầu dịch miễn phí.</span>
         </button>
       </div>
 

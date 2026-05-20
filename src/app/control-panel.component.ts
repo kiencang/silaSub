@@ -143,21 +143,8 @@ import { PLATFORM_ID } from "@angular/core";
         </div>
 
         <!-- Extra Context Section -->
-        <div class="mt-4 border-t border-slate-700 pt-4 relative group/flashlock w-full">
-          
-          @if (translationService.aiModel() === 'gemini-flash-latest') {
-            <div class="absolute inset-0 z-50 cursor-not-allowed"></div>
-            <div class="absolute top-3 left-1/2 -translate-x-1/2 -translate-y-full w-max max-w-[200px] opacity-0 group-hover/flashlock:opacity-100 transition-opacity pointer-events-none z-[100]">
-                <span class="block bg-slate-800 text-white text-[11px] font-medium p-2 rounded-lg shadow-xl relative text-center leading-relaxed">
-                    Model Flash không đủ sức mạnh tính toán cho tác vụ Thêm bối cảnh. Nếu muốn dùng, bạn hãy chuyển sang model Pro (icon hình đầu người).
-                    <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45"></span>
-                </span>
-            </div>
-          }
-
-          <div class="flex flex-col gap-3 w-full transition-opacity duration-300"
-               [class.opacity-40]="translationService.aiModel() === 'gemini-flash-latest'"
-               [class.pointer-events-none]="translationService.aiModel() === 'gemini-flash-latest'">
+        <div class="mt-4 border-t border-slate-700 pt-4 relative group w-full">
+          <div class="flex flex-col gap-3 w-full transition-opacity duration-300">
             <div class="flex items-center gap-1.5 mb-1">
               <span class="text-[13px] font-bold text-slate-300 block"
                 >Thêm bối cảnh (không bắt buộc)</span
@@ -173,7 +160,7 @@ import { PLATFORM_ID } from "@angular/core";
               <div
                 class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom"
               >
-                Cung cấp thêm audio gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định (ví dụ như có nhiều người nói), nhưng tùy chọn này không phải là yêu cầu bắt buộc. Ngoài ra: Thêm bối cảnh chỉ bật được với model Pro (tư duy sâu), model Flash không đủ sức mạnh tính toán.
+                Cung cấp thêm audio gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định (ví dụ như có nhiều người nói), nhưng tùy chọn này không phải là yêu cầu bắt buộc. Ngoài ra nếu có thể, hãy sử dụng model Pro để có chất lượng tốt hơn.
                 <!-- Arrow -->
                 <div
                   class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-slate-800"

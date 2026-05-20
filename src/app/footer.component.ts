@@ -25,7 +25,7 @@ import { HistoryService } from "./history.service";
           </button>
           
           <p class="text-[10px] text-slate-500 font-medium">
-            Chỉ dùng cho mục đích cá nhân • v1.0.67 •
+            Chỉ dùng cho mục đích cá nhân • v1.0.68 •
             <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200 ml-1">GitHub</a>
           </p>
         </div>
@@ -104,7 +104,7 @@ import { HistoryService } from "./history.service";
           
           <!-- Tooltip -->
           <span class="absolute bottom-full right-0 mb-3 w-[220px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
-            <span class="font-bold" [class.text-blue-400]="translationService.useGoogleSearch()" [class.text-slate-400]="!translationService.useGoogleSearch()">[{{ translationService.useGoogleSearch() ? 'Đang bật' : 'Đang tắt' }}]</span> Đa số các video thông thường không cần bật tính năng này. Bật công cụ tìm kiếm cho AI sẽ hữu ích nhất cho nội dung có tính chuyên ngành cao hoặc nội dung có tính thời sự cao cần cập nhật thông tin mới nhất.
+            <span class="font-bold" [class.text-blue-400]="translationService.useGoogleSearch()" [class.text-slate-400]="!translationService.useGoogleSearch()">[{{ translationService.useGoogleSearch() ? 'Đang bật' : 'Đang tắt' }}]</span> Đa số các video thông thường không cần bật tính năng này. Bật công cụ tìm kiếm cho AI sẽ hữu ích nhất cho nội dung có tính chuyên ngành cao hoặc nội dung có tính thời sự cao cần cập nhật thông tin mới nhất. Tính năng này đang bị hạn chế trên tài khoản miễn phí, bất kể model đang dùng là gì.
             <!-- Arrow -->
             <span class="absolute -bottom-1 right-4 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
           </span>

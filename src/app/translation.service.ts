@@ -21,7 +21,7 @@ export class TranslationService {
   private http = inject(HttpClient);
 
   aiTemperature = signal<number>(0.5);
-  aiModel = signal<string>("gemini-pro-latest");
+  aiModel = signal<string>("gemini-flash-latest");
   translationMode = signal<"multi-task" | "lyric">("multi-task");
   useGoogleSearch = signal<boolean>(false);
 
