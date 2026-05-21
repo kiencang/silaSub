@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from './toast.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,19 @@ import { ToastService } from './toast.service';
 export class SearchService {
   private toastService = inject(ToastService);
   private http = inject(HttpClient);
+  private storageService = inject(StorageService);
   
   searchQuery = signal("");
   isSearchingQuery = signal(false);
+
+  private getAuthHeaders(): Record<string, string> {
+    const key = this.storageService.userApiKey();
+    const headers: Record<string, string> = {};
+    if (key) {
+      headers["x-gemini-api-key"] = key;
+    }
+    return headers;
+  }
 
   async searchYoutube() {
     if (!this.searchQuery().trim()) return;
@@ -34,8 +45,9 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         config: {
           systemInstruction: systemInstruction,
-          temperature: 0.1,
         },
+      }, {
+        headers: this.getAuthHeaders()
       }));
 
       const output = response.text || "";

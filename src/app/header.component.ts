@@ -6,6 +6,7 @@ import { SettingsService } from "./settings.service";
 import { AppStateService } from "./app.state.service";
 import { SearchService } from "./search.service";
 import { FileService } from "./file.service";
+import { StorageService } from "./storage.service";
 
 @Component({
   selector: "app-header",
@@ -14,42 +15,6 @@ import { FileService } from "./file.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #controlsTemplate>
-      <!-- Temperature Controls -->
-      <div class="flex items-center gap-2.5">
-        <button
-          (click)="translationService.aiTemperature.set(0.3)"
-          class="group relative w-3.5 h-3.5 rounded-full bg-slate-600 transition-all focus:outline-none cursor-pointer hover:scale-110"
-          [class.ring-2]="translationService.aiTemperature() === 0.3"
-          [class.ring-offset-2]="translationService.aiTemperature() === 0.3"
-          [class.ring-slate-400]="translationService.aiTemperature() === 0.3"
-          [class.ring-offset-slate-900]="translationService.aiTemperature() === 0.3"
-        >
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max mx-auto px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Sát nghĩa (0.3)</span>
-        </button>
-        <button
-          (click)="translationService.aiTemperature.set(0.5)"
-          class="group relative w-3.5 h-3.5 rounded-full bg-blue-500 transition-all focus:outline-none cursor-pointer hover:scale-110"
-          [class.ring-2]="translationService.aiTemperature() === 0.5"
-          [class.ring-offset-2]="translationService.aiTemperature() === 0.5"
-          [class.ring-blue-500]="translationService.aiTemperature() === 0.5"
-          [class.ring-offset-slate-900]="translationService.aiTemperature() === 0.5"
-        >
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Cân bằng (0.5)</span>
-        </button>
-        <button
-          (click)="translationService.aiTemperature.set(0.7)"
-          class="group relative w-3.5 h-3.5 rounded-full bg-red-500 transition-all focus:outline-none cursor-pointer hover:scale-110"
-          [class.ring-2]="translationService.aiTemperature() === 0.7"
-          [class.ring-offset-2]="translationService.aiTemperature() === 0.7"
-          [class.ring-red-500]="translationService.aiTemperature() === 0.7"
-          [class.ring-offset-slate-900]="translationService.aiTemperature() === 0.7"
-        >
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Uyển chuyển (0.7)</span>
-        </button>
-      </div>
-
-      <div class="w-[1px] h-4 bg-slate-700 mx-0.5"></div>
-
       <!-- AI Model Controls -->
       <div class="flex items-center gap-2">
         <button
@@ -128,11 +93,28 @@ import { FileService } from "./file.service";
           >
             <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
           </div>
+
+          <button
+            (click)="storageService.openApiKeyDialog()"
+            class="w-9 h-9 rounded-full text-sm font-semibold transition-all cursor-pointer flex items-center justify-center border shrink-0"
+            [class.bg-blue-500/10]="storageService.userApiKey()"
+            [class.border-blue-500/30]="storageService.userApiKey()"
+            [class.text-blue-400]="storageService.userApiKey()"
+            [class.hover:bg-blue-500/20]="storageService.userApiKey()"
+            [class.bg-slate-800]="!storageService.userApiKey()"
+            [class.border-transparent]="!storageService.userApiKey()"
+            [class.text-slate-300]="!storageService.userApiKey()"
+            [class.hover:bg-slate-700]="!storageService.userApiKey()"
+            [title]="storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Key hệ thống'"
+          >
+            <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
+          </button>
+
           <button
             (click)="settingsService.openSettings(); settingsService.isOpen.set(true)"
-            class="px-2 py-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 rounded-full text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center shrink-0"
+            class="w-9 h-9 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 rounded-full text-sm font-semibold transition-colors cursor-pointer flex items-center justify-center shrink-0"
           >
-            <mat-icon class="text-[20px] w-[20px] h-[20px] leading-none">settings</mat-icon>
+            <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">settings</mat-icon>
           </button>
         </div>
       </div>
@@ -184,10 +166,27 @@ import { FileService } from "./file.service";
         >
           <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
         </div>
+
+        <button
+          (click)="storageService.openApiKeyDialog()"
+          class="px-4 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 border shrink-0 select-none"
+          [class.bg-blue-500/10]="storageService.userApiKey()"
+          [class.border-blue-500/30]="storageService.userApiKey()"
+          [class.text-blue-400]="storageService.userApiKey()"
+          [class.hover:bg-blue-500/20]="storageService.userApiKey()"
+          [class.bg-slate-800]="!storageService.userApiKey()"
+          [class.border-transparent]="!storageService.userApiKey()"
+          [class.text-slate-300]="!storageService.userApiKey()"
+          [class.hover:bg-slate-700]="!storageService.userApiKey()"
+          [class.hover:text-white]="!storageService.userApiKey()"
+        >
+          <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
+          {{ storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Key hệ thống' }}
+        </button>
         
         <button
           (click)="settingsService.openSettings(); settingsService.isOpen.set(true)"
-          class="px-4 py-2 bg-slate-800 text-slate-300 rounded-full text-sm font-semibold hover:bg-slate-700 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+          class="px-4 py-2 bg-slate-800 text-slate-300 rounded-full text-sm font-semibold hover:bg-slate-700 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
         >
           <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">settings</mat-icon>
           Cài đặt
@@ -202,6 +201,7 @@ export class HeaderComponent {
   appState = inject(AppStateService);
   searchService = inject(SearchService);
   fileService = inject(FileService);
+  storageService = inject(StorageService);
 
   changeTranslationMode(mode: "multi-task" | "lyric") {
     this.translationService.translationMode.set(mode);

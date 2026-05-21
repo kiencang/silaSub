@@ -7,6 +7,7 @@ import { TranscriptLine, SubtitleService } from "./subtitle.service";
 import { HistoryService } from "./history.service";
 import { AppStateService } from "./app.state.service";
 import { VideoService } from "./video.service";
+import { StorageService } from "./storage.service";
 
 @Injectable({
   providedIn: "root",
@@ -19,8 +20,17 @@ export class TranslationService {
   private appState = inject(AppStateService);
   private videoService = inject(VideoService);
   private http = inject(HttpClient);
+  private storageService = inject(StorageService);
 
-  aiTemperature = signal<number>(0.5);
+  private getAuthHeaders(): Record<string, string> {
+    const key = this.storageService.userApiKey();
+    const headers: Record<string, string> = {};
+    if (key) {
+      headers["x-gemini-api-key"] = key;
+    }
+    return headers;
+  }
+
   aiModel = signal<string>("gemini-flash-latest");
   translationMode = signal<"multi-task" | "lyric">("multi-task");
   useGoogleSearch = signal<boolean>(false);
@@ -201,8 +211,7 @@ export class TranslationService {
             const reqConfigPhase1: Record<string, unknown> = {
               systemInstruction: phase1Si,
               responseMimeType: "application/json",
-              temperature: 0.1,
-              thinkingConfig: { thinkingLevel: 5 }, // 5 = HIGH
+              thinkingConfig: { thinkingLevel: "HIGH" },
               responseSchema: {
                 type: "array",
                 items: {
@@ -237,6 +246,8 @@ export class TranslationService {
               model: this.aiModel(),
               contents: reqContentsPhase1,
               config: reqConfigPhase1
+            }, {
+              headers: this.getAuthHeaders()
             }));
             
             const phase1Data = JSON.parse(phase1Res.text || "[]");
@@ -351,8 +362,7 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
         const reqConfig: Record<string, unknown> = {
           systemInstruction: systemInstruction,
           responseMimeType: "application/json",
-          temperature: this.aiTemperature(),
-          thinkingConfig: { thinkingLevel: 5 }, // 5 = HIGH
+          thinkingConfig: { thinkingLevel: "HIGH" },
           responseSchema: {
             type: "array",
             items: {
@@ -394,6 +404,8 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
           model: this.aiModel(),
           contents: reqContents,
           config: reqConfig,
+        }, {
+          headers: this.getAuthHeaders()
         }));
 
         const output = response.text;

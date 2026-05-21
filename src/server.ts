@@ -22,7 +22,13 @@ app.post('/api/ai/generate', async (req, res) => {
   try {
     const { model, contents, config } = req.body;
     
-    const response = await genAI.models.generateContent({
+    // Check if user provided their own API Key in headers (highly secure, non-persistent server-side)
+    const customKey = req.headers['x-gemini-api-key'] || req.headers['X-Gemini-Api-Key'];
+    const activeGenAI = typeof customKey === 'string' && customKey.trim() !== ''
+      ? new GoogleGenAI({ apiKey: customKey.trim() })
+      : genAI;
+    
+    const response = await activeGenAI.models.generateContent({
       model,
       contents,
       config,

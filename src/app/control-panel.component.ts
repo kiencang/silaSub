@@ -598,16 +598,15 @@ export class ControlPanelComponent {
     const srtContent = this.subtitleService.generateSrtContent(res.transcript);
     
     const model = this.translationService.aiModel();
-    const temp = this.translationService.aiTemperature();
     const mode = this.translationService.translationMode() === 'lyric' ? 'lyric' : 'multi-task';
     const search = this.translationService.useGoogleSearch() ? 'search' : 'no-search';
     
-    let fileName = `silaSub_vi_${this.appState.videoId() || "subtitles"}_[${model}]_[${temp}]_[${mode}]_[${search}].srt`;
+    let fileName = `silaSub_vi_${this.appState.videoId() || "subtitles"}_[${model}]_[${mode}]_[${search}].srt`;
     const videoIdStr = this.appState.videoId();
 
     if (videoIdStr) {
       const videoTitle = await this.videoService.fetchVideoTitle(videoIdStr);
-      fileName = `silaSub_vi_${videoIdStr}_[${videoTitle}]_[${model}]_[${temp}]_[${mode}]_[${search}].srt`;
+      fileName = `silaSub_vi_${videoIdStr}_[${videoTitle}]_[${model}]_[${mode}]_[${search}].srt`;
     }
 
     this.fileService.downloadFile(srtContent, fileName, "text/srt");

@@ -4,6 +4,7 @@ import { ToastService } from "./toast.service";
 
 export const SETTINGS_STORAGE_KEY = "silaSub_v1_prefs_8f9a2b";
 export const FAVORITES_STORAGE_KEY = "silaSub_favorite_channels_v1";
+export const GEMINI_API_KEY_STORAGE_KEY = "silaSub_user_gemini_api_key_v1";
 
 export interface AppSettings {
   size: number;
@@ -29,9 +30,14 @@ export class StorageService {
   dialogChannels = signal<string[]>([]);
   showFavoritesDialog = signal(false);
 
+  // User API Key State
+  userApiKey = signal<string | null>(null);
+  showApiKeyDialog = signal(false);
+
   constructor() {
     if (this.isBrowser) {
       this.loadFavorites();
+      this.loadUserApiKey();
     }
   }
 
@@ -63,6 +69,42 @@ export class StorageService {
     if (!this.isBrowser) return;
     try {
       localStorage.removeItem(SETTINGS_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  }
+
+  loadUserApiKey(): string | null {
+    if (!this.isBrowser) return null;
+    try {
+      const savedKey = localStorage.getItem(GEMINI_API_KEY_STORAGE_KEY);
+      if (savedKey) {
+        this.userApiKey.set(savedKey);
+        return savedKey;
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  }
+
+  saveUserApiKey(key: string): boolean {
+    if (!this.isBrowser) return false;
+    try {
+      const trimmed = key.trim();
+      localStorage.setItem(GEMINI_API_KEY_STORAGE_KEY, trimmed);
+      this.userApiKey.set(trimmed);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  removeUserApiKey(): void {
+    if (!this.isBrowser) return;
+    try {
+      localStorage.removeItem(GEMINI_API_KEY_STORAGE_KEY);
+      this.userApiKey.set(null);
     } catch {
       // ignore
     }
@@ -118,6 +160,14 @@ export class StorageService {
 
   closeFavoritesDialog() {
     this.showFavoritesDialog.set(false);
+  }
+
+  openApiKeyDialog() {
+    this.showApiKeyDialog.set(true);
+  }
+
+  closeApiKeyDialog() {
+    this.showApiKeyDialog.set(false);
   }
 
   addDialogChannel() {

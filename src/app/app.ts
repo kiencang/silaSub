@@ -31,6 +31,7 @@ import { FooterComponent } from "./footer.component";
 import { VideoPlayerComponent } from "./video-player.component";
 import { ControlPanelComponent } from "./control-panel.component";
 import { HistoryModalComponent } from "./history-modal.component";
+import { ApiKeyModalComponent } from "./api-key-modal.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +49,7 @@ import { HistoryModalComponent } from "./history-modal.component";
     VideoPlayerComponent,
     ControlPanelComponent,
     HistoryModalComponent,
+    ApiKeyModalComponent,
   ],
   templateUrl: "./app.html",
   styleUrl: "./app.css",
