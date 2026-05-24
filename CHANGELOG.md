@@ -5,14 +5,6 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.70] 2026-05-24
-### Fixed
-- Điều chỉnh lại tooltip cho model Pro và Flash để phù hợp hơn.
-- Bắt lỗi nhập link ở input nhập từ khóa.
-- Chuyển sang dùng Clientside với Key cá nhân, chỉ Serverside với Key dùng chung để tránh hiện tượng quá tải.
-- Điều chỉnh các Toast để nó có thông báo chuẩn hơn phù hợp với từng trường hợp lỗi của API Key (hết ngưỡng miễn phí, từ chối dịch, vân vân..).
-- Loại bỏ tính năng +Search, vì hiện nó không tương thích với JSON?
-
 ## [v1.0.69]- 2026-05-21
 ### Fixed
 - Thiết lập cài đặt khóa API dùng riêng.
