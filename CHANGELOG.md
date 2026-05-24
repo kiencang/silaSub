@@ -8,6 +8,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ## [v1.0.70] 2026-05-24
 ### Fixed
 - Điều chỉnh lại tooltip cho model Pro và Flash để phù hợp hơn.
+- Bắt lỗi nhập link ở input nhập từ khóa.
 
 ## [v1.0.69]- 2026-05-21
 ### Fixed
