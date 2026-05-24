@@ -9,6 +9,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 ### Fixed
 - Điều chỉnh lại tooltip cho model Pro và Flash để phù hợp hơn.
 - Bắt lỗi nhập link ở input nhập từ khóa.
+- Chuyển sang dùng Clientside với Key cá nhân, chỉ Serverside với Key dùng chung để tránh hiện tượng quá tải.
 
 ## [v1.0.69]- 2026-05-21
 ### Fixed
