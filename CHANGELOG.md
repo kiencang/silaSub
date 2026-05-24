@@ -10,6 +10,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0
 - Điều chỉnh lại tooltip cho model Pro và Flash để phù hợp hơn.
 - Bắt lỗi nhập link ở input nhập từ khóa.
 - Chuyển sang dùng Clientside với Key cá nhân, chỉ Serverside với Key dùng chung để tránh hiện tượng quá tải.
+- Điều chỉnh các Toast để nó có thông báo chuẩn hơn phù hợp với từng trường hợp lỗi của API Key (hết ngưỡng miễn phí, từ chối dịch, vân vân..).
 
 ## [v1.0.69]- 2026-05-21
 ### Fixed
