@@ -500,8 +500,12 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
         errMsg.includes("429") ||
         errMsg.toLowerCase().includes("quota")
       ) {
-        toastMsg =
-          "Hệ thống AI đang quá tải hoặc hết lượt dịch miễn phí. Vui lòng thử lại sau ít phút!";
+        const isUsingPersonalKey = !!this.storageService.userApiKey();
+        if (isUsingPersonalKey) {
+          toastMsg = "Key cá nhân hiện tại của bạn đã hết ngưỡng miễn phí ngày, bạn có thể nhập API Key khác còn ngưỡng miễn phí để tiếp tục sử dụng.";
+        } else {
+          toastMsg = "Key hệ thống chung đã hết ngưỡng miễn phí, bạn có thể nhập API Key riêng của bạn để dùng thoải mái hơn.";
+        }
       } else if (
         errMsg.toLowerCase().includes("safet") ||
         errMsg.toLowerCase().includes("block")

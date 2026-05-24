@@ -36,7 +36,7 @@ import { ToastService } from './toast.service';
         <!-- Modal Body -->
         <div class="p-6 flex flex-col gap-5">
           <p class="text-slate-300 text-sm leading-relaxed">
-            Tự cấu hình khóa API (Gemini API Key) riêng để dịch ổn định, không lo hết giới hạn lượt dịch từ hệ thống chung.
+            Thêm khóa API (Gemini API Key) của cá nhân bạn, để việc dịch được ổn định, không lo hết giới hạn lượt dịch từ hệ thống chung. Bạn có thể tạo khóa API miễn phí từ trang AI Studio (xem phần "Hướng dẫn nhanh").
           </p>
 
           <!-- Badges & Guide -->
@@ -76,7 +76,7 @@ import { ToastService } from './toast.service';
                 [type]="showPassword() ? 'text' : 'password'"
                 [value]="apiKeyInput()"
                 (input)="onApiKeyChange($event)"
-                placeholder="Nhập API Key của bạn (bắt đầu bằng AIzaSy...)"
+                placeholder="Nhập API Key của bạn vào đây..."
                 class="w-full pl-3 pr-10 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:bg-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono tracking-wider placeholder-slate-500"
               />
               <button

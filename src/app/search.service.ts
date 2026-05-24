@@ -25,7 +25,19 @@ export class SearchService {
   }
 
   async searchYoutube() {
-    if (!this.searchQuery().trim()) return;
+    const rawQuery = this.searchQuery().trim();
+    if (!rawQuery) return;
+
+    // Phát hiện nếu người dùng nhập nhầm link thay vì từ khóa
+    const isUrl = /^(https?:\/\/|www\.|youtube\.com|youtu\.be)/i.test(rawQuery);
+    if (isUrl) {
+      this.toastService.addToast(
+        'Phần này dùng để nhập từ khóa tìm kiếm video, vui lòng nhập link video YouTube ở phần "Dán link Video..." bên cột phải.',
+        'warning'
+      );
+      return;
+    }
+
     this.isSearchingQuery.set(true);
 
     try {
@@ -68,7 +80,21 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
       }
     } catch (err) {
       console.error(err);
-      this.toastService.addToast("Lỗi khi dịch từ khóa tìm kiếm", "error");
+      const error = err as Error;
+      let toastMsg = "Lỗi khi dịch từ khóa tìm kiếm";
+      const errMsg = error.message || "";
+      if (
+        errMsg.includes("429") ||
+        errMsg.toLowerCase().includes("quota")
+      ) {
+        const isUsingPersonalKey = !!this.storageService.userApiKey();
+        if (isUsingPersonalKey) {
+          toastMsg = "Key cá nhân hiện tại của bạn đã hết ngưỡng miễn phí ngày, bạn có thể nhập API Key khác còn ngưỡng miễn phí để tiếp tục sử dụng.";
+        } else {
+          toastMsg = "Key hệ thống chung đã hết ngưỡng miễn phí, bạn có thể nhập API Key riêng của bạn để dùng thoải mái hơn.";
+        }
+      }
+      this.toastService.addToast(toastMsg, "error");
     } finally {
       this.isSearchingQuery.set(false);
     }
