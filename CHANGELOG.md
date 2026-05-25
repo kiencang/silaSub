@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.71] - 2026-05-25
+### Fixed
+- Chuyển về dạng Clientside, và bắt buộc nhập API Key để dịch.
+- Chỉnh sửa giao diện nhập API Key.
+
 ## [v1.0.70]- 2026-05-24
 ### Fixed
 - Chỉnh lại một số Toast để thông báo chuẩn hơn.
