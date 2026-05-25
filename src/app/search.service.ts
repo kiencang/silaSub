@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from './toast.service';
 import { StorageService } from './storage.service';
+import { GoogleGenAI } from '@google/genai';
 
 @Injectable({
   providedIn: 'root'
@@ -52,15 +53,20 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
 
       const prompt = `Provide the single best English search query translation for the following Vietnamese query. Output ONLY the raw English text, nothing else:\n[${this.searchQuery().trim()}]`;
 
-      const response = await firstValueFrom(this.http.post<{ text: string }>('/api/ai/generate', {
+      const key = this.storageService.userApiKey();
+      if (!key) {
+        throw new Error("Bắt buộc: Vui lòng truy cập Cài đặt để nhập Gemini API Key của bạn trước khi dịch từ khóa.");
+      }
+
+      const ai = new GoogleGenAI({ apiKey: key });
+
+      const response = await ai.models.generateContent({
         model: 'gemini-flash-latest',
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         config: {
           systemInstruction: systemInstruction,
         },
-      }, {
-        headers: this.getAuthHeaders()
-      }));
+      });
 
       const output = response.text || "";
       const cleanKeyword = output
@@ -83,16 +89,18 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
       const error = err as Error;
       let toastMsg = "Lỗi khi dịch từ khóa tìm kiếm";
       const errMsg = error.message || "";
-      if (
+      if (errMsg.includes("Bắt buộc")) {
+        toastMsg = errMsg;
+      } else if (
         errMsg.includes("429") ||
         errMsg.toLowerCase().includes("quota")
       ) {
-        const isUsingPersonalKey = !!this.storageService.userApiKey();
-        if (isUsingPersonalKey) {
-          toastMsg = "Key cá nhân hiện tại của bạn đã hết ngưỡng miễn phí ngày, bạn có thể nhập API Key khác còn ngưỡng miễn phí để tiếp tục sử dụng.";
-        } else {
-          toastMsg = "Key hệ thống chung đã hết ngưỡng miễn phí, bạn có thể nhập API Key riêng của bạn để dùng thoải mái hơn.";
-        }
+        toastMsg = "API Key của bạn đã hết ngưỡng miễn phí hoặc giới hạn request. Vui lòng thử lại sau hoặc đổi API Key khác.";
+      } else if (
+        errMsg.includes("403") ||
+        errMsg.toLowerCase().includes("permission")
+      ) {
+        toastMsg = "API Key của bạn không hợp lệ hoặc không có quyền truy cập Gemini API. Vui lòng kiểm tra lại.";
       }
       this.toastService.addToast(toastMsg, "error");
     } finally {

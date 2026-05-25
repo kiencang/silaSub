@@ -105,7 +105,7 @@ import { StorageService } from "./storage.service";
             [class.border-transparent]="!storageService.userApiKey()"
             [class.text-slate-300]="!storageService.userApiKey()"
             [class.hover:bg-slate-700]="!storageService.userApiKey()"
-            [title]="storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Key hệ thống'"
+            [title]="storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Nhập API Key'"
           >
             <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
           </button>
@@ -181,7 +181,7 @@ import { StorageService } from "./storage.service";
           [class.hover:text-white]="!storageService.userApiKey()"
         >
           <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
-          {{ storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Key hệ thống' }}
+          {{ storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Nhập API Key' }}
         </button>
         
         <button

@@ -39,7 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
 
         <!-- Description -->
         <p class="text-[13px] text-slate-300 mb-6 leading-relaxed">
-          silaSub là công cụ miễn phí, dựa trên gói miễn phí mà AI Studio cung cấp, đủ dịch khoảng 2 - 3 tiếng video / ngày bằng model AI Gemini mới nhất.
+          silaSub là công cụ miễn phí hoạt động độc lập trên trình duyệt của bạn (client-side). Bạn sẽ cần có Gemini API Key riêng của bạn để kết nối trực tiếp đến AI của Google.
         </p>
 
         <!-- Link Container -->

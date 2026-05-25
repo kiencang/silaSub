@@ -36,7 +36,7 @@ import { ToastService } from './toast.service';
         <!-- Modal Body -->
         <div class="p-6 flex flex-col gap-5">
           <p class="text-slate-300 text-sm leading-relaxed">
-            Thêm khóa API (Gemini API Key) của cá nhân bạn, để việc dịch được ổn định, không lo hết giới hạn lượt dịch từ hệ thống chung. Bạn có thể tạo khóa API miễn phí từ trang AI Studio (xem phần "Hướng dẫn nhanh").
+            Để sử dụng công cụ dịch phụ đề YouTube này bạn cần khóa API Key của Gemini. Bạn hãy vào link "Nơi lấy API Key Gemini" để thao tác. Bạn chỉ cần tạo Key miễn phí là đủ dùng.
           </p>
 
           <!-- Badges & Guide -->
@@ -44,12 +44,12 @@ import { ToastService } from './toast.service';
             @if (storageService.userApiKey()) {
               <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/15 text-blue-400 border border-blue-500/20 rounded-full font-medium">
                 <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-                Đang dùng API Key của bạn
+                Đã cấu hình API Key
               </span>
             } @else {
               <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 text-slate-400 border border-slate-700 rounded-full font-medium">
                 <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
-                Chưa cấu hình API Key cá nhân
+                Bạn chưa nhập API Key cho ứng dụng
               </span>
             }
 
@@ -61,15 +61,15 @@ import { ToastService } from './toast.service';
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors font-medium hover:underline"
             >
-              <mat-icon class="text-[14px] w-3.5 h-3.5 flex items-center justify-center">help_outline</mat-icon>
-              Hướng dẫn nhanh
+              <mat-icon style="font-size: 14px; width: 14px; height: 14px;" class="flex items-center justify-center scale-[0.8] opacity-80 -mx-0.5 origin-center">help_outline</mat-icon>
+              Nơi lấy API Key Gemini
             </a>
           </div>
 
           <!-- Input Area -->
           <div class="flex flex-col gap-2">
             <span class="block text-[11px] font-bold text-slate-400 tracking-wider uppercase select-none">
-              GEMINI API KEY CÁ NHÂN
+              GEMINI API KEY
             </span>
             <div class="relative w-full group">
               <input
@@ -101,17 +101,11 @@ import { ToastService } from './toast.service';
                 (click)="removeKey()"
                 class="px-4 py-2 text-xs font-semibold text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/35 hover:bg-red-500/5 rounded-lg transition-colors cursor-pointer"
               >
-                Xóa Key cá nhân
+                Xóa cấu hình Key
               </button>
             }
           </div>
           <div class="flex gap-3">
-            <button
-              (click)="storageService.closeApiKeyDialog()"
-              class="px-4 py-2 rounded-lg font-medium bg-slate-800 border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors text-[13px] cursor-pointer"
-            >
-              Hủy
-            </button>
             <button
               (click)="saveKey()"
               class="px-5 py-2 rounded-lg font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer shadow-sm text-[13px]"
@@ -159,7 +153,7 @@ export class ApiKeyModalComponent {
     }
     
     if (this.storageService.saveUserApiKey(key)) {
-      this.toastService.addToast("Lưu API Key cá nhân thành công!", "success");
+      this.toastService.addToast("Lưu API Key thành công!", "success");
       this.storageService.closeApiKeyDialog();
     } else {
       this.toastService.addToast("Lỗi khi lưu cấu hình!", "error");
@@ -169,7 +163,7 @@ export class ApiKeyModalComponent {
   removeKey() {
     this.storageService.removeUserApiKey();
     this.apiKeyInput.set("");
-    this.toastService.addToast("Đã xóa API Key cá nhân và đổi về Key hệ thống", "success");
+    this.toastService.addToast("Đã xóa API Key. Bạn cần cung cấp lại Key để tiếp tục dịch.", "success");
     this.storageService.closeApiKeyDialog();
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable, signal, computed, inject, WritableSignal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { firstValueFrom } from "rxjs";
+import { GoogleGenAI } from "@google/genai";
 import { ToastService, ToastType } from "./toast.service";
 import { FileService } from "./file.service";
 import { TranscriptLine, SubtitleService } from "./subtitle.service";
@@ -242,13 +243,18 @@ export class TranslationService {
                 ];
             }
 
-            const phase1Res = await firstValueFrom(this.http.post<{ text: string }>('/api/ai/generate', {
+            const key = this.storageService.userApiKey();
+            if (!key) {
+               throw new Error("Bắt buộc: Vui lòng truy cập Cài đặt để nhập Gemini API Key của bạn trước khi dịch.");
+            }
+
+            const ai = new GoogleGenAI({ apiKey: key });
+
+            const phase1Res = await ai.models.generateContent({
               model: this.aiModel(),
-              contents: reqContentsPhase1,
-              config: reqConfigPhase1
-            }, {
-              headers: this.getAuthHeaders()
-            }));
+              contents: reqContentsPhase1 as any,
+              config: reqConfigPhase1 as any
+            });
             
             const phase1Data = JSON.parse(phase1Res.text || "[]");
             
@@ -400,13 +406,18 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
             ];
         }
 
-        const response = await firstValueFrom(this.http.post<{ text: string }>('/api/ai/generate', {
+        const key = this.storageService.userApiKey();
+        if (!key) {
+           throw new Error("Bắt buộc: Vui lòng truy cập Cài đặt để nhập Gemini API Key của bạn trước khi dịch.");
+        }
+
+        const ai = new GoogleGenAI({ apiKey: key });
+
+        const response = await ai.models.generateContent({
           model: this.aiModel(),
-          contents: reqContents,
-          config: reqConfig,
-        }, {
-          headers: this.getAuthHeaders()
-        }));
+          contents: reqContents as any,
+          config: reqConfig as any,
+        });
 
         const output = response.text;
         if (!output) throw new Error("Empty response from AI");
@@ -493,19 +504,21 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
       let toastMsg = "Lỗi kết nối khi dịch thuật.";
       let toastType: ToastType = "error";
 
-      if (errMsg === "SYSTEM_PROMPT_FETCH_ERROR") {
+      if (errMsg.includes("API Key") || errMsg.includes("Bắt buộc")) {
+        toastMsg = errMsg;
+      } else if (errMsg === "SYSTEM_PROMPT_FETCH_ERROR") {
         toastMsg =
           "Không thể tải file Cấu hình AI. Vui lòng kiểm tra lại thư mục public/prompts/";
       } else if (
         errMsg.includes("429") ||
         errMsg.toLowerCase().includes("quota")
       ) {
-        const isUsingPersonalKey = !!this.storageService.userApiKey();
-        if (isUsingPersonalKey) {
-          toastMsg = "Key cá nhân hiện tại của bạn đã hết ngưỡng miễn phí ngày, bạn có thể nhập API Key khác còn ngưỡng miễn phí để tiếp tục sử dụng.";
-        } else {
-          toastMsg = "Key hệ thống chung đã hết ngưỡng miễn phí, bạn có thể nhập API Key riêng của bạn để dùng thoải mái hơn.";
-        }
+        toastMsg = "API Key của bạn đã hết ngưỡng miễn phí hoặc giới hạn request. Vui lòng thử lại sau hoặc đổi API Key khác.";
+      } else if (
+        errMsg.includes("403") ||
+        errMsg.toLowerCase().includes("permission")
+      ) {
+        toastMsg = "API Key của bạn không hợp lệ hoặc không có quyền truy cập Gemini API. Vui lòng kiểm tra lại.";
       } else if (
         errMsg.toLowerCase().includes("safet") ||
         errMsg.toLowerCase().includes("block")

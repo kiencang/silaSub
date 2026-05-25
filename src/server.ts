@@ -6,7 +6,6 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import {join} from 'node:path';
-import { GoogleGenAI } from "@google/genai";
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -14,33 +13,6 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 app.use(express.json({ limit: '50mb' }));
-
-const genAI = new GoogleGenAI({ apiKey: process.env['GEMINI_API_KEY'] || '' });
-
-// AI proxy endpoint
-app.post('/api/ai/generate', async (req, res) => {
-  try {
-    const { model, contents, config } = req.body;
-    
-    // Check if user provided their own API Key in headers (highly secure, non-persistent server-side)
-    const customKey = req.headers['x-gemini-api-key'] || req.headers['X-Gemini-Api-Key'];
-    const activeGenAI = typeof customKey === 'string' && customKey.trim() !== ''
-      ? new GoogleGenAI({ apiKey: customKey.trim() })
-      : genAI;
-    
-    const response = await activeGenAI.models.generateContent({
-      model,
-      contents,
-      config,
-    });
-
-    res.json({ text: response.text });
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error('AI Error:', error);
-    res.status(500).json({ error: errorMessage || 'Internal Server Error' });
-  }
-});
 
 /**
  * Serve static files from /browser
