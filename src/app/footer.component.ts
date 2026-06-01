@@ -4,6 +4,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { TranslationService } from "./translation.service";
 import { AppStateService } from "./app.state.service";
 import { HistoryService } from "./history.service";
+import { TtsService } from "./tts.service";
 
 @Component({
   selector: "app-footer",
@@ -15,6 +16,40 @@ import { HistoryService } from "./history.service";
       <!-- Left side -->
       <div class="flex flex-col md:flex-row md:items-center gap-3 order-2 md:order-1 mt-1 md:mt-0">
         <div class="flex flex-row items-center gap-3">
+          <!-- Dev Mode Toggle -->
+          <div class="group relative flex items-center gap-2 self-start md:self-auto">
+            <button
+              (click)="appState.isDevMode.set(!appState.isDevMode())"
+              (keyup.enter)="appState.isDevMode.set(!appState.isDevMode())"
+              tabindex="0"
+              class="relative inline-block h-4 w-7 rounded-full transition-colors focus:outline-none shadow-none border border-slate-700 cursor-pointer"
+              [class.bg-indigo-600]="appState.isDevMode()"
+              [class.bg-slate-800]="!appState.isDevMode()"
+            >
+              <span
+                class="absolute top-[1px] h-3 w-3 rounded-full bg-slate-200 transition-all duration-200 shadow-sm"
+                [class.left-[13px]]="appState.isDevMode()"
+                [class.left-[1px]]="!appState.isDevMode()"
+                [class.bg-white]="appState.isDevMode()"
+              ></span>
+            </button>
+            <span 
+              class="text-[10px] font-medium cursor-pointer" 
+              (click)="appState.isDevMode.set(!appState.isDevMode())"
+              (keyup.enter)="appState.isDevMode.set(!appState.isDevMode())"
+              tabindex="0"
+              [class.text-slate-500]="!appState.isDevMode()" 
+              [class.text-indigo-500]="appState.isDevMode()"
+            >Dev</span>
+            
+            <!-- Tooltip -->
+            <span class="absolute bottom-full left-0 md:left-auto md:left-1/2 md:-translate-x-1/2 mb-3 w-[260px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
+              <span class="font-bold" [class.text-indigo-400]="appState.isDevMode()" [class.text-slate-400]="!appState.isDevMode()">[{{ appState.isDevMode() ? 'Đang bật' : 'Đang tắt' }}]</span> Chỉ dành cho lập trình viên, khi được bật công cụ sẽ thêm nút tải file trung gian về để lập trình viên có thể kiểm tra nội dung, đặc biệt hữu ích nếu bạn Remix công cụ về phát triển thêm.
+              <!-- Arrow -->
+              <span class="absolute -bottom-1 left-4 md:left-1/2 md:-translate-x-1/2 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
+            </span>
+          </div>
+
           <button
             (click)="appState.isShareModalOpen.set(true)"
             class="flex items-center justify-center gap-1 h-[20px] px-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded transition-colors border border-slate-700 cursor-pointer group focus:outline-none focus:ring-1 focus:ring-slate-500"
@@ -25,40 +60,40 @@ import { HistoryService } from "./history.service";
           </button>
           
           <p class="text-[10px] text-slate-500 font-medium">
-            Chỉ dùng cho mục đích cá nhân • v1.0.73 •
+            Chỉ dùng cho mục đích cá nhân • v1.0.74 •
             <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200 ml-1">GitHub</a>
           </p>
         </div>
 
-        <!-- Dev Mode Toggle -->
+        <!-- TTS Mode Toggle -->
         <div class="group relative flex items-center gap-2 self-start md:self-auto ml-1 md:ml-0 md:pl-2 md:border-l md:border-slate-800">
           <button
-            (click)="appState.isDevMode.set(!appState.isDevMode())"
-            (keyup.enter)="appState.isDevMode.set(!appState.isDevMode())"
+            (click)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
+            (keyup.enter)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
             tabindex="0"
             class="relative inline-block h-4 w-7 rounded-full transition-colors focus:outline-none shadow-none border border-slate-700 cursor-pointer"
-            [class.bg-indigo-600]="appState.isDevMode()"
-            [class.bg-slate-800]="!appState.isDevMode()"
+            [class.bg-green-600]="ttsService.isTtsEnabled()"
+            [class.bg-slate-800]="!ttsService.isTtsEnabled()"
           >
             <span
               class="absolute top-[1px] h-3 w-3 rounded-full bg-slate-200 transition-all duration-200 shadow-sm"
-              [class.left-[13px]]="appState.isDevMode()"
-              [class.left-[1px]]="!appState.isDevMode()"
-              [class.bg-white]="appState.isDevMode()"
+              [class.left-[13px]]="ttsService.isTtsEnabled()"
+              [class.left-[1px]]="!ttsService.isTtsEnabled()"
+              [class.bg-white]="ttsService.isTtsEnabled()"
             ></span>
           </button>
           <span 
-            class="text-[10px] font-medium cursor-pointer" 
-            (click)="appState.isDevMode.set(!appState.isDevMode())"
-            (keyup.enter)="appState.isDevMode.set(!appState.isDevMode())"
+            class="text-[10px] font-medium cursor-pointer flex items-center gap-1" 
+            (click)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
+            (keyup.enter)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
             tabindex="0"
-            [class.text-slate-500]="!appState.isDevMode()" 
-            [class.text-indigo-500]="appState.isDevMode()"
-          >Dev</span>
+            [class.text-slate-500]="!ttsService.isTtsEnabled()" 
+            [class.text-green-500]="ttsService.isTtsEnabled()"
+          ><mat-icon class="text-[14px] w-[14px] h-[14px] leading-none">volume_up</mat-icon> Lồng tiếng</span>
           
           <!-- Tooltip -->
           <span class="absolute bottom-full left-0 md:left-auto md:left-1/2 md:-translate-x-1/2 mb-3 w-[260px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
-            <span class="font-bold" [class.text-indigo-400]="appState.isDevMode()" [class.text-slate-400]="!appState.isDevMode()">[{{ appState.isDevMode() ? 'Đang bật' : 'Đang tắt' }}]</span> Chỉ dành cho lập trình viên, khi được bật công cụ sẽ thêm nút tải file trung gian về để lập trình viên có thể kiểm tra nội dung, đặc biệt hữu ích nếu bạn Remix công cụ về phát triển thêm.
+            <span class="font-bold" [class.text-green-400]="ttsService.isTtsEnabled()" [class.text-slate-400]="!ttsService.isTtsEnabled()">[{{ ttsService.isTtsEnabled() ? 'Đang bật' : 'Đang tắt' }}]</span> <br/> Tính năng lồng tiếng (thử nghiệm) sử dụng Web Speech API của trình duyệt. 
             <!-- Arrow -->
             <span class="absolute -bottom-1 left-4 md:left-1/2 md:-translate-x-1/2 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
           </span>
@@ -117,4 +152,5 @@ export class FooterComponent {
   translationService = inject(TranslationService);
   appState = inject(AppStateService);
   historyService = inject(HistoryService);
+  ttsService = inject(TtsService);
 }

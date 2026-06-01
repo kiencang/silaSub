@@ -12,6 +12,7 @@ export class PlayerService {
   isYtReady = signal(false);
   isFullscreen = signal(false);
   playbackRate = signal(1);
+  isPlaying = signal(false);
   
   player: any;
   private timer: ReturnType<typeof setInterval> | undefined;
@@ -41,6 +42,7 @@ export class PlayerService {
           if (state === 1 || state === 2) {
             this.currentTime.set(this.player.getCurrentTime());
           }
+          this.isPlaying.set(state === 1);
         }
       }, 100);
     }
@@ -99,6 +101,19 @@ export class PlayerService {
     if (this.player && typeof this.player.setPlaybackRate === "function") {
       this.player.setPlaybackRate(rate);
       this.playbackRate.set(rate);
+    }
+  }
+
+  getVolume(): number {
+    if (this.player && typeof this.player.getVolume === "function") {
+      return this.player.getVolume();
+    }
+    return 100;
+  }
+
+  setVolume(volume: number) {
+    if (this.player && typeof this.player.setVolume === "function") {
+      this.player.setVolume(volume);
     }
   }
 
