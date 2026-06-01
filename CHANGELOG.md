@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.74] - 2026-06-01
+### Fixed
+- Cập nhật tính năng lồng tiếng (sử dụng audio TTS của hệ điều hành).
+
 ## [1.0.73] - 2026-05-29
 ### Fixed
 - Chỉnh title của index.html
