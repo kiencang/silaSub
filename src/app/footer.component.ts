@@ -43,10 +43,10 @@ import { TtsService } from "./tts.service";
             >Dev</span>
             
             <!-- Tooltip -->
-            <span class="absolute bottom-full left-0 md:left-auto md:left-1/2 md:-translate-x-1/2 mb-3 w-[260px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
+            <span class="absolute bottom-full left-0 mb-3 w-[260px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
               <span class="font-bold" [class.text-indigo-400]="appState.isDevMode()" [class.text-slate-400]="!appState.isDevMode()">[{{ appState.isDevMode() ? 'Đang bật' : 'Đang tắt' }}]</span> Chỉ dành cho lập trình viên, khi được bật công cụ sẽ thêm nút tải file trung gian về để lập trình viên có thể kiểm tra nội dung, đặc biệt hữu ích nếu bạn Remix công cụ về phát triển thêm.
               <!-- Arrow -->
-              <span class="absolute -bottom-1 left-4 md:left-1/2 md:-translate-x-1/2 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
+              <span class="absolute -bottom-1 left-4 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
             </span>
           </div>
 
@@ -60,7 +60,7 @@ import { TtsService } from "./tts.service";
           </button>
           
           <p class="text-[10px] text-slate-500 font-medium">
-            Chỉ dùng cho mục đích cá nhân • v1.0.75 •
+            Chỉ dùng cho mục đích cá nhân • v1.0.76 •
             <a href="https://github.com/kiencang/silaSub" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white underline decoration-slate-600 hover:decoration-slate-400 underline-offset-2 transition-colors duration-200 ml-1">GitHub</a>
           </p>
         </div>
@@ -92,10 +92,10 @@ import { TtsService } from "./tts.service";
           ><mat-icon class="text-[14px] w-[14px] h-[14px] leading-none">volume_up</mat-icon> Lồng tiếng</span>
           
           <!-- Tooltip -->
-          <span class="absolute bottom-full left-0 md:left-auto md:left-1/2 md:-translate-x-1/2 mb-3 w-[260px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
+          <span class="absolute bottom-full left-0 mb-3 w-[260px] whitespace-normal px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-left border border-slate-700">
             <span class="font-bold" [class.text-green-400]="ttsService.isTtsEnabled()" [class.text-slate-400]="!ttsService.isTtsEnabled()">[{{ ttsService.isTtsEnabled() ? 'Đang bật' : 'Đang tắt' }}]</span> <br/> Tính năng lồng tiếng (thử nghiệm) sử dụng Web Speech API của trình duyệt. 
             <!-- Arrow -->
-            <span class="absolute -bottom-1 left-4 md:left-1/2 md:-translate-x-1/2 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
+            <span class="absolute -bottom-1 left-4 w-2 h-2 bg-slate-800 border-b border-r border-slate-700 rotate-45"></span>
           </span>
         </div>
       </div>

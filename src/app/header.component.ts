@@ -105,7 +105,7 @@ import { StorageService } from "./storage.service";
             [class.border-transparent]="!storageService.userApiKey()"
             [class.text-slate-300]="!storageService.userApiKey()"
             [class.hover:bg-slate-700]="!storageService.userApiKey()"
-            [title]="storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Nhập API Key'"
+            [title]="storageService.userApiKey() ? 'Đang dùng Key của bạn' : 'Nhập API Key'"
           >
             <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
           </button>
@@ -124,7 +124,7 @@ import { StorageService } from "./storage.service";
         <input
           type="text"
           [value]="searchService.searchQuery()"
-          (input)="searchService.searchQuery.set($any($event.target).value)"
+          (input)="searchService.searchQuery.set($any($event.target).value); searchService.translatedSearchQuery.set('')"
           (keydown.enter)="searchService.searchYoutube()"
           [disabled]="searchService.isSearchingQuery() || appState.isAnalyzing() || translationService.isTranslating()"
           placeholder="Gõ tiếng Việt, tìm video tiếng Anh trên YouTube..."
@@ -134,7 +134,7 @@ import { StorageService } from "./storage.service";
         <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
           @if (searchService.searchQuery()) {
           <button
-            (click)="searchService.searchQuery.set('')"
+            (click)="searchService.searchQuery.set(''); searchService.translatedSearchQuery.set('')"
             class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-700 text-slate-400 hover:text-white focus:outline-none transition-colors"
             title="Xóa tìm kiếm"
           >
@@ -155,6 +155,23 @@ import { StorageService } from "./storage.service";
             }
           </button>
         </div>
+        
+        @if (searchService.translatedSearchQuery()) {
+        <div class="absolute top-full left-0 right-0 mt-2 bg-slate-800 border border-slate-700 rounded-xl shadow-lg p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <p class="text-xs text-slate-400 mb-1.5 font-medium px-1 uppercase tracking-wider">Kết quả dịch</p>
+          <a
+            [href]="'https://www.youtube.com/results?search_query=' + searchService.encodedTranslatedQuery()"
+            target="_blank"
+            (click)="searchService.translatedSearchQuery.set('')"
+            class="flex items-center gap-2 w-full p-2.5 bg-slate-700/50 hover:bg-slate-700 rounded-lg transition-colors group"
+            title="Mở YouTube với từ khóa này"
+          >
+            <mat-icon class="text-blue-400 text-[20px] w-[20px] h-[20px] leading-none">search</mat-icon>
+            <span class="text-white font-medium flex-1 truncate text-left">{{ searchService.translatedSearchQuery() }}</span>
+            <mat-icon class="text-slate-400 group-hover:text-white transition-colors text-[18px] w-[18px] h-[18px] leading-none">open_in_new</mat-icon>
+          </a>
+        </div>
+        }
       </div>
 
       <!-- Right Desktop: Controls + Settings -->
@@ -181,7 +198,7 @@ import { StorageService } from "./storage.service";
           [class.hover:text-white]="!storageService.userApiKey()"
         >
           <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
-          {{ storageService.userApiKey() ? 'Đang sử dụng Key của bạn' : 'Nhập API Key' }}
+          {{ storageService.userApiKey() ? 'Đang dùng Key của bạn' : 'Nhập API Key' }}
         </button>
         
         <button

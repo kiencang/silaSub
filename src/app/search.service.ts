@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from './toast.service';
@@ -15,6 +15,8 @@ export class SearchService {
   
   searchQuery = signal("");
   isSearchingQuery = signal(false);
+  translatedSearchQuery = signal("");
+  encodedTranslatedQuery = computed(() => encodeURIComponent(this.translatedSearchQuery()));
 
   private getAuthHeaders(): Record<string, string> {
     const key = this.storageService.userApiKey();
@@ -26,6 +28,7 @@ export class SearchService {
   }
 
   async searchYoutube() {
+    this.translatedSearchQuery.set("");
     const rawQuery = this.searchQuery().trim();
     if (!rawQuery) return;
 
@@ -77,10 +80,7 @@ QUY TẮC BẮT BUỘC TUÂN THỦ:
         .trim();
 
       if (cleanKeyword) {
-        window.open(
-          `https://www.youtube.com/results?search_query=${encodeURIComponent(cleanKeyword)}`,
-          "_blank",
-        );
+        this.translatedSearchQuery.set(cleanKeyword);
       } else {
         this.toastService.addToast("Không thể dịch từ khóa", "error");
       }

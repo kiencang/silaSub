@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.76] - 2026-06-02
+### Fixed
+- Từ khóa dịch tìm kiếm video YouTube trả kết quả về một dạng dropdown thay vì tự động mở cửa sổ ra ở tab mới (phòng lỗi chặn của trình duyệt);
+- Cập nhật hướng dẫn sử dụng;
+
 ## [1.0.75] - 2026-06-01
 ### Fixed
 - Điều chỉnh số ký tự ước chừng xuống thành 12 ký tự/s trong TTS (để tránh TTS phát âm chậm).
