@@ -5,6 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.75] - 2026-06-01
+### Fixed
+- Điều chỉnh số ký tự ước chừng xuống thành 12 ký tự/s trong TTS (để tránh TTS phát âm chậm).
+- Điều chỉnh loại bỏ xuống dòng trước khi truyền vào TTS (xuống dòng để tối ưu hiển thị phụ đề tránh tràn dòng), đưa vào TTS cần loại bỏ để phát âm được mượt hơn.
+- Điều chỉnh loại các chú thích tiếng Anh trong ngoặc đơn và chú thích trong ngoặc vuông trước khi đưa vào TTS.
+
 ## [1.0.74] - 2026-06-01
 ### Fixed
 - Cập nhật tính năng lồng tiếng (sử dụng audio TTS của hệ điều hành).

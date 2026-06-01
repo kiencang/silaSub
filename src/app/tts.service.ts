@@ -108,10 +108,19 @@ export class TtsService {
   speak(text: string, durationInSeconds: number) {
     if (!this.synthesis) return;
     
+    // Sanitize text for better TTS reading
+    // 1. Remove text inside parentheses (...) and brackets [...]
+    // 2. Remove newlines and excessive spaces
+    const cleanText = text
+      .replace(/\([^)]*\)|\[[^\]]*\]/g, ' ')
+      .replace(/\n+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
     // Stop any ongoing speech
     this.stop();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     const voice = this.getVietnameseVoice();
     if (voice) {
       utterance.voice = voice;
@@ -124,11 +133,11 @@ export class TtsService {
     const videoRate = this.playerService.playbackRate() || 1.0;
     const actualDuration = durationInSeconds / videoRate;
 
-    // A conservative estimate: TTS reads roughly 13 characters per second at normal speed (rate=1.0)
+    // A conservative estimate: TTS reads roughly 12 characters per second at normal speed (rate=1.0)
     // Assuming a lower characters-per-second forces the calculated rate to be HIGHER,
     // ensuring the speech finishes within the target actualDuration.
-    const BASE_CHARS_PER_SEC = 13;
-    const estimatedDuration = text.length / BASE_CHARS_PER_SEC;
+    const BASE_CHARS_PER_SEC = 12;
+    const estimatedDuration = cleanText.length / BASE_CHARS_PER_SEC;
     
     let rate = 1.0;
     if (actualDuration > 0) {
