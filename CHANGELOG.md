@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.77] - 2026-06-02
+### Fixed
+- Cập nhật hướng dẫn liên quan đến phần remix ứng dụng về để tận dụng ngưỡng miễn phí trên AI Studio.
+
 ## [1.0.76] - 2026-06-02
 ### Fixed
 - Từ khóa dịch tìm kiếm video YouTube trả kết quả về một dạng dropdown thay vì tự động mở cửa sổ ra ở tab mới (phòng lỗi chặn của trình duyệt);

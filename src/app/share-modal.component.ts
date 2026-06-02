@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 
       <!-- Modal Content -->
       <div
-        class="relative w-[90%] max-w-[420px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8 animate-in zoom-in-95 fade-in duration-200"
+        class="relative w-[90%] max-w-[483px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8 animate-in zoom-in-95 fade-in duration-200"
       >
         <!-- Close Button -->
         <button
@@ -38,9 +38,14 @@ import { MatIconModule } from '@angular/material/icon';
         </h2>
 
         <!-- Description -->
-        <p class="text-[13px] text-slate-300 mb-6 leading-relaxed">
-          silaSub là công cụ miễn phí hoạt động độc lập trên trình duyệt của bạn (client-side). Bạn sẽ cần có Gemini API Key riêng của bạn để kết nối trực tiếp đến AI của Google.
-        </p>
+        <div class="text-[13px] text-slate-300 mb-6 leading-relaxed space-y-3">
+          <p>
+            silaSub là công cụ miễn phí hoạt động độc lập trên trình duyệt của bạn (client-side). Bạn sẽ cần Gemini API Key riêng của bạn để kết nối trực tiếp đến AI của Google.
+          </p>
+          <p>
+            Bên dưới là link chính thức của ứng dụng. Nếu bạn remix công cụ về, thi thoảng hãy vào xem xem ứng dụng chính thức có cập nhật gì không và remix lại nếu cần để có bản cập nhật mới nhất (về bản chất remix nghĩa là sao chép mã nguồn của phần mềm tại thời điểm đó về).
+          </p>
+        </div>
 
         <!-- Link Container -->
         <div class="mb-5 bg-slate-800 rounded-xl p-1.5 flex items-center border border-slate-700 focus-within:border-slate-500 transition-colors">
@@ -83,7 +88,7 @@ export class ShareModalComponent {
   appState = inject(AppStateService);
 
   readonly fullLink = 'https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?showPreview=true&showAssistant=true&fullscreenApplet=true';
-  readonly displayLink = 'https://aistudio.google.com/apps/b98324ac...';
+  readonly displayLink = 'https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7';
   
   isCopied = signal(false);
 

@@ -17,7 +17,7 @@ import { ToastService } from './toast.service';
       ></div>
 
       <div
-        class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-lg mx-4 relative flex flex-col pointer-events-auto overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+        class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-[563px] mx-4 relative flex flex-col pointer-events-auto overflow-hidden animate-in fade-in zoom-in-95 duration-200"
       >
         <!-- Modal Header -->
         <div class="px-6 py-4 border-b border-slate-700/80 flex justify-between items-center bg-slate-800/40">
@@ -36,8 +36,12 @@ import { ToastService } from './toast.service';
         <!-- Modal Body -->
         <div class="p-6 flex flex-col gap-5">
           <p class="text-slate-300 text-sm leading-relaxed">
-            Để sử dụng công cụ dịch phụ đề YouTube này bạn cần khóa API Key của Gemini. Bạn hãy vào link "Nơi lấy API Key Gemini" để thao tác. Bạn chỉ cần tạo Key miễn phí là đủ dùng.
+            Để sử dụng công cụ dịch phụ đề YouTube này bạn cần khóa API Key của Gemini. Bạn hãy vào link "Nơi lấy API Key Gemini" để thao tác. Key miễn phí chỉ có hiệu lực nếu bạn dùng <a href="https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?showPreview=true&showAssistant=true" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 underline font-medium">ứng dụng qua AI Studio</a>, với ai dùng trên silasub.wpsila.com, chỉ Key trả phí mới dùng được. Hãy remix ứng dụng trên AI Studio để dùng miễn phí.
           </p>
+          
+          <div class="flex justify-center my-1 w-full">
+            <img src="remix-silasub.png" alt="Hướng dẫn remix ứng dụng" class="w-full max-w-md rounded-lg border border-slate-700/80 shadow-md" referrerpolicy="no-referrer" />
+          </div>
 
           <!-- Badges & Guide -->
           <div class="flex items-center flex-wrap gap-2 text-xs">
