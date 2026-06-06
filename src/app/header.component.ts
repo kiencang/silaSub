@@ -95,16 +95,20 @@ import { StorageService } from "./storage.service";
           </div>
 
           <button
-            (click)="storageService.openApiKeyDialog()"
-            class="w-9 h-9 rounded-full text-sm font-semibold transition-all cursor-pointer flex items-center justify-center border shrink-0"
+            [disabled]="translationService.isTranslating()"
+            (click)="(!translationService.isTranslating()) && storageService.openApiKeyDialog()"
+            class="w-9 h-9 rounded-full text-sm font-semibold transition-all flex items-center justify-center border shrink-0"
+            [class.cursor-pointer]="!translationService.isTranslating()"
+            [class.cursor-not-allowed]="translationService.isTranslating()"
+            [class.opacity-50]="translationService.isTranslating()"
             [class.bg-blue-500/10]="storageService.userApiKey()"
             [class.border-blue-500/30]="storageService.userApiKey()"
             [class.text-blue-400]="storageService.userApiKey()"
-            [class.hover:bg-blue-500/20]="storageService.userApiKey()"
+            [class.hover:bg-blue-500/20]="storageService.userApiKey() && !translationService.isTranslating()"
             [class.bg-slate-800]="!storageService.userApiKey()"
             [class.border-transparent]="!storageService.userApiKey()"
             [class.text-slate-300]="!storageService.userApiKey()"
-            [class.hover:bg-slate-700]="!storageService.userApiKey()"
+            [class.hover:bg-slate-700]="!storageService.userApiKey() && !translationService.isTranslating()"
             [title]="storageService.userApiKey() ? 'Đang dùng Key của bạn' : 'Nhập API Key'"
           >
             <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
@@ -185,17 +189,21 @@ import { StorageService } from "./storage.service";
         </div>
 
         <button
-          (click)="storageService.openApiKeyDialog()"
-          class="px-4 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 border shrink-0 select-none"
+          [disabled]="translationService.isTranslating()"
+          (click)="(!translationService.isTranslating()) && storageService.openApiKeyDialog()"
+          class="px-4 py-2 rounded-full text-sm font-semibold transition-all flex items-center justify-center gap-1.5 border shrink-0 select-none"
+          [class.cursor-pointer]="!translationService.isTranslating()"
+          [class.cursor-not-allowed]="translationService.isTranslating()"
+          [class.opacity-50]="translationService.isTranslating()"
           [class.bg-blue-500/10]="storageService.userApiKey()"
           [class.border-blue-500/30]="storageService.userApiKey()"
           [class.text-blue-400]="storageService.userApiKey()"
-          [class.hover:bg-blue-500/20]="storageService.userApiKey()"
+          [class.hover:bg-blue-500/20]="storageService.userApiKey() && !translationService.isTranslating()"
           [class.bg-slate-800]="!storageService.userApiKey()"
           [class.border-transparent]="!storageService.userApiKey()"
           [class.text-slate-300]="!storageService.userApiKey()"
-          [class.hover:bg-slate-700]="!storageService.userApiKey()"
-          [class.hover:text-white]="!storageService.userApiKey()"
+          [class.hover:bg-slate-700]="!storageService.userApiKey() && !translationService.isTranslating()"
+          [class.hover:text-white]="!storageService.userApiKey() && !translationService.isTranslating()"
         >
           <mat-icon class="text-[18px] w-[18px] h-[18px] leading-none">key</mat-icon>
           {{ storageService.userApiKey() ? 'Đang dùng Key của bạn' : 'Nhập API Key' }}

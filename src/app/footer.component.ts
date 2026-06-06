@@ -17,12 +17,15 @@ import { TtsService } from "./tts.service";
       <div class="flex flex-col md:flex-row md:items-center gap-3 order-2 md:order-1 mt-1 md:mt-0">
         <div class="flex flex-row items-center gap-3">
           <!-- Dev Mode Toggle -->
-          <div class="group relative flex items-center gap-2 self-start md:self-auto">
+          <div class="group relative flex items-center gap-2 self-start md:self-auto" [class.opacity-50]="translationService.isTranslating()">
             <button
-              (click)="appState.isDevMode.set(!appState.isDevMode())"
-              (keyup.enter)="appState.isDevMode.set(!appState.isDevMode())"
+              [disabled]="translationService.isTranslating()"
+              (click)="(!translationService.isTranslating()) && appState.isDevMode.set(!appState.isDevMode())"
+              (keyup.enter)="(!translationService.isTranslating()) && appState.isDevMode.set(!appState.isDevMode())"
               tabindex="0"
-              class="relative inline-block h-4 w-7 rounded-full transition-colors focus:outline-none shadow-none border border-slate-700 cursor-pointer"
+              class="relative inline-block h-4 w-7 rounded-full transition-colors focus:outline-none shadow-none border border-slate-700"
+              [class.cursor-pointer]="!translationService.isTranslating()"
+              [class.cursor-not-allowed]="translationService.isTranslating()"
               [class.bg-indigo-600]="appState.isDevMode()"
               [class.bg-slate-800]="!appState.isDevMode()"
             >
@@ -34,9 +37,11 @@ import { TtsService } from "./tts.service";
               ></span>
             </button>
             <span 
-              class="text-[10px] font-medium cursor-pointer" 
-              (click)="appState.isDevMode.set(!appState.isDevMode())"
-              (keyup.enter)="appState.isDevMode.set(!appState.isDevMode())"
+              class="text-[10px] font-medium" 
+              [class.cursor-pointer]="!translationService.isTranslating()"
+              [class.cursor-not-allowed]="translationService.isTranslating()"
+              (click)="(!translationService.isTranslating()) && appState.isDevMode.set(!appState.isDevMode())"
+              (keyup.enter)="(!translationService.isTranslating()) && appState.isDevMode.set(!appState.isDevMode())"
               tabindex="0"
               [class.text-slate-500]="!appState.isDevMode()" 
               [class.text-indigo-500]="appState.isDevMode()"
@@ -66,12 +71,15 @@ import { TtsService } from "./tts.service";
         </div>
 
         <!-- TTS Mode Toggle -->
-        <div class="group relative flex items-center gap-2 self-start md:self-auto ml-1 md:ml-0 md:pl-2 md:border-l md:border-slate-800">
+        <div class="group relative flex items-center gap-2 self-start md:self-auto ml-1 md:ml-0 md:pl-2 md:border-l md:border-slate-800" [class.opacity-50]="translationService.isTranslating()">
           <button
-            (click)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
-            (keyup.enter)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
+            [disabled]="translationService.isTranslating()"
+            (click)="(!translationService.isTranslating()) && ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
+            (keyup.enter)="(!translationService.isTranslating()) && ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
             tabindex="0"
-            class="relative inline-block h-4 w-7 rounded-full transition-colors focus:outline-none shadow-none border border-slate-700 cursor-pointer"
+            class="relative inline-block h-4 w-7 rounded-full transition-colors focus:outline-none shadow-none border border-slate-700"
+            [class.cursor-pointer]="!translationService.isTranslating()"
+            [class.cursor-not-allowed]="translationService.isTranslating()"
             [class.bg-green-600]="ttsService.isTtsEnabled()"
             [class.bg-slate-800]="!ttsService.isTtsEnabled()"
           >
@@ -83,9 +91,11 @@ import { TtsService } from "./tts.service";
             ></span>
           </button>
           <span 
-            class="text-[10px] font-medium cursor-pointer flex items-center gap-1" 
-            (click)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
-            (keyup.enter)="ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
+            class="text-[10px] font-medium flex items-center gap-1" 
+            [class.cursor-pointer]="!translationService.isTranslating()"
+            [class.cursor-not-allowed]="translationService.isTranslating()"
+            (click)="(!translationService.isTranslating()) && ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
+            (keyup.enter)="(!translationService.isTranslating()) && ttsService.isTtsEnabled.set(!ttsService.isTtsEnabled())"
             tabindex="0"
             [class.text-slate-500]="!ttsService.isTtsEnabled()" 
             [class.text-green-500]="ttsService.isTtsEnabled()"
