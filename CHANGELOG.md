@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.78] - 2026-07-06
+### Fixed
+- Điều chỉnh cấu hình safetySettings và đưa các mức chặn threshold về BLOCK_NONE giúp AI nới lỏng bộ lọc;
+
 ## [1.0.77] - 2026-06-02
 ### Fixed
 - Cập nhật hướng dẫn liên quan đến phần remix ứng dụng về để tận dụng ngưỡng miễn phí trên AI Studio.
