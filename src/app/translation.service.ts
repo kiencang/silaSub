@@ -1,7 +1,7 @@
 import { Injectable, signal, computed, inject, WritableSignal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { firstValueFrom } from "rxjs";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { ToastService, ToastType } from "./toast.service";
 import { FileService } from "./file.service";
 import { TranscriptLine, SubtitleService } from "./subtitle.service";
@@ -212,6 +212,12 @@ export class TranslationService {
             const reqConfigPhase1: Record<string, unknown> = {
               systemInstruction: phase1Si,
               responseMimeType: "application/json",
+              safetySettings: [
+                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE }
+              ],
               thinkingConfig: { thinkingLevel: "HIGH" },
               responseSchema: {
                 type: "array",
@@ -368,6 +374,12 @@ ${prevLines.map((l, i) => `[id=${prevStart + i}] Anh: "${l.text}" -> Việt: "${
         const reqConfig: Record<string, unknown> = {
           systemInstruction: systemInstruction,
           responseMimeType: "application/json",
+          safetySettings: [
+            { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+            { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+            { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+            { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE }
+          ],
           thinkingConfig: { thinkingLevel: "HIGH" },
           responseSchema: {
             type: "array",
