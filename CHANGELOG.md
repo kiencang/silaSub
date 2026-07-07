@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.79] - 2026-07-07
+### Fixed
+- Tinh chỉnh nhỏ cho giao diện (căn lề trái cho các tooltip, thêm favicon);
+
 ## [1.0.78] - 2026-07-06
 ### Fixed
 - Điều chỉnh cấu hình safetySettings và đưa các mức chặn threshold về BLOCK_NONE giúp AI nới lỏng bộ lọc;

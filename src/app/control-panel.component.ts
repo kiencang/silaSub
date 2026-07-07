@@ -158,7 +158,7 @@ import { PLATFORM_ID } from "@angular/core";
                 <span class="text-[9px] font-bold font-serif italic">i</span>
               </div>
               <div
-                class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom"
+                class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-max max-w-[280px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-left leading-relaxed origin-bottom"
               >
                 Cung cấp thêm audio gốc của phụ đề giúp dịch phụ đề được tốt hơn đáng kể trong một số trường hợp nhất định (ví dụ như có nhiều người nói), nhưng tùy chọn này không phải là yêu cầu bắt buộc. Ngoài ra nếu có thể, hãy sử dụng model Pro để có chất lượng tốt hơn.
                 <!-- Arrow -->
@@ -294,7 +294,7 @@ import { PLATFORM_ID } from "@angular/core";
               <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-200 hover:bg-slate-300 transition-colors rounded-full text-slate-500">
                 <span class="text-[9px] font-bold font-serif italic">i</span>
               </div>
-              <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[220px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
+              <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[220px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-left leading-relaxed origin-bottom-right">
                 Nếu bạn đã có sẵn bản dịch tiếng Việt cho phụ đề và muốn xem lại với video trên YouTube.
                 <!-- Arrow -->
                 <div class="absolute top-full right-[3px] border-[5px] border-transparent border-t-slate-800"></div>
@@ -314,7 +314,7 @@ import { PLATFORM_ID } from "@angular/core";
                 <div class="relative flex h-3.5 w-3.5 items-center justify-center bg-slate-700 hover:bg-slate-600 transition-colors rounded-full text-slate-400">
                   <span class="text-[9px] font-bold font-serif italic">i</span>
                 </div>
-                <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[220px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-center leading-relaxed origin-bottom-right">
+                <div class="absolute bottom-full mb-1.5 right-0 w-max max-w-[220px] bg-slate-800 text-white text-[11px] font-medium p-2.5 rounded-lg shadow-xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-[100] text-left leading-relaxed origin-bottom-right">
                   Nếu bạn đã có sẵn bản dịch tiếng Việt cho phụ đề và muốn xem lại với video trên YouTube.
                   <!-- Arrow -->
                   <div class="absolute top-full right-[3px] border-[5px] border-transparent border-t-slate-800"></div>

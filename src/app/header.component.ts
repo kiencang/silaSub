@@ -27,7 +27,7 @@ import { StorageService } from "./storage.service";
           [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-pro-latest'"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">psychology</mat-icon>
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 whitespace-normal text-center px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Model Pro: Chất lượng dịch cao nhất, nhưng tốn chi phí hơn.</span>
+          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 whitespace-normal text-left px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Model Pro: Chất lượng dịch cao nhất, tuy nhiên tốn chi phí & thời gian hơn.</span>
         </button>
 
         <button
@@ -40,7 +40,7 @@ import { StorageService } from "./storage.service";
           [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-flash-latest'"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">bolt</mat-icon>
-          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-60 whitespace-normal text-center px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Model Flash: Chất lượng dịch đủ tốt trong đa số trường hợp. Tốc độ dịch cao & chi phí rẻ hơn Pro.</span>
+          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 whitespace-normal text-left px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Model Flash: Chất lượng dịch đủ tốt trong đa số trường hợp. Tốc độ dịch cao & chi phí rẻ hơn Pro.</span>
         </button>
       </div>
 
