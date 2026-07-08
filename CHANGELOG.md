@@ -5,6 +5,10 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.80] - 2026-07-08
+### Fixed
+- Loại bỏ các thư viện không cần thiết (các thư viện serverside, các thư viện trong quá trình phát triển trước đó);
+
 ## [1.0.79] - 2026-07-07
 ### Fixed
 - Tinh chỉnh nhỏ cho giao diện (căn lề trái cho các tooltip, thêm favicon);
