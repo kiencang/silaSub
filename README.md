@@ -1,6 +1,11 @@
 # silaSub
 silaSub là dự án dịch phụ đề video YouTube từ tiếng Anh sang tiếng Việt. 
 
+<p align="center">
+  <img src="images/silaSub.png" alt="Giao diện của silaSub...">
+   <br><em>Giao diện của silaSub...</em>
+</p>
+
 - **Link app trên AI Studio**: https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?fullscreenApplet=true&showAssistant=true&showPreview=true (Key miễn phí dùng được).
 - Link web: https://silasub.wpsila.com (chỉ Key trả phí mới dùng được).
 
