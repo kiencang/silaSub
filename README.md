@@ -15,20 +15,18 @@ Ngưỡng miễn phí ước tính từ 2 - 3 tiếng video / ngày ở model AI
 
 Ứng dụng sử dụng SI & Prompt mẫu ở: https://github.com/kiencang/SI-Prompt-Subtitles (**v1.0.40**) / Cùng tác giả.
 
----
+## Lý do triển khai
+- Chất lượng dịch mặc định của YouTube không quá tốt: YouTube có sẵn tính năng dịch phụ đề tiện lợi ngay, trên các chủ đề không quá phức tạp chất lượng vẫn chấp nhận được, nhưng nếu là nội dung có độ khó cao, dễ nhận thấy chất lượng dịch suy giảm khá nhanh. silaSub sử dụng các model AI mạnh nhất của Gemini, kết hợp với việc đưa vào bối cảnh sâu hơn giúp chất lượng dịch được cải thiện đáng kể.
+- Nhiều video có kiểu dịch liên thanh (dịch nhả ra từng từ) tương đối khó chịu để đọc hiểu: Không phải ai cũng khó chịu với kiểu dịch này, và nó có ưu điểm là luôn bám sát nội dung đang được nói ở cấp độ từng từ. Tuy nhiên nhược điểm lớn của kiểu dịch này là nó có thể gây cảm giác `vội vàng`, câu đầy đủ không thấy được ngay. Tôi (người phát triển công cụ này) đặc biệt không thoải mái với kiểu dịch nhả ra từng chữ như vậy.
 
-Lý do triển khai:
-- Chất lượng dịch mặc định của YouTube không quá tốt.
-- Nhiều video có kiểu dịch liên thanh (dịch nhả ra từng từ) tương đối khó chịu để đọc.
-
-Cách dùng:
+## Cách dùng
 - Nhập link video bạn muốn dịch.
 - Tải lên phụ đề .srt tiếng Anh (cái phụ đề này, thường YouTube nó tạo sẵn rồi, bạn chỉ cần lên mạng gõ 'download youtube subtitles' là ra cả tá công cụ tải file phụ đề về, đỡ phải copy thủ công bên YouTube rồi lưu file mất thời gian). Nhớ là phải chọn định dạng SRT.
 - Nhấn nút dịch (thường là đợi khoảng 1/4 thời gian của video là dịch xong).
 - Dịch xong thì play và xem ngay trong ứng dụng.
 - Dùng tốt nhất trên màn hình lớn, trình duyệt Chrome hoặc Edge.
 
-Một số chức năng chính:
+## Một số chức năng chính
 - Tùy chỉnh model AI. Pro (xịn nhất nhưng dịch hơi lâu) hoặc Flash (nhanh & vẫn có chất lượng tốt). Mặc định là Flash. 
 - Chỉnh font chữ (5 font), màu chữ (3 màu), kích cỡ chữ. Mặc định font Space Mono / chữ vàng. Điều chỉnh cái này ở phần Cài đặt.
 - Xem phụ đề song ngữ hoặc đơn ngữ.
