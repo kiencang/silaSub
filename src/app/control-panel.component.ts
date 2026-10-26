@@ -3,7 +3,8 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  inject
+  inject,
+  effect
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
@@ -427,6 +428,23 @@ export class ControlPanelComponent {
   @ViewChild("viFileUploader") viFileUploader!: ElementRef<HTMLInputElement>;
   @ViewChild("audioFileUploader") audioFileUploader!: ElementRef<HTMLInputElement>;
 
+  constructor() {
+    effect(() => {
+      const trigger = this.appState.resetTrigger();
+      if (trigger > 0) {
+        if (this.enFileUploader?.nativeElement) {
+          this.enFileUploader.nativeElement.value = "";
+        }
+        if (this.viFileUploader?.nativeElement) {
+          this.viFileUploader.nativeElement.value = "";
+        }
+        if (this.audioFileUploader?.nativeElement) {
+          this.audioFileUploader.nativeElement.value = "";
+        }
+      }
+    });
+  }
+
   get videoUrl() { return this.appState.videoUrl; }
   get isAnalyzing() { return this.appState.isAnalyzing; }
   get analysisResult() { return this.appState.analysisResult; }
@@ -435,11 +453,18 @@ export class ControlPanelComponent {
   get videoId() { return this.appState.videoId; }
 
   clearAllData() {
-    this.appState.videoUrl.set("");
-    this.appState.showEnglishSubtitle.set(true);
-    this.clearSubtitleFiles();
-    this.playerService.stopVideo();
-    this.playerService.setPlaybackRate(1);
+    this.appState.resetAll();
+    this.fileService.clearAllFiles();
+    this.translationService.resetState();
+    if (this.enFileUploader?.nativeElement) {
+      this.enFileUploader.nativeElement.value = "";
+    }
+    if (this.viFileUploader?.nativeElement) {
+      this.viFileUploader.nativeElement.value = "";
+    }
+    if (this.audioFileUploader?.nativeElement) {
+      this.audioFileUploader.nativeElement.value = "";
+    }
   }
 
   clearEnSubtitleFile(event?: Event) {
@@ -471,12 +496,7 @@ export class ControlPanelComponent {
     }
     this.appState.analysisResult.set(null);
     this.playerService.seekToZero();
-    this.fileService.selectedEnFile.set(null);
-    this.fileService.selectedViFile.set(null);
-    this.fileService.selectedAudioFile.set(null);
-    this.fileService.audioDuration.set(null);
-    this.fileService.showViUpload.set(false);
-    this.fileService.showAudioUpload.set(false);
+    this.fileService.clearAllFiles();
     this.appState.analyzeError.set(null);
     this.translationService.resetState();
 

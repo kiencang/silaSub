@@ -38,6 +38,15 @@ export class FileService {
     });
   }
 
+  clearAllFiles() {
+    this.selectedEnFile.set(null);
+    this.selectedViFile.set(null);
+    this.selectedAudioFile.set(null);
+    this.audioDuration.set(null);
+    this.showViUpload.set(false);
+    this.showAudioUpload.set(false);
+  }
+
   clearAudioFile(inputElement?: HTMLInputElement) {
     this.selectedAudioFile.set(null);
     this.audioDuration.set(null);

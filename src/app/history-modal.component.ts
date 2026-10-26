@@ -19,14 +19,6 @@ import { SubtitleService } from './subtitle.service';
           class="bg-slate-900 border border-slate-700 rounded-xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[85vh] my-auto relative"
           (click)="$event.stopPropagation()"
         >
-          <!-- Cảnh báo trên đầu -->
-          <div class="bg-yellow-500/10 border-b border-yellow-500/20 p-4 shrink-0 flex items-start gap-3">
-            <mat-icon class="text-[20px] w-[20px] h-[20px] text-yellow-500 shrink-0">warning_amber</mat-icon>
-            <p class="text-xs text-yellow-200/80 leading-relaxed font-medium">
-              Danh sách tối đa 10 bản dịch gần nhất của bạn. Dữ liệu chỉ được <strong class="text-yellow-400">lưu trữ cục bộ</strong> tại <strong class="text-yellow-400">trình duyệt bạn đang dùng</strong>, để tiện xem lại khi cần và có thể bị xóa nếu bạn xóa lịch sử duyệt web. Luôn chủ động tải file (.srt) về máy tính để lưu trữ vĩnh viễn và an toàn.
-            </p>
-          </div>
-
           <div class="px-5 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-900 shrink-0 sticky top-0 z-10">
             <div class="flex items-center gap-4">
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -63,12 +55,19 @@ import { SubtitleService } from './subtitle.service';
             <div class="flex items-center gap-2">
               <button 
                 (click)="closeModal()"
-                class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                class="w-8 h-8 flex items-center justify-center hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors cursor-pointer focus:outline-none"
                 title="Đóng cửa sổ"
               >
-                <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
+                <mat-icon class="text-[20px] w-[20px] h-[20px]">close</mat-icon>
               </button>
             </div>
+          </div>
+
+          <!-- Thông tin lưu ý bên dưới header -->
+          <div class="bg-yellow-500/10 border-b border-yellow-500/20 px-5 py-3 shrink-0">
+            <p class="text-xs text-yellow-200/80 leading-relaxed font-medium">
+              Danh sách tối đa 10 bản dịch gần nhất của bạn. Dữ liệu chỉ được <strong class="text-yellow-400">lưu trữ cục bộ</strong> tại <strong class="text-yellow-400">trình duyệt bạn đang dùng</strong>, để tiện xem lại khi cần và có thể bị xóa nếu bạn xóa lịch sử duyệt web. Luôn chủ động tải file (.srt) về máy tính để lưu trữ vĩnh viễn và an toàn.
+            </p>
           </div>
 
           <div class="overflow-y-auto p-3 overflow-x-hidden flex-1">

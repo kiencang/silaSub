@@ -74,4 +74,17 @@ export class AppStateService {
     }
     return null;
   });
+
+  resetTrigger = signal(0);
+
+  resetAll() {
+    this.videoUrl.set("");
+    this.analysisResult.set(null);
+    this.analyzeError.set(null);
+    this.showEnglishSubtitle.set(true);
+    this.playerService.stopVideo();
+    this.playerService.seekToZero();
+    this.playerService.setPlaybackRate(1);
+    this.resetTrigger.update(v => v + 1);
+  }
 }

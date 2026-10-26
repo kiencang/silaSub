@@ -5,6 +5,11 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.82] - 2026-10-26
+### Fixed
+- Bổ sung tính năng click vào logo để reset/quay lại trạng thái ban đầu;
+- Điều chỉnh nhỏ thiết kế của modal `Lịch sử & Các bản dịch đang lưu`;
+
 ## [1.0.81] - 2026-10-26
 ### Fixed
 - Điều chỉnh nhỏ về giao diện (modal Nhập khóa API Key);

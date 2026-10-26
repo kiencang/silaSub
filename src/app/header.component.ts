@@ -18,26 +18,28 @@ import { StorageService } from "./storage.service";
       <!-- AI Model Controls -->
       <div class="flex items-center gap-2">
         <button
+          [disabled]="translationService.isTranslating()"
           (click)="changeAiModel('gemini-pro-latest')"
-          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105 disabled:cursor-not-allowed disabled:hover:scale-100"
           [class.bg-blue-500]="translationService.aiModel() === 'gemini-pro-latest'"
           [class.text-white]="translationService.aiModel() === 'gemini-pro-latest'"
           [class.bg-slate-800]="translationService.aiModel() !== 'gemini-pro-latest'"
           [class.text-slate-400]="translationService.aiModel() !== 'gemini-pro-latest'"
-          [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-pro-latest'"
+          [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-pro-latest' && !translationService.isTranslating()"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">psychology</mat-icon>
           <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 whitespace-normal text-left px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Model Pro: Chất lượng dịch cao nhất, tuy nhiên tốn chi phí & thời gian hơn.</span>
         </button>
 
         <button
+          [disabled]="translationService.isTranslating()"
           (click)="changeAiModel('gemini-flash-latest')"
-          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105 disabled:cursor-not-allowed disabled:hover:scale-100"
           [class.bg-amber-500]="translationService.aiModel() === 'gemini-flash-latest'"
           [class.text-white]="translationService.aiModel() === 'gemini-flash-latest'"
           [class.bg-slate-800]="translationService.aiModel() !== 'gemini-flash-latest'"
           [class.text-slate-400]="translationService.aiModel() !== 'gemini-flash-latest'"
-          [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-flash-latest'"
+          [class.hover:bg-slate-700]="translationService.aiModel() !== 'gemini-flash-latest' && !translationService.isTranslating()"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">bolt</mat-icon>
           <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 whitespace-normal text-left px-2.5 py-1.5 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">Model Flash: Chất lượng dịch đủ tốt trong đa số trường hợp. Tốc độ dịch cao & chi phí rẻ hơn Pro.</span>
@@ -49,26 +51,28 @@ import { StorageService } from "./storage.service";
       <!-- Translation Mode Controls -->
       <div class="flex items-center gap-2">
         <button
+          [disabled]="translationService.isTranslating()"
           (click)="changeTranslationMode('multi-task')"
-          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105 disabled:cursor-not-allowed disabled:hover:scale-100"
           [class.bg-blue-500]="translationService.translationMode() === 'multi-task'"
           [class.text-white]="translationService.translationMode() === 'multi-task'"
           [class.bg-slate-800]="translationService.translationMode() !== 'multi-task'"
           [class.text-slate-400]="translationService.translationMode() !== 'multi-task'"
-          [class.hover:bg-slate-700]="translationService.translationMode() !== 'multi-task'"
+          [class.hover:bg-slate-700]="translationService.translationMode() !== 'multi-task' && !translationService.isTranslating()"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">language</mat-icon>
           <span class="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">Dịch đa nhiệm</span>
         </button>
 
         <button
+          [disabled]="translationService.isTranslating()"
           (click)="changeTranslationMode('lyric')"
-          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105"
+          class="group relative flex items-center justify-center w-5 h-5 rounded border border-transparent transition-all focus:outline-none cursor-pointer hover:scale-105 disabled:cursor-not-allowed disabled:hover:scale-100"
           [class.bg-pink-500]="translationService.translationMode() === 'lyric'"
           [class.text-white]="translationService.translationMode() === 'lyric'"
           [class.bg-slate-800]="translationService.translationMode() !== 'lyric'"
           [class.text-slate-400]="translationService.translationMode() !== 'lyric'"
-          [class.hover:bg-slate-700]="translationService.translationMode() !== 'lyric'"
+          [class.hover:bg-slate-700]="translationService.translationMode() !== 'lyric' && !translationService.isTranslating()"
         >
           <mat-icon class="text-[12px] w-[12px] h-[12px] leading-none">music_note</mat-icon>
           <span class="absolute top-full right-0 md:left-1/2 md:-translate-x-1/2 mt-3 w-max px-2.5 py-1 bg-slate-800 text-white text-[10px] font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">Dịch lời bài hát</span>
@@ -80,15 +84,28 @@ import { StorageService } from "./storage.service";
       
       <!-- Top Row Mobile / Left Desktop -->
       <div class="flex items-center justify-between w-full md:w-auto shrink-0 gap-4 xl:gap-8">
-        <h1 class="text-xl font-bold tracking-tight text-white leading-none select-none">
-          sila<span class="text-red-400">Sub</span>
-        </h1>
+        <button
+          type="button"
+          (click)="resetApp()"
+          [disabled]="translationService.isTranslating()"
+          class="group flex items-center bg-transparent border-0 p-0 text-left transition-all focus:outline-none disabled:cursor-not-allowed"
+          [class.cursor-pointer]="!translationService.isTranslating()"
+          [class.cursor-not-allowed]="translationService.isTranslating()"
+          [title]="translationService.isTranslating() ? 'Đang dịch, không thể thiết lập lại' : 'Làm mới / Về trạng thái ban đầu'"
+        >
+          <h1
+            class="text-xl font-bold tracking-tight text-white leading-none select-none transition-all"
+            [class.group-hover:opacity-80]="!translationService.isTranslating()"
+            [class.opacity-60]="translationService.isTranslating()"
+          >
+            sila<span class="text-red-400">Sub</span>
+          </h1>
+        </button>
 
         <!-- Mobile Controls & Settings Button -->
         <div class="flex md:hidden items-center justify-end flex-wrap gap-2 shrink-0 max-w-[240px]">
           <div
             class="flex items-center gap-2.5 transition-opacity scale-90 origin-right justify-end"
-            [class.pointer-events-none]="translationService.isTranslating()"
             [class.opacity-50]="translationService.isTranslating()"
           >
             <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
@@ -182,7 +199,6 @@ import { StorageService } from "./storage.service";
       <div class="hidden md:flex items-center shrink-0 gap-4 lg:gap-6">
         <div
           class="flex items-center gap-3 transition-opacity"
-          [class.pointer-events-none]="translationService.isTranslating()"
           [class.opacity-50]="translationService.isTranslating()"
         >
           <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
@@ -229,14 +245,25 @@ export class HeaderComponent {
   storageService = inject(StorageService);
 
   changeTranslationMode(mode: "multi-task" | "lyric") {
+    if (this.translationService.isTranslating()) return;
     this.translationService.translationMode.set(mode);
   }
 
   changeAiModel(model: "gemini-pro-latest" | "gemini-flash-latest") {
+    if (this.translationService.isTranslating()) return;
     this.translationService.aiModel.set(model);
     if (model === "gemini-flash-latest") {
       this.fileService.clearAudioFile();
       this.fileService.showAudioUpload.set(false);
     }
+  }
+
+  resetApp() {
+    if (this.translationService.isTranslating()) return;
+    this.appState.resetAll();
+    this.fileService.clearAllFiles();
+    this.translationService.resetState();
+    this.searchService.searchQuery.set("");
+    this.searchService.translatedSearchQuery.set("");
   }
 }
