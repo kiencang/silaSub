@@ -36,7 +36,7 @@ import { ToastService } from './toast.service';
         <!-- Modal Body -->
         <div class="p-6 flex flex-col gap-5">
           <p class="text-slate-300 text-sm leading-relaxed">
-            Để sử dụng công cụ dịch phụ đề YouTube này bạn cần khóa API Key của Gemini. Bạn hãy vào link "Nơi lấy API Key Gemini" để thao tác. Key miễn phí chỉ có hiệu lực nếu bạn dùng <a href="https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?showPreview=true&showAssistant=true" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 underline font-medium">ứng dụng qua AI Studio</a>, với ai dùng trên silasub.wpsila.com, chỉ Key trả phí mới dùng được. Hãy remix ứng dụng trên AI Studio để dùng miễn phí.
+            Để sử dụng công cụ dịch phụ đề YouTube này bạn cần khóa API Key của Gemini. Bạn hãy vào link "Nơi lấy Gemini API Key" để thao tác. Key miễn phí (Free tier) chỉ có hiệu lực nếu bạn dùng <a href="https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?showPreview=true&showAssistant=true" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 underline font-medium">ứng dụng trên AI Studio</a>, với ai dùng trên silasub.wpsila.com, chỉ Key trả phí mới dùng được. Hãy Remix ứng dụng trên AI Studio để dùng miễn phí.
           </p>
           
           <div class="flex justify-center my-1 w-full">
@@ -57,16 +57,14 @@ import { ToastService } from './toast.service';
               </span>
             }
 
-            <span class="text-slate-600 select-none mx-1">|</span>
-
             <a
-              href="https://aistudio.google.com/app/apikey"
+              href="https://aistudio.google.com/app/api-keys"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors font-medium hover:underline"
+              class="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors font-medium hover:underline ml-auto"
             >
-              <mat-icon style="font-size: 14px; width: 14px; height: 14px;" class="flex items-center justify-center scale-[0.8] opacity-80 -mx-0.5 origin-center">help_outline</mat-icon>
-              Nơi lấy API Key Gemini
+              <span>Nơi lấy Gemini API Key</span>
+              <mat-icon class="text-[14px] w-[14px] h-[14px] leading-none flex items-center justify-center">open_in_new</mat-icon>
             </a>
           </div>
 

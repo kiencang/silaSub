@@ -323,10 +323,10 @@ import { PLATFORM_ID } from "@angular/core";
               @if (!fileService.selectedViFile() && !fileService.selectedEnFile()) {
               <button
                 (click)="fileService.showViUpload.set(false)"
-                class="text-cyan-400 hover:text-cyan-300 focus:outline-none cursor-pointer ml-auto bg-cyan-900/30 hover:bg-cyan-900/50 p-1 rounded-full transition-colors"
+                class="w-6 h-6 flex items-center justify-center text-cyan-400 hover:text-cyan-300 focus:outline-none cursor-pointer ml-auto bg-cyan-900/30 hover:bg-cyan-900/50 rounded-full transition-colors"
                 title="Đóng tùy chọn này"
               >
-                <mat-icon class="text-[16px] w-[16px] h-[16px]">close</mat-icon>
+                <mat-icon class="text-[16px] w-[16px] h-[16px] leading-none flex items-center justify-center">close</mat-icon>
               </button>
               }
             </div>
