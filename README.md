@@ -6,14 +6,11 @@ silaSub là dự án dịch phụ đề video YouTube từ tiếng Anh sang ti�
    <br><em>Giao diện của silaSub...</em>
 </p>
 
-- **Link app trên AI Studio**: https://aistudio.google.com/apps/b98324ac-cdef-4887-961c-dbcc2c50a6c7?fullscreenApplet=true&showAssistant=true&showPreview=true (Key miễn phí dùng được).
-- Link web: https://silasub.wpsila.com (chỉ Key trả phí mới dùng được).
-
-2 bản trên là một, và có chất lượng như nhau.
-
-Ngưỡng miễn phí ước tính từ 2 - 3 tiếng video / ngày ở model AI cao nhất.
+- Link web: https://silasub.wpsila.com
 
 Ứng dụng sử dụng SI & Prompt mẫu ở: https://github.com/kiencang/SI-Prompt-Subtitles (**v1.0.40**) / Cùng tác giả.
+
+**Lưu ý**: Từ ngày 28/10/2026, việc sử dụng API Key miễn phí trên AI Studio không được thoải mái như trước đây, thường gặp giới hạn (thông báo dạng `model AI đang có nhu cầu sử dụng cao, vui lòng thử lại sau`). Hiện chỉ Key trả phí là tiện dùng ứng dụng được ngay.
 
 ## Lý do triển khai
 - Chất lượng dịch mặc định của YouTube không quá tốt: YouTube có sẵn tính năng dịch phụ đề tiện lợi ngay, trên các chủ đề không quá phức tạp chất lượng vẫn chấp nhận được, nhưng nếu là nội dung có độ khó cao, dễ nhận thấy chất lượng dịch suy giảm khá nhanh. silaSub sử dụng các model AI mạnh nhất của Gemini, kết hợp với việc đưa vào bối cảnh sâu hơn giúp chất lượng dịch được cải thiện đáng kể.
