@@ -31,6 +31,11 @@ silaSub là dự án dịch phụ đề video YouTube từ tiếng Anh sang ti�
 - Lồng tiếng, sử dụng khả năng phát âm của hệ điều hành, mặc định trên Windows là giọng đọc "Microsoft An".
 - Tìm kiếm video tiếng Anh trên YouTube với từ khóa tiếng Việt.
 
+## Một số lưu ý khi dùng với API Key trả phí
+- Không chia sẻ API Key trả phí với người dùng khác, vì bạn sẽ bị tốn chi phí;
+- Luôn thiết lập ngưỡng cho API Key bạn dùng để tránh chi tiêu quá mức, ví dụ thiết lập ngưỡng chi tiêu tối đa 300 ngàn đồng/tháng;
+- Nên dùng ứng dụng này trên các trình duyệt đáng tin cậy, tốt nhất là Chrome, Firefox hoặc Edge. Ngoài ra nên hạn chế các addon cài trên trình duyệt;
+
 ## Tuyên bố từ chối trách nhiệm
 Công cụ này có thể được sử dụng cho mục đích nghiên cứu và học tập cá nhân.
 
