@@ -5,6 +5,12 @@ Tất cả những thay đổi đáng chú ý của dự án kiencang/SI-Prompt-
 Định dạng dựa trên [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 và dự án này tuân thủ [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.83] - 2026-11-04
+### Fixed
+- Loại bỏ tàn dư mã server side; Ứng dụng chạy hoàn toàn phía clientside;
+- Loại bỏ các thông tin sai do giờ đây Gemini không miễn phí rộng rãi nữa (chỉ Key trả phí mới dùng thoải mái);
+- Bảo vệ khóa API Key của người dùng tốt hơn;
+
 ## [1.0.82] - 2026-10-26
 ### Fixed
 - Bổ sung tính năng click vào logo để reset/quay lại trạng thái ban đầu;
