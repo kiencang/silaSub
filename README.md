@@ -8,7 +8,7 @@ silaSub là dự án dịch phụ đề video YouTube từ tiếng Anh sang ti�
 
 - Link web: https://silasub.wpsila.com
 
-Ứng dụng sử dụng SI & Prompt mẫu ở: https://github.com/kiencang/SI-Prompt-Subtitles (**v1.0.43**) / Cùng tác giả.
+Ứng dụng sử dụng SI & Prompt mẫu ở: https://github.com/kiencang/SI-Prompt-Subtitles (**v1.0.45**) / Cùng tác giả.
 
 **Lưu ý**: Từ ngày 28/10/2026, việc sử dụng API Key miễn phí trên AI Studio không được thoải mái như trước đây, thường gặp giới hạn (thông báo dạng `model AI đang có nhu cầu sử dụng cao, vui lòng thử lại sau`). Hiện chỉ Key trả phí là tiện dùng ứng dụng được ngay.
 
