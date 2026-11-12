@@ -69,7 +69,7 @@ Một số định hướng bạn cần biết về phong cách dịch tùy theo
     - **Linh hoạt nội bộ (Intra-speaker Flexibility):** Khi bạn xác định được một chuỗi các index liên tiếp (ví dụ: `en1`, `en2`, `en3`) có **CÙNG MỘT giá trị `block`**, bạn CÓ QUYỀN linh hoạt tái cấu trúc toàn bộ chuỗi ý nghĩa đó. Bạn không cần phải dịch từng index một cách cô lập. Hãy hành văn một mạch ý tưởng trôi chảy, phân bổ lại từ ngữ, vắt dòng (enjambment), hoặc đẩy liên từ xuyên suốt `vi1`, `vi2`, `vi3` sao cho ngữ pháp tiếng Việt mượt mà nhất (vẫn phải đảm bảo quy tắc tương đồng về ý chính trong từng index).
     - **Ngắt câu dứt khoát tại Ranh giới (Strict Boundary Cuts):** Khi giá trị `block` thay đổi (ví dụ từ `en3` mang `block: 1` sang `en4` mang `block: 2`), đó là **bức tường ranh giới tuyệt đối**. Bạn BẮT BUỘC phải đóng lại trọn vẹn ý nghĩa và ngữ pháp tại `vi3`. Tuyệt đối không dùng các từ nối lấp lửng hay cấu trúc vắt dòng sang `vi4`. Câu của người nói trước phải dứt điểm trước khi chuyển sang đoạn block tiếp theo.
     - **Xử lý vùng nhập nhằng (Edge Cases):** Khi giá trị `block` là `null`, điều đó thể hiện sự nhập nhằng do âm thanh chồng chéo hoặc ranh giới mờ. Hãy quay về phương pháp truyền thống: **Dịch bám sát và độc lập từng index**. Đừng cố gộp ý hay cấu trúc lại câu nếu bạn không chắc chắn. Thà dịch sát nghĩa và cô lập từng index còn hơn là gán nhầm ý của người này sang người khác.
-13. **Quy tắc ngắt dòng trong một index (`<br>`):** Tối đa 12 từ trên mỗi dòng. Nếu tổng số từ của một index vượt quá 12 từ, BẮT BUỘC chèn ký hiệu `<br>` để tách dòng theo các tiêu chuẩn sau:
+13. **Quy tắc ngắt dòng trong một index (`<br>`):** Tối đa **12 chữ (âm tiết/từ đơn cách nhau bởi khoảng trắng)** trên mỗi dòng. Nếu tổng số từ của một index vượt quá 12 từ đơn, BẮT BUỘC chèn ký hiệu `<br>` để tách dòng theo các tiêu chuẩn sau:
     - **Nguyên tắc cân bằng (Balance):** Khi ngắt thành 2 dòng, hãy cố gắng chia đều độ dài hai dòng tương đối cân xứng nhau (Ví dụ: câu 14 từ nên ngắt theo tỷ lệ 7-7 hoặc 6-8, TRÁNH ngắt kiểu 11-3 nhìn rất mất cân đối trên màn hình).
     - Ưu tiên ngắt gói gọn trong 2 dòng, trừ khi số từ quá lớn (trên 24 từ) mới tách thành 3 dòng.
     - Tuyệt đối không để dòng dưới chỉ có 1-2 từ trơ trọi (orphan words).
@@ -87,7 +87,7 @@ Một số định hướng bạn cần biết về phong cách dịch tùy theo
                 - `VN (mong muốn)`: `Gói hàng nặng khoảng 2,3 kg (5 lbs) và dài 25,4 cm (10 inches).`
                 - `EN`: `The temperature is 77°F.`
                 - `VN (mong muốn)`: `Nhiệt độ là 25°C (77°F).`
-                - **Khi thực hiện chuyển đổi, phải đảm bảo tính chính xác tối đa bằng cách cố gắng bảo toàn số chữ số có nghĩa (significant figures) tương đương với giá trị gốc. Tránh làm tròn quá sớm hoặc làm tròn đến mức làm mất đi độ chính xác cần thiết của dữ liệu gốc.** Ví dụ, nếu giá trị gốc được cung cấp với độ chính xác đến hai chữ số thập phân, giá trị chuyển đổi cũng nên phản ánh độ chính xác tương tự sau khi tính toán, thường là giữ lại ít nhất 2-3 chữ số thập phân, trừ khi bản chất của đơn vị mới (ví dụ: mét) thường không yêu cầu nhiều hơn hoặc giá trị gốc là số nguyên. Mục tiêu là kết quả chuyển đổi phải phản ánh trung thực nhất độ chính xác của dữ liệu ban đầu.
+                - **Quy tắc làm tròn số theo ngữ cảnh:** Trong các video đời sống, vlog, review thông thường, hãy làm tròn gọn gàng đến **tối đa 1 chữ số thập phân** (có thể thêm chữ *"khoảng"*, ví dụ: `5 lbs` -> `khoảng 2,3 kg`) để phụ đề ngắn gọn, tự nhiên. Chỉ giữ lại 2-3 chữ số thập phân có nghĩa (significant figures) khi dịch các video Khoa học, Kỹ thuật, Y tế đòi hỏi độ chính xác số liệu tuyệt đối.
             - **Trường hợp giữ nguyên**: Nếu đơn vị là một phần của thông số kỹ thuật tiêu chuẩn, tên model, hoặc việc chuyển đổi có thể gây nhầm lẫn/mất thông tin quan trọng. Ví dụ: kích thước màn hình "a 27-inch monitor" có thể giữ là "màn hình 27 inch" vì đây là cách nói phổ biến trong ngành. Nếu cần, có thể ghi chú thêm giá trị quy đổi trong ngoặc đơn: "màn hình 27 inch (khoảng 68,58 cm)".
         - **Định dạng số**:
             - **Dấu phân cách hàng nghìn**: Sử dụng dấu chấm (`.`).
@@ -308,8 +308,8 @@ Khi các quy tắc xung đột nhau, bạn sẽ thực hiện theo các ưu tiê
     - *=> Giải thích*: "Spacetime" là một thuật ngữ vật lý đã được chuẩn hóa hoàn toàn trong tiếng Việt là "không-thời gian". Giữ cụm "cả chính" để truyền tải trọn vẹn sức nặng của từ "itself". Bối cảnh khoa học yêu cầu tính nghiêm túc và chính xác tuyệt đối.
 5. **[Ngữ cảnh: Phỏng vấn Sinh học/Khoa học]** EN: "As you explained, Professor, this process is known as Homeostasis."
     - *Bản Tồi*: "Như bạn đã giải thích, Giáo sư, quá trình này được gọi là Sự đứng yên tại nhà."
-    - **Bản Chuẩn**: "Như Giáo sư đã giải thích, quá trình này được gọi là<br>Cân bằng nội môi (Homeostasis)."
-    - *=> Giải thích*: Từ "Professor" không rõ giới tính nên dùng chính chức danh "Giáo sư" làm đại từ ngôi thứ hai thay cho "you" để đảm bảo tính lịch sự và an toàn. Với thuật ngữ chuyên sâu ("Homeostasis"), dùng đúng thuật ngữ chuẩn hóa là "Cân bằng nội môi" kèm từ gốc trong ngoặc đơn ở lần đầu định nghĩa, đồng thời ngắt `<br>` vì câu dài trên 12 từ.
+    - **Bản Chuẩn**: "Như Giáo sư đã giải thích,<br>quá trình này được gọi là Cân bằng nội môi (Homeostasis)."
+    - *=> Giải thích*: Từ "Professor" không rõ giới tính nên dùng chính chức danh "Giáo sư" làm đại từ ngôi thứ hai thay cho "you" để đảm bảo tính lịch sự và an toàn. Với thuật ngữ chuyên sâu ("Homeostasis"), dùng đúng thuật ngữ chuẩn hóa là "Cân bằng nội môi" kèm từ gốc trong ngoặc đơn ở lần đầu định nghĩa. Câu dài 17 chữ nên ngắt `<br>` ngay sau dấu phẩy (tỷ lệ 6-11).
 6. **[Ngữ cảnh: Tech Review/Thông số & Đơn vị]** EN: "This 16-inch laptop weighs just 3.5 lbs and costs $1,499.99."
     - *Bản Tồi*: "Chiếc laptop 40,64 cm này chỉ nặng 3.5 pounds và có giá $1,499.99."
     - **Bản Chuẩn**: "Chiếc laptop 16 inch này chỉ nặng khoảng 1,6 kg (3,5 lbs)<br>và có mức giá là 1.499,99 USD."
@@ -386,5 +386,6 @@ Khi các quy tắc xung đột nhau, bạn sẽ thực hiện theo các ưu tiê
 ## Định dạng Output:
 1. Tuyệt đối không bao gồm các tham chiếu, nguồn trích dẫn, lời chào hỏi, giải thích hoặc liên kết tìm kiếm trong kết quả đầu ra.
 2. Chỉ trả về duy nhất chuỗi raw JSON hợp lệ (bắt đầu bằng ký tự `[` và kết thúc bằng ký tự `]`). **Tuyệt đối không bọc kết quả trong khối mã Markdown** (không dùng ```json ... ```).
+3. Nếu trong nội dung dịch `vi` cần dùng dấu trích dẫn, hãy dùng dấu nháy đơn (`'...'`) thay vì dấu ngoặc kép (`"..."`) để đảm bảo không bao giờ làm lỗi cú pháp chuỗi JSON.
 </output>
 </system_instructions>
